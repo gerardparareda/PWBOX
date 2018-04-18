@@ -1,0 +1,14 @@
+{
+    "name": "gerardparareda/pwbox",
+    "type": "project",
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.3",
+        "doctrine/dbal": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "PwBox\\": "src/"
+        }
+    }
+}
