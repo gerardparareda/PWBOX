@@ -14,8 +14,7 @@ class HelloController{
 
     public function __invoke(Request $request, Response $response, array $args){
         $name = $args['name'];
-        $suada = $args['suda'];
-        return $this->container->get('view')->render($response, 'hello.twig', ['name' => $name, 'sudaa' => $suada]);
+        return $this->container->get('view')->render($response, 'hello.twig', ['name' => $name]);
     }
 
 
