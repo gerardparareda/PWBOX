@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %}{% endblock %} - PWBox</title>
+    <title>{% block title %}{% endblock %}- PWBox</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -16,25 +16,23 @@
 
     {% endblock %}
 </head>
+    {% block body %}
+        {% block header %}{% endblock %}
 
-<body class="text-center">
+        {% block content %}{% endblock %}
 
-<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-    {% block header %}{% endblock %}
+        {% block footer %}{% endblock %}
 
-    {% block content %}{% endblock %}
 
-    {% block footer %}{% endblock %}
 
-</div>
+        {% block scripts %}
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="/assets/js/vendor/popper.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
 
-{% block scripts %}
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="/assets/js/vendor/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js"></script>
+        {% endblock %}
+    {% endblock %}
 
-{% endblock %}
-</body>
 </html>

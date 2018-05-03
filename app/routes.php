@@ -10,4 +10,8 @@ $app->get('/register', 'PwBox\Controller\RegisterController');
 
 $app->post('/register', 'PwBox\Controller\RegisterController:subtmit');
 
+$app->get('/login', 'PwBox\Controller\LoginController');
+
+$app->post('/login', 'PwBox\Controller\LoginController:subtmit');
+
 ?>
