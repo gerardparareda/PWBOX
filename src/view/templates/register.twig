@@ -20,16 +20,49 @@
         </header>
     {% endblock %}
     {% block content %}
-    <div class="d-flex justify-content-center">
-        <form class="form-signup" action="/register">
+    <div class="d-flex justify-content-center w-50">
+        <form id="register-form" class="form-signup" onsubmit="return validateForm();" action="/register">
             <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Register</h1>
             <label for="inputUsername" class="sr-only">Username</label>
             <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+            <p id="error-nom" class="error text-danger"></p>
             <label for="inputEmail" class="sr-only">Email address</label>
             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <p id="error-email" class="error text-danger"></p>
+            <label for="inputUsername" class="sr-only">Username</label>
+            <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="inputBirthDay">Day</label>
+                    <input type="text" id="inputBirthDay" class="form-control" placeholder="23" required autofocus>
+                    <p id="error-dia" class="error text-danger"></p>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputMonthBirth">Month</label>
+                    <select id="inputMonthBirth" class="form-control">
+                        <option selected>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option>
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option>
+                        <option>December</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputBirthYear" >Year</label>
+                    <input type="text" id="inputBirthYear" class="form-control" placeholder="1997" required autofocus>
+                    <p id="error-any" class="error text-danger"></p>
+                </div>
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <p id="error-password" class="error text-danger"></p>
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
@@ -42,5 +75,10 @@
     {% endblock %}
 </div>
 
+    {% block scripts %}
+        {{ parent() }}
+        <script src="/assets/js/register.js"></script>
+
+    {% endblock %}
 </body>
 {% endblock %}
