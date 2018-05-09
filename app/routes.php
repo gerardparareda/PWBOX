@@ -8,10 +8,11 @@ $app->get('/', 'PwBox\Controller\LandingController');
 
 $app->get('/register', 'PwBox\Controller\RegisterController');
 
-$app->post('/register', 'PwBox\Controller\RegisterController:subtmit');
+$app->post('/register', 'PwBox\Controller\RegisterController:submit');
+//$app->post('/register', 'PwBox\Controller\PostUserController');
 
 $app->get('/login', 'PwBox\Controller\LoginController');
 
-$app->post('/login', 'PwBox\Controller\LoginController:subtmit');
+$app->post('/login', 'PwBox\Controller\LoginController:submit');
 
 ?>

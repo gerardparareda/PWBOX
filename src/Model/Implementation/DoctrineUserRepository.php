@@ -18,6 +18,8 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function __construct(Connection $database)
     {
+        //No cal connectar-se a la base de dades, perque ho fa sol amb els parametres
+        // de app/settings.php
         $this->database = $database;
     }
 

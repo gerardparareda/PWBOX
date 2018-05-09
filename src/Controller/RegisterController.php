@@ -23,4 +23,20 @@ class RegisterController{
         return $this->container->get('view')->render($response, 'register.twig', []);
     }
 
+    //Amb aquesta funcio obtenim les dades del request i despres de comprovar, guradem les dades.
+    public function submit (Request $request, Response $response) {
+        try{
+            $data = $request->getParsedBody();
+            var_dump($data);
+            //Validate
+            //if (isset($data['email'])) {}
+            //$service = $this->container->get('post_user_use_case');
+            //$service($data);
+
+        }catch(\Exception $e){
+            $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
+        }
+        return $response;
+    }
+
 }
