@@ -27,7 +27,7 @@ class RegisterController{
     public function submit (Request $request, Response $response) {
         try{
             $data = $request->getParsedBody();
-            var_dump($data);
+            //var_dump($data);
 
             $errors = [];
 
@@ -35,44 +35,43 @@ class RegisterController{
             if (isset($data['inputEmail']) && filter_var($data['inputEmail'], FILTER_VALIDATE_EMAIL)) {
 
             } else {
-                $errors[] = 'errorEmail';
+                $errors['errorEmail'] = 'The email is not valid';
             }
 
-            if (isset($data['inputUsername']) && strlen($data['inputUsername']) <= 20 && preg_match("[^A-Za-z0-9]+", $data['inputUsername'])) {
+            if (isset($data['inputUsername']) && strlen($data['inputUsername']) <= 20 && !preg_match("[^A-Za-z0-9]", $data['inputUsername'])) {
 
             } else {
-                $errors[] = 'errorUsername';
+                $errors['errorUsername'] = 'The username is not valid' ;
             }
 
             if (isset($data['inputBirthDay']) && isset($data['inputMonthBirth']) && isset($data['inputBirthYear']) && $this->validateDay($data['inputBirthDay'], $data['inputMonthBirth'])) {
 
             } else {
-                $errors[] = 'errorBirth';
+                $errors['errorBirth'] = 'This birthdate is invalid';
             }
 
             if (isset($data['inputPassword'])) {
 
                 if (strlen($data['inputPassword']) < 6 || strlen($data['inputPassword']) > 12){
-                    $errors[] = 'errorPasswordLength';
+                    $errors['errorPasswordLength'] = 'Password length must be between 6 and 12 characters';
                 }
                 if (strtolower($data['inputPassword']) != $data['inputPassword'] || strtoupper($data['inputPassword']) != $data['inputPassword']){
 
                 } else {
-                    $errors[] = 'errorPasswordCase';
+                    $errors['errorPasswordCase'] = 'Password must have one lowercase and one uppercase';
                 }
 
             } else {
-                $errors[] = 'errorPassword';
+                $errors['errorPassword'] = 'Password is missing';
             }
 
             if (isset($data['inputPasswordConf'])) {
                  if ($data['inputPasswordConf'] != $data['inputPassword']){
-                     $errors[] = 'errorPasswordMismatch';
+                     $errors['errorPasswordMismatch'] = 'The passwords don\'t match';
                  }
             } else {
-                $errors[] = 'errorPasswordMismatch';
+                $errors['errorPasswordConf'] = 'Password confirmation is missing';
             }
-
 
             return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors]);
 
