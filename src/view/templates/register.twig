@@ -27,14 +27,23 @@
             <label for="inputUsername" class="sr-only">Username</label>
             <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus>
             <p id="error-nom" class="error text-danger"></p>
+            {% if error_array['errorUsername'] %}
+                <p id="error-nom" class="error text-danger">Username can only contain alphanumeric characters and a max length of 20 characters</p>
+            {% endif %}
             <label for="inputEmail" class="sr-only">Email address</label>
             <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
             <p id="error-email" class="error text-danger"></p>
+            {%  if error_array['errorEmail'] %}
+                <p id="error-email" class="error text-danger">Invalid email</p>
+            {%  endif %}
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label for="inputBirthDay">Day</label>
                     <input type="text" id="inputBirthDay" name="inputBirthDay" class="form-control" placeholder="23" required autofocus>
                     <p id="error-dia" class="error text-danger"></p>
+                    {%  if error_array['errorBirth'] %}
+                        <p id="error-dia" class="error text-danger">Input a valid date</p>
+                    {%  endif %}
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputMonthBirth">Month</label>
@@ -64,6 +73,18 @@
             <label for="inputPasswordConf" class="sr-only">Confirm password</label>
             <input type="password" id="inputPasswordConf" name="inputPasswordConf" class="form-control" placeholder="Confirm password" required>
             <p id="error-password" class="error text-danger"></p>
+            {%  if error_array['errorPasswordLength'] %}
+                <p id="error-password" class="error text-danger">Password length must be between 6 and 12 characters</p>
+            {%  endif %}
+            {%  if error_array['errorPasswordCase'] %}
+                <p id="error-password" class="error text-danger">Password must contain at least one number and one upper case letter</p>
+            {%  endif %}
+            {%  if error_array['errorPasswordMismatch'] %}
+                <p id="error-password" class="error text-danger">Passowords must match</p>
+            {%  endif %}
+            {%  if error_array['errorPassword'] %}
+                <p id="error-password" class="error text-danger">Invalid password</p>
+            {%  endif %}
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" name="remember" value="remember-me"> Remember me
