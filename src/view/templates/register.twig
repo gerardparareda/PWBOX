@@ -25,13 +25,13 @@
             <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Register</h1>
             <label for="inputUsername" class="sr-only">Username</label>
-            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus>
+            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" value = "{{ lastingData['inputUsername'] }}" required autofocus>
             <p id="error-nom" class="error text-danger"></p>
             {% if error_array['errorUsername'] %}
                 <p id="error-nom" class="error text-danger">{{ error_array['errorUsername'] }}</p>
             {% endif %}
             <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" value = "{{ lastingData['inputEmail'] }}" required autofocus>
             <p id="error-email" class="error text-danger"></p>
             {%  if error_array['errorEmail'] %}
                 <p id="error-email" class="error text-danger">{{ error_array['errorEmail'] }}</p>
@@ -39,7 +39,7 @@
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label for="inputBirthDay">Day</label>
-                    <input type="text" id="inputBirthDay" name="inputBirthDay" class="form-control" placeholder="23" required autofocus>
+                    <input type="text" id="inputBirthDay" name="inputBirthDay" class="form-control" placeholder="23" value = "{{ lastingData['inputBirtDay'] }}" required autofocus>
                     <p id="error-dia" class="error text-danger"></p>
                     {%  if error_array['errorBirth'] %}
                         <p id="error-dia" class="error text-danger">{{ error_array['errorBirth'] }}</p>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputMonthBirth">Month</label>
-                    <select id="inputMonthBirth" name="inputMonthBirth" class="form-control">
+                    <select id="inputMonthBirth" name="inputMonthBirth" class="form-control" selected = "{{ lastingData['inputMonthBirth'] }}">
                         <option selected>January</option>
                         <option>February</option>
                         <option>March</option>
@@ -64,14 +64,14 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputBirthYear" >Year</label>
-                    <input type="text" id="inputBirthYear" name="inputBirthYear" class="form-control" placeholder="1997" required autofocus>
+                    <input type="text" id="inputBirthYear" name="inputBirthYear" class="form-control" placeholder="1997" value = "{{ lastingData['inputBirthYear'] }}" required autofocus>
                     <p id="error-any" class="error text-danger"></p>
                 </div>
             </div>
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" value = "{{ lastingData['inputPassword'] }}" required>
             <label for="inputPasswordConf" class="sr-only">Confirm password</label>
-            <input type="password" id="inputPasswordConf" name="inputPasswordConf" class="form-control" placeholder="Confirm password" required>
+            <input type="password" id="inputPasswordConf" name="inputPasswordConf" class="form-control" placeholder="Confirm password" value = "{{ lastingData['inputPasswordConf'] }}" required>
             <p id="error-password" class="error text-danger"></p>
             {%  if error_array['errorPasswordLength'] %}
                 <p id="error-password" class="error text-danger">{{ error_array['errorPasswordLength'] }}</p>
