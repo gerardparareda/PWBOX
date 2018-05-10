@@ -55,7 +55,7 @@ class RegisterController{
                 if (strlen($data['inputPassword']) < 6 || strlen($data['inputPassword']) > 12){
                     $errors['errorPasswordLength'] = 'Password length must be between 6 and 12 characters';
                 }
-                if (strtolower($data['inputPassword']) != $data['inputPassword'] || strtoupper($data['inputPassword']) != $data['inputPassword']){
+                if (strtolower($data['inputPassword']) != $data['inputPassword'] && strtoupper($data['inputPassword']) != $data['inputPassword']){
 
                 } else {
                     $errors['errorPasswordCase'] = 'Password must have one lowercase and one uppercase';

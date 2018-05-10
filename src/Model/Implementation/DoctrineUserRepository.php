@@ -35,4 +35,25 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("updated_at", $user->getUpdatedAt()->format(self::DATE_FORMAT));
         $stmt->execute();
     }
+
+    /**
+     * @param User $user
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function lookFor(User $user)
+    {
+        $sql = "SELECT * FROM user WHERE email = :email AND password = :password";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("email", $user->getEmail(), 'string');
+        $stmt->bindValue("password", $user->getPassword(), 'string');
+        $result = $stmt->execute();
+        $user = $stmt->fetch();
+        //Revisar
+        var_dump($user);
+
+        if ($user =! null) {
+            return true;
+        }
+        return false;
+    }
 }
