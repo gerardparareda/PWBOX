@@ -73,7 +73,7 @@ class RegisterController{
                 $errors['errorPasswordConf'] = 'Password confirmation is missing';
             }
 
-            return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors]);
+            return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors, 'lastingData' => $data]);
 
         }catch(\Exception $e){
             $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
