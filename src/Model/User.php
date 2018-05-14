@@ -7,6 +7,9 @@ class User{
     private $username;
     private $email;
     private $password;
+    private $birthDay;
+    private $birthMonth;
+    private $birthYear;
     private $createdAt;
     private $updatedAt;
 
@@ -16,15 +19,21 @@ class User{
      * @param $username
      * @param $email
      * @param $password
+     * @param $birthDay
+     * @param $birthMonth
+     * @param $birthYear
      * @param $createdAt
      * @param $updatedAt
      */
-    public function __construct($id, $username, $email, $password, $createdAt, $updatedAt)
+    public function __construct($id, $username, $email, $password, $birthDay, $birthMonth, $birthYear, $createdAt, $updatedAt)
     {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
+        $this->birthDay = $birthDay;
+        $this->birthMonth = $birthMonth;
+        $this->birthYear = $birthYear;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
@@ -59,6 +68,30 @@ class User{
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBirthDay()
+    {
+        return $this->birthDay;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBirthMonth()
+    {
+        return $this->birthMonth;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBirthYear()
+    {
+        return $this->birthYear;
     }
 
     /**

@@ -11,6 +11,7 @@ namespace PwBox\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use PwBox\Model\User;
 
 class RegisterController{
     protected $container;
@@ -24,6 +25,14 @@ class RegisterController{
     }
 
     //Amb aquesta funcio obtenim les dades del request i despres de comprovar, guradem les dades.
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function submit (Request $request, Response $response) {
         try{
             $data = $request->getParsedBody();
@@ -73,7 +82,32 @@ class RegisterController{
                 $errors['errorPasswordConf'] = 'Password confirmation is missing';
             }
 
-            return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors, 'lastingData' => $data]);
+            if(sizeof($errors) == 0) {
+
+                //Registrar l'usuari (ARREGLAR)
+                $service = $this->container->get('post_user_use_case');
+
+                $now = new \DateTime('now');
+
+                $this->get('doctrine')->save(
+                     new User(null,
+                         $data['inputUsername'],
+                         $data['inputEmail'],
+                         $data['inputPassword'],
+                         $data['inputBirthDay'],
+                         $data['inputMonthBirth'],
+                         $data['inputBirthYear'],
+                         $now,
+                         $now)
+                 );
+
+                //Iniciar una cookie
+
+                //Portar l'usuari a la seva home
+                return $this->container->get('view')->render($response, 'login.twig', []);
+            } else {
+                return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors, 'lastingData' => $data]);
+            }
 
         }catch(\Exception $e){
             $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
