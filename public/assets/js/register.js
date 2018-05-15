@@ -4,7 +4,7 @@ function validateForm(){
     var email = document.forms["register-form"]["inputEmail"].value;
     var password = document.forms["register-form"]["inputPassword"].value;
     var birthDay = document.forms["register-form"]["inputBirthDay"].value;
-    var birthMonth = document.forms["register-form"]["inputBirthMonth"].value;
+    var birthMonth = document.forms["register-form"]["inputMonthBirth"].value;
     var birthYear = document.forms["register-form"]["inputBirthYear"].value;
     var errors = true;
 

@@ -41,11 +41,31 @@ class LoginController{
             $errors = [];
 
             //Validate
-            if (isset($data['inputEmail']) && filter_var($data['inputEmail'], FILTER_VALIDATE_EMAIL)) {
+            $rejex = '/@/';
+            preg_match($rejex, $data['inputEmail'], $matches, PREG_OFFSET_CAPTURE);
+
+            //var_dump($matches);
+
+            if (!empty($matches)) {
+
+                //Si entra vol dir que no ha trobat una arroba, i per tant que es un email, fem comprovacions email.
+                if (isset($data['inputEmail']) && filter_var($data['inputEmail'], FILTER_VALIDATE_EMAIL)) {
+
+                } else {
+                    $errors['errorEmail'] = 'El camp email no és correcte ';
+                }
 
             } else {
-                $errors['errorEmail'] = 'El camp email no és correcte ';
+
+                //Si entra aqui vol dir que no ha trobat una arroba i per tant es un username, fem validacions.
+                if (isset($data['inputEmail']) && strlen($data['inputEmail']) <= 20 && !preg_match("[^A-Za-z0-9]", $data['inputEmail'])) {
+
+                } else {
+                    $errors['errorUsername'] = 'The username is not valid' ;
+                }
+
             }
+
 
             if (isset($data['inputPassword'])) {
 

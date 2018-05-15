@@ -73,4 +73,21 @@ class DoctrineUserRepository implements UserRepository{
         }
         return false;
     }
+
+    /**
+     * @param User $user
+     * @return bool
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getUserId(User $user)
+    {
+        $sql = "SELECT * FROM User WHERE email = :email AND pass = :password";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("email", $user->getEmail(), 'string');
+        $stmt->bindValue("password", md5($user->getPassword()), 'string');
+        $result = $stmt->execute();
+        $newUser = $stmt->fetchColumn (0);
+
+        return $newUser;
+    }
 }
