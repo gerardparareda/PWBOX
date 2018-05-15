@@ -37,7 +37,7 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("password", md5($user->getPassword()), 'string');
         $stmt->bindValue("birthDay", $user->getBirthDay(), 'integer');
         $stmt->bindValue("birthMonth", $user->getBirthMonth(), 'string');
-        $stmt->bindValue("birthYear", md5($user->getBirthYear()), 'integer');
+        $stmt->bindValue("birthYear", $user->getBirthYear(), 'integer');
         $stmt->bindValue("created_at", $user->getCreatedAt()->format(self::DATE_FORMAT));
         $stmt->bindValue("updated_at", $user->getUpdatedAt()->format(self::DATE_FORMAT));
         $stmt->execute();
@@ -49,16 +49,16 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function lookFor(User $user)
     {
-        $sql = "SELECT * FROM user WHERE email = :email AND pass = :password";
+        $sql = "SELECT * FROM User WHERE email = :email AND pass = :password";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("email", $user->getEmail(), 'string');
-        $stmt->bindValue("password", $user->getPassword(), 'string');
+        $stmt->bindValue("password", md5($user->getPassword()), 'string');
         $result = $stmt->execute();
-        $user = $stmt->fetch();
+        $newUser = $stmt->fetch();
         //Revisar
-        var_dump($user);
+        //var_dump($newUser);
 
-        if ($user != null) {
+        if ($newUser != null) {
             return true;
         }
         return false;

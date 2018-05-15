@@ -82,7 +82,7 @@ class RegisterController{
                 $errors['errorPasswordConf'] = 'Password confirmation is missing';
             }
 
-            var_dump($data);
+            //var_dump($data);
 
             if(sizeof($errors) == 0) {
 
@@ -91,7 +91,7 @@ class RegisterController{
 
                 $now = new \DateTime('now');
 
-                var_dump($data);
+                //var_dump($data);
 
                 $service->save(
                      new User(null,
