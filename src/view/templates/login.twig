@@ -17,11 +17,13 @@
 {% endblock %}
 
 {% block content %}
-<form class="form-signin" action="/login" method="POST" onsubmit="return validateLogin()">
+<form id="form-signin" class="form-signin" action="/login" method="POST" onsubmit="return validateLogin();">
     <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
     <label for="inputEmail" class="sr-only">Email address</label>
     <input type="text" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <p id="error-email" class="error text-danger"></p>
+    <p id="error-nom" class="error text-danger"></p>
     {%  if error_array['errorEmail'] %}
         <p id="error-email" class="error text-danger">{{ error_array['errorEmail'] }}</p>
     {%  endif %}
@@ -30,6 +32,7 @@
     {% endif %}
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+    <p id="error-password" class="error text-danger"></p>
     {%  if error_array['errorPasswordLength'] or error_array['errorPasswordCase']%}
         {% if error_array['errorPasswordCase'] is defined %}
             <p id="error-password" class="error text-danger">{{ error_array['errorPasswordCase'] }}</p>

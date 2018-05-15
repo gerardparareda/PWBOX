@@ -1,8 +1,10 @@
 function validateLogin() {
 
-    var email = document.forms["register-form"]["inputEmail"].value;
-    var password = document.forms["register-form"]["inputPassword"].value;
+    var email = document.forms["form-signin"]["inputEmail"].value;
+    var password = document.forms["form-signin"]["inputPassword"].value;
     var errors = true;
+
+    alert("He arribat aqui");
 
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -23,7 +25,7 @@ function validateLogin() {
         errors = false;
     }
 
-    if (errors) {
+    if (errors == false) {
         /*divError = document.createElement('p');
         textError = document.createTextNode('Usuari o password incorrectes ');
         element = document.getElementById('inputPassword');
@@ -42,7 +44,8 @@ function validateLogin() {
 
     }
 
-    return errors;
+    alert('cosa');
+    return false;
 
 }
 

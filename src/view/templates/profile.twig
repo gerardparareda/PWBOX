@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+{% block title %} Sign In {% endblock %}
+{% block styles %}
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/register.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+    <div class="fixed-top">
+        <div class="float-sm-right">
+            <p class="lead menuButton">
+                <a href="/" class="btn btn-lg btn-secondary ">Log out</a>
+            </p>
+        </div>
+
+        <div class="float-sm-right">
+            <p class="lead menuButton">
+                <a href="/edit" class="btn btn-lg btn-secondary ">Edit profile</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <p class="lead">Welcome to your profile</p>
+    <p class="lead"></p>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <!--script src="/assets/js/login.js"></--script>
+
+{% endblock %}
