@@ -82,12 +82,16 @@ class RegisterController{
                 $errors['errorPasswordConf'] = 'Password confirmation is missing';
             }
 
+            var_dump($data);
+
             if(sizeof($errors) == 0) {
 
                 //Registrar l'usuari (ARREGLAR)
                 $service = $this->container->get('user_repository');
 
                 $now = new \DateTime('now');
+
+                var_dump($data);
 
                 $service->save(
                      new User(null,
@@ -101,6 +105,8 @@ class RegisterController{
                          $now)
                  );
 
+
+
                 //Iniciar una cookie
 
                 //Portar l'usuari a la seva home
@@ -111,6 +117,8 @@ class RegisterController{
 
         }catch(\Exception $e){
             //$response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
+            $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write($e->getMessage());
+
             //posar e.getMessage()
         }
         return $response;

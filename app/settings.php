@@ -4,7 +4,7 @@ return [
     'settings' => [
         'displayErrorDetails' => true,
         'database' => [
-            'dbname' => 'PwBoxEx',
+            'dbname' => 'PWBOX',
             'user' => 'root',
             'password' => 'secret',
             'host' => 'localhost',
