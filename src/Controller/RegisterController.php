@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use PwBox\Model\User;
+use Slim\Http\UploadedFile;
 
 class RegisterController{
     protected $container;
@@ -36,7 +37,6 @@ class RegisterController{
     public function submit (Request $request, Response $response) {
         try{
             $data = $request->getParsedBody();
-            //var_dump($data);
 
             $errors = [];
 
@@ -82,6 +82,18 @@ class RegisterController{
                 $errors['errorPasswordConf'] = 'Password confirmation is missing';
             }
 
+            //Comprovar que la imatge no sigui més gran de 500kB
+            $uploadedFiles = $request->getUploadedFiles();
+            if (isset($uploadedFiles['inputProfileImage'])){
+
+                $uploadedFile = $uploadedFiles['inputProfileImage'];
+
+                if ($uploadedFile->getSize() >= 500000){
+                    $errors['errorProfilePicture'] = "Profile picture size must be less than 500KB";
+                }
+
+            }
+
             //var_dump($data);
 
             if(sizeof($errors) == 0) {
@@ -91,9 +103,7 @@ class RegisterController{
 
                 $now = new \DateTime('now');
 
-                //var_dump($data);
-
-                $service->save(
+                $id = $service->save(
                      new User(null,
                          $data['inputUsername'],
                          $data['inputEmail'],
@@ -105,7 +115,11 @@ class RegisterController{
                          $now)
                  );
 
-
+                //Moure la seva imatge de perfil al directori que toca
+                if (isset($uploadedFile)) {
+                    $directory = __DIR__ . '/../../public/uploads';
+                    $this->moveUploadedImage($directory, $uploadedFile, $id);
+                }
 
                 //Iniciar una cookie
 
@@ -141,5 +155,16 @@ class RegisterController{
         }
         return true;
     }
+
+    private function moveUploadedImage($directory, UploadedFile $uploadedFile, int $id)
+    {
+        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+        $filename = sprintf('%s.%0.8s', $id, $extension);
+        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+        return $filename;
+    }
+
+
 
 }

@@ -21,7 +21,7 @@
     {% endblock %}
     {% block content %}
     <div class="d-flex justify-content-center w-50">
-        <form id="register-form" class="form-signup" method="POST" onsubmit="return validateForm();" action="/register">
+        <form id="register-form" class="form-signup" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();" action="/register">
             <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Register</h1>
             <label for="inputUsername" class="sr-only">Username</label>
@@ -85,6 +85,15 @@
             {%  if error_array['errorPassword'] %}
                 <p id="error-password" class="error text-danger">{{ error_array['errorPassword'] }}</p>
             {%  endif %}
+
+
+
+            <label for="inputProfileImage">Profile image</label>
+            <input type="file" accept="image/*" name="inputProfileImage" class="form-control-file" id="inputProfileImage">
+            {%  if error_array['errorProfilePicture'] %}
+                <p id="error-profilepicure" class="error text-danger">{{ error_array['errorProfilePicture'] }}</p>
+            {%  endif %}
+
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" name="remember" value="remember-me"> Remember me
