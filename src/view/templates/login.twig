@@ -5,6 +5,17 @@
     <link href="/assets/css/register.css" rel="stylesheet">
 {% endblock %}
 
+{% block header %}
+    {{ parent() }}
+    <div class="fixed-top">
+        <div class="float-sm-right">
+            <p class="lead menuButton">
+                <a href="/register" class="btn btn-lg btn-secondary ">Sing up</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
 <form class="form-signin" action="/login" method="POST" onsubmit="return validateLogin()">
     <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
@@ -17,7 +28,11 @@
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
     {%  if error_array['errorPasswordLength'] or error_array['errorPasswordCase']%}
-        <p id="error-password" class="error text-danger">{{ error_array['errorPasswordCase'] }}</p>
+        {% if error_array['errorPasswordCase'] is defined %}
+            <p id="error-password" class="error text-danger">{{ error_array['errorPasswordCase'] }}</p>
+        {% else %}
+            <p id="error-password" class="error text-danger">{{ error_array['errorPasswordLength'] }}</p>
+        {% endif %}
     {%  endif %}
     {%  if error_array['errorPassword']%}
         <p id="error-password" class="error text-danger">{{ error_array['errorPassword'] }}</p>

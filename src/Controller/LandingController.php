@@ -20,6 +20,7 @@ class LandingController{
     }
 
     public function __invoke(Request $request, Response $response, array $args){
+        //Mirar si l'usuari esta logged in i si no ho esta carregar landing page.
         return $this->container->get('view')->render($response, 'landing.twig', []);
     }
 
