@@ -15,4 +15,6 @@ $app->get('/login', 'PwBox\Controller\LoginController');
 
 $app->post('/login', 'PwBox\Controller\LoginController:submit');
 
+$app->get('/dashboard', 'PwBox\Controller\DashboardController');
+
 ?>

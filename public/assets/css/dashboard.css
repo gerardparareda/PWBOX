@@ -1,0 +1,20 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: rgba(112, 92, 157, 0.52);
+}
+
+.logo {
+    margin-right: 5px;
+}
+
+.utils img{
+    margin: -3px 5px 5px;
+}
+
+.utils{
+    background-color: rgb(168, 168, 168);
+}
