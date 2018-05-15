@@ -86,8 +86,14 @@ class LoginController{
                 //Comprovar
                 /** @var UserRepository $repo */
                 $repo = $this->container->get('user_repository');
-                if ($repo->lookFor(new User(null, null, $data['inputEmail'], $data['inputPassword'], null, null, null, null, null))) {
+                $nouUser = new User(null, null, $data['inputEmail'], $data['inputPassword'], null, null, null, null, null);
 
+                if ($repo->lookFor($nouUser)) {
+
+                    //Començar cookie
+                    session_start();
+
+                    setcookie("user_id", $repo->getUserId($nouUser),time() + 15778463);
 
                     return $this->container->get('view')->render($response, 'dashboard.twig', []);
                 } else {
