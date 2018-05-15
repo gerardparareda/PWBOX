@@ -14,19 +14,32 @@ function validateLogin() {
     var password_s = password.toString();
     if (password_s.length < 6 || password_s > 12) {
         document.getElementById("error-password").innerHTML = "Password incorrecte. ";
+        errors = false;
     }
     if (password_s.toLowerCase() !== password_s && password_s.toUpperCase() !== password_s) {
 
     } else {
         document.getElementById("error-password").innerHTML = "Password incorrecte ";
+        errors = false;
     }
 
     if (errors) {
-        divError = document.createElement('p');
+        /*divError = document.createElement('p');
         textError = document.createTextNode('Usuari o password incorrectes ');
         element = document.getElementById('inputPassword');
 
-        element.appendChild(divError);
+        element.appendChild(divError);*/
+
+        divError = document.createElement('p');
+        divError.className = "error text-danger";
+        /*divError.classList.add("error");
+        divError.classList.add("text-danger");*/
+        divError.innerText = "Usuari o password incorrectes";
+
+        element = document.getElementById("inputPassword");
+        element.parentNode.insertBefore(divError, element.nextSibling);
+        console.log('hola');
+
     }
 
     return errors;

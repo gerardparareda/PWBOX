@@ -41,6 +41,16 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("created_at", $user->getCreatedAt()->format(self::DATE_FORMAT));
         $stmt->bindValue("updated_at", $user->getUpdatedAt()->format(self::DATE_FORMAT));
         $stmt->execute();
+
+        //Ara retornem l'id de l'ususari.
+        $sql = "SELECT * FROM User WHERE email = :email AND pass = :password";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("email", $user->getEmail(), 'string');
+        $stmt->bindValue("password", md5($user->getPassword()), 'string');
+        $result = $stmt->execute();
+        $newUser = $stmt->fetchColumn (0);
+
+        return $newUser;
     }
 
     /**
