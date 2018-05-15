@@ -26,6 +26,14 @@ class LoginController{
     }
 
     //Amb aquesta funcio sabem si les dades son correctes i si existeix l'usuari a la bbdd.
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function submit (Request $request, Response $response) {
         try{
             $data = $request->getParsedBody();
@@ -42,7 +50,7 @@ class LoginController{
             if (isset($data['inputPassword'])) {
 
                 if (strlen($data['inputPassword']) < 6 || strlen($data['inputPassword']) > 12){
-                    $errors['errorPasswordLength'] = 'El password és incorrecte ';
+                    $errors['errorPasswordLength'] = 'El password és incorrecte';
                 }
                 if (strtolower($data['inputPassword']) != $data['inputPassword'] && strtoupper($data['inputPassword']) != $data['inputPassword']){
 
@@ -58,7 +66,7 @@ class LoginController{
                 //Comprovar
                 /** @var UserRepository $repo */
                 $repo = $this->container->get('user_repository');
-                if (!$repo->lookFor(new User(null, null, $data['inputEmail'], $data['inputPassword'], null, null))) {
+                if (!$repo->lookFor(new User(null, null, $data['inputEmail'], $data['inputPassword'], null, null, null, null, null))) {
                     $errors['userNotFound'] = 'Usuari o contrasenya incorrectes. ';
                 }
             }

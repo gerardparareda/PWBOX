@@ -89,7 +89,7 @@ class RegisterController{
 
                 $now = new \DateTime('now');
 
-                $this->get('doctrine')->save(
+                $service->save(
                      new User(null,
                          $data['inputUsername'],
                          $data['inputEmail'],

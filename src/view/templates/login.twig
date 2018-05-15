@@ -12,12 +12,18 @@
     <label for="inputEmail" class="sr-only">Email address</label>
     <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
     {%  if error_array['errorEmail'] %}
-        <p id="error-password" class="error text-danger">{{ error_array['errorEmail'] }}</p>
+        <p id="error-email" class="error text-danger">{{ error_array['errorEmail'] }}</p>
     {%  endif %}
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
     {%  if error_array['errorPasswordLength'] or error_array['errorPasswordCase']%}
         <p id="error-password" class="error text-danger">{{ error_array['errorPasswordCase'] }}</p>
+    {%  endif %}
+    {%  if error_array['errorPassword']%}
+        <p id="error-password" class="error text-danger">{{ error_array['errorPassword'] }}</p>
+    {%  endif %}
+    {%  if error_array['userNotFound']%}
+        <p id="error-password" class="error text-danger">{{ error_array['userNotFound'] }}</p>
     {%  endif %}
     <div class="checkbox mb-3">
         <label>

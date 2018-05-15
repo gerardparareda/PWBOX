@@ -24,9 +24,13 @@ class DoctrineUserRepository implements UserRepository{
     }
 
 
+    /**
+     * @param User $user
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function save(User $user)
     {
-        $sql = "INSERT INTO user(username, email, password, created_at, updated_at) VALUES(:username, :email, :password, :birthDay, :birthMonth, :birthYear,:created_at, :updated_at)";
+        $sql = "INSERT INTO user(username, email, pass, birthDay, birthMonth, birthYear, created_at, updated_at) VALUES(:username, :email, :password, :birthDay, :birthMonth, :birthYear, :created_at, :updated_at)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("username", $user->getUsername(), 'string');
         $stmt->bindValue("email", $user->getEmail(), 'string');
@@ -45,7 +49,7 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function lookFor(User $user)
     {
-        $sql = "SELECT * FROM user WHERE email = :email AND password = :password";
+        $sql = "SELECT * FROM user WHERE email = :email AND pass = :password";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("email", $user->getEmail(), 'string');
         $stmt->bindValue("password", $user->getPassword(), 'string');
@@ -54,7 +58,7 @@ class DoctrineUserRepository implements UserRepository{
         //Revisar
         var_dump($user);
 
-        if ($user =! null) {
+        if ($user != null) {
             return true;
         }
         return false;
