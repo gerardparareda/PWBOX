@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<form class="form-signin" action="/login" method="POST">
+<form class="form-signin" action="/login" method="POST" onsubmit="return validateLogin()">
     <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
     <label for="inputEmail" class="sr-only">Email address</label>
@@ -33,4 +33,10 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
 </form>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="/assets/js/login.js"></script>
+
 {% endblock %}

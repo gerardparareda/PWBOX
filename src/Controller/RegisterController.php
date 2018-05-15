@@ -85,7 +85,7 @@ class RegisterController{
             if(sizeof($errors) == 0) {
 
                 //Registrar l'usuari (ARREGLAR)
-                $service = $this->container->get('post_user_use_case');
+                $service = $this->container->get('user_repository');
 
                 $now = new \DateTime('now');
 
@@ -110,7 +110,8 @@ class RegisterController{
             }
 
         }catch(\Exception $e){
-            $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
+            //$response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
+            //posar e.getMessage()
         }
         return $response;
     }
