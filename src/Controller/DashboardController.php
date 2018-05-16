@@ -23,10 +23,9 @@ class DashboardController{
 
         $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
 
-        if(!isset($result)){
-            $result = "./uploads/default-avatar.jpg";
+        if(count($result) == 0){
+            $result[0] = "./uploads/default-avatar.jpg";
         }
-
 
         return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
     }
