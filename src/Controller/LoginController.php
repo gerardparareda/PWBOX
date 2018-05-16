@@ -26,7 +26,6 @@ class LoginController{
         if(isset($_COOKIE['inputRememberMe']) && isset($_COOKIE['inputEmail']) && isset($_COOKIE['inputPassword'])){
             return $this->container->get('view')->render($response, 'login.twig', ['inputRememberMe' => $_COOKIE['inputRememberMe'], 'inputEmail' => $_COOKIE['inputEmail'], 'inputPassword' => $_COOKIE['inputPassword']]);
         }
-
         return $this->container->get('view')->render($response, 'login.twig', []);
     }
 

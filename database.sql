@@ -31,21 +31,13 @@ CREATE TABLE Directori(
 	PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS AdminCarpeta;
+DROP TABLE IF EXISTS UserCarpeta;
 
-CREATE TABLE AdminCarpeta(
+CREATE TABLE UserCarpeta(
 	id_usuari INT,
 	id_carpeta INT,
-	FOREIGN KEY (id_usuari) REFERENCES User(id),
-    FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
-	PRIMARY KEY(id_usuari, id_carpeta)
-);
-
-DROP TABLE IF EXISTS RearderCarpeta;
-
-CREATE TABLE ReaderCarpeta(
-	id_usuari INT,
-	id_carpeta INT,
+    admin BOOLEAN,
+    reader BOOLEAN,
 	FOREIGN KEY (id_usuari) REFERENCES User(id),
     FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
 	PRIMARY KEY(id_usuari, id_carpeta)
