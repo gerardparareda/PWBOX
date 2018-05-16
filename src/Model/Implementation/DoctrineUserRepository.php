@@ -186,15 +186,56 @@ class DoctrineUserRepository implements UserRepository{
 
         //Ara que tenim l'id de la carpeta relacionem la carpeta amb el rol de l'usuari.
         //Afegim fila id_carpeta i id_usuari a taula Admin.
-        $sql = "INSERT INTO AdminCarpeta (id_usuari, id_carpeta) VALUES (:id_usuari, :id_carpeta)";
+        $sql = "INSERT INTO Carpeta (id_usuari, id_carpeta, admin, reader) VALUES (:id_usuari, :id_carpeta, :admin, :reader)";
         $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("id_usuari", $idUsuari, 'string');
-        $stmt->bindValue("id_carpeta", $idCarpeta, 'string');
+        $stmt->bindValue("id_usuari", $idUsuari, 'integer');
+        $stmt->bindValue("id_carpeta", $idCarpeta, 'integer');
+        $stmt->bindValue("admin", $idCarpeta, 'boolean');
+        $stmt->bindValue("reader", $idCarpeta, 'boolean');
         $result = $stmt->execute();
 
 
     }
 
+    public function lookIfDirectoryExists($URLPath)
+    {
+
+        $sql = "SELECT * FROM Directori WHERE urlPath = :urlPath";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("urlPath", $URLPath, 'string');
+        $result = $stmt->execute();
+        $carpeta = $stmt->fetch();
+
+        return $carpeta;
+
+    }
+
+    /**
+     * @param $idCarpeta
+     * @param $idUsuari
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function userPrivileges($idCarpetaActual, $idUsuari)
+    {
+
+        $sql = "SELECT uc.admin, uc.reader FROM UserCarpeta AS uc WHERE uc.id_carpeta = :idCarpetaActual AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaActual", $idCarpetaActual, 'integer');
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $permisos = $stmt->fetch();
+
+        return $permisos;
+
+    }
+
+    /**
+     * @param $idCarpetaClicada
+     * @param $idUsuari
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function showDirectory($idCarpetaClicada, $idUsuari)
     {
         $idHash = 0;
@@ -202,35 +243,36 @@ class DoctrineUserRepository implements UserRepository{
         //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
         //diferent.
 
-        $sql = "SELECT * FROM Directori WHERE carpetaParent = :idCarpetaClicada";
+        $sql = "SELECT d.nomCarpeta, uc.admin, uc.reader  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idCarpetaClicada", $idCarpetaClicada, 'integer');
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
         $result = $stmt->execute();
-        $idHash = $stmt->fetchColumn (0);
+        $carpetes = $stmt->fetchAll();
 
+        /*foreach ($carpetes as $carpeta) {
+            
+        }*/
 
-        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath)";
-        $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
-
-        if ($idCarpetaParent == null) {
-
-            $stmt->bindValue("isRoot", 1, 'integer');
-            $stmt->bindValue("carpetaParent", null, 'integer');
-            $stmt->bindValue("ulrPath", md5($idHash), 'string');
-
-        } else {
-
-            $stmt->bindValue("isRoot", 0, 'integer');
-            $stmt->bindValue("carpetaParent", $idCarpetaParent, 'integer');
-            $stmt->bindValue("ulrPath", md5($idHash), 'string');
-
-        }
-        //$stmt->bindValue("email", , 'string');
-        //$stmt->bindValue("password", md5($user->getPassword()), 'string');
-        $result = $stmt->execute();
+        return $carpetes;
 
     }
+
+    public function deleteDirectory($idCarpetaAEsborrar, $idUsuari)
+    {
+
+        /*$sql = "SELECT d.nomCarpeta, uc.admin, uc.reader  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaClicada", $idCarpetaClicada, 'integer');
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $carpetes = $stmt->fetchAll();
+
+        return $carpetes;*/
+
+    }
+
+
 
 
 }
