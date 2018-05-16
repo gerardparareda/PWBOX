@@ -59,10 +59,22 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function lookFor(User $user)
     {
-        $sql = "SELECT * FROM User WHERE email = :email AND pass = :password";
-        $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("email", $user->getEmail(), 'string');
-        $stmt->bindValue("password", md5($user->getPassword()), 'string');
+        if ($user->getEmail() != null) {
+            echo 'email';
+            $sql = "SELECT * FROM User WHERE email = :email AND pass = :password";
+            $stmt = $this->database->prepare($sql);
+            $stmt->bindValue("email", $user->getEmail(), 'string');
+            $stmt->bindValue("password", md5($user->getPassword()), 'string');
+
+        } else {
+            echo 'no email';
+            $sql = "SELECT * FROM User WHERE username = :username AND pass = :password";
+            $stmt = $this->database->prepare($sql);
+            $stmt->bindValue("username", $user->getUsername(), 'string');
+            $stmt->bindValue("password", md5($user->getPassword()), 'string');
+
+        }
+
         $result = $stmt->execute();
         $newUser = $stmt->fetch();
         //Revisar

@@ -55,6 +55,9 @@ class LoginController{
                     $errors['errorEmail'] = 'El camp email no és correcte ';
                 }
 
+                $email = true;
+
+
             } else {
 
                 //Si entra aqui vol dir que no ha trobat una arroba i per tant es un username, fem validacions.
@@ -63,6 +66,9 @@ class LoginController{
                 } else {
                     $errors['errorUsername'] = 'The username is not valid' ;
                 }
+
+                $email = false;
+
 
             }
 
@@ -86,7 +92,15 @@ class LoginController{
                 //Comprovar
                 /** @var UserRepository $repo */
                 $repo = $this->container->get('user_repository');
-                $nouUser = new User(null, null, $data['inputEmail'], $data['inputPassword'], null, null, null, null, null);
+
+                if ($email) {
+
+                    $nouUser = new User(null, null, $data['inputEmail'], $data['inputPassword'], null, null, null, null, null);
+
+                } else {
+
+                    $nouUser = new User(null, $data['inputEmail'], null, $data['inputPassword'], null, null, null, null, null);
+                }
 
                 if ($repo->lookFor($nouUser)) {
 
