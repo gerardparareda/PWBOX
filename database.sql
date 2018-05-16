@@ -19,3 +19,14 @@ CREATE TABLE User(
 INSERT INTO User(name) VALUES('hola');
 
 SELECT * FROM User;
+
+DROP TABLE IF EXISTS Directori;
+
+CREATE TABLE Directori(
+	id INT NOT NULL AUTO_INCREMENT,
+	nomCarpeta VARCHAR(255),
+	isRoot BOOLEAN,
+  carpetaParent INT,
+  urlPath VARCHAR(255)
+	PRIMARY KEY(id)
+);
