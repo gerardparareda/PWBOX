@@ -43,6 +43,7 @@ class DashboardController{
                     if ($uploadedFile->getSize() >= 2000000) {
                         $errors['errorFileSize'] = "File size must be less than 2MB";
                         break;
+
                     }
                 }
             }
