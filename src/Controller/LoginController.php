@@ -22,6 +22,11 @@ class LoginController{
     }
 
     public function __invoke(Request $request, Response $response, array $args){
+
+        if(isset($_COOKIE['inputRememberMe']) && isset($_COOKIE['inputEmail']) && isset($_COOKIE['inputPassword'])){
+            return $this->container->get('view')->render($response, 'login.twig', ['inputRememberMe' => $_COOKIE['inputRememberMe'], 'inputEmail' => $_COOKIE['inputEmail'], 'inputPassword' => $_COOKIE['inputPassword']]);
+        }
+
         return $this->container->get('view')->render($response, 'login.twig', []);
     }
 
@@ -109,9 +114,21 @@ class LoginController{
 
                     setcookie("user_id", $repo->getUserId($nouUser),time() + 15778463);
 
-                    return $this->container->get('view')->render($response, 'dashboard.twig', []);
+                    if(isset($data['inputRememberMe'])){
+                        setcookie("inputEmail", $data['inputEmail'],time() + 15778463);
+                        setcookie("inputPassword", $data['inputPassword'],time() + 15778463);
+                        setcookie("inputRememberMe", 'checked',time() + 15778463);
+                    } else {
+                        if(isset($_COOKIE['inputEmail']) && isset($_COOKIE['inputPassword'])){
+                            setcookie("inputEmail", 'nein',1);
+                            setcookie("inputPassword", 'nein',1);
+                        }
+                    }
+
+                    return $this->container->get('view')->render($response, 'dashboard.twig', []); //El render
+                    //L'altre rediracció no funciona
                 } else {
-                    $errors['userNotFound'] = 'Usuari o contrasenya incorrectes. ';
+                    $errors['userNotFound'] = 'Usuari o contrasenya incorrectes.';
                 }
             }
 

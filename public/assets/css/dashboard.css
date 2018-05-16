@@ -4,7 +4,7 @@ body {
 }
 
 body {
-    background-color: rgba(112, 92, 157, 0.52);
+    background-color: rgba(170,170,170,0.5);
 }
 
 .logo {
@@ -19,3 +19,18 @@ body {
     background-color: rgb(168, 168, 168);
 }
 
+.utils img:hover{
+    filter: contrast(350%);
+}
+
+td img,p,.actions{
+    display: inline;
+}
+
+td:hover p{
+    text-decoration: underline;
+}
+
+td .actions img:hover{
+    filter: contrast(350%);
+}

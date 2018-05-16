@@ -34,26 +34,42 @@
         <nav class="navbar navbar-expand-lg navbar-dark utils">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-
+                    <a class="nav-link" href="#">
+                        <img src="/assets/img/upload-button.png" class="float-left" title="Upload File" alt="Upload File" width="20" height="20">
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><img src="/assets/img/folder-storage.png" class="float-left" title="New Folder" alt="New Folder" width="20" height="20"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><img src="/assets/img/delete-button.png" class="float-left" title="Remove Item" alt="Remove Item" width="20" height="20"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><img src="/assets/img/enter-button.png" class="float-left" title="Enter Folder" alt="Enter Folder" width="20" height="20"></a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#"><img src="/assets/img/reload-button.png" class="float-left" title="Reload Files" alt="Reload Files" width="20" height="20"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><img src="/assets/img/share-button.png" class="float-left" title="Share Item" alt="Share Item" width="20" height="20"></a>
                 </li>
             </ul>
         </nav>
-
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <td  ondblclick="alert('double clicked');">
+                        <img src="/assets/img/folder.png" width="20" height="20">
+                        <p>Carpeta 1</p>
+                        <div class="actions float-right">
+                            <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
+                            <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td  ondblclick="alert('double clicked');">
+                        <img src="/assets/img/file.png" width="20" height="20">
+                        <p>Arxiu 1</p>
+                        <div class="actions float-right">
+                            <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
+                            <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     {% endblock %}
     {% block footer %}
     {% endblock %}

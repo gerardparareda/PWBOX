@@ -21,7 +21,7 @@
     <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
     <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="text" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <input type="text" id="inputEmail" name="inputEmail" class="form-control" placeholder="Username or Email address" value="{{ inputEmail }}" required autofocus>
     <p id="error-email" class="error text-danger"></p>
     <p id="error-nom" class="error text-danger"></p>
     {%  if error_array['errorEmail'] %}
@@ -31,7 +31,7 @@
         <p id="error-nom" class="error text-danger">{{ error_array['errorUsername'] }}</p>
     {% endif %}
     <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" value="{{ inputPassword }}" required>
     <p id="error-password" class="error text-danger"></p>
     {%  if error_array['errorPasswordLength'] or error_array['errorPasswordCase']%}
         {% if error_array['errorPasswordCase'] is defined %}
@@ -48,7 +48,7 @@
     {%  endif %}
     <div class="checkbox mb-3">
         <label>
-            <input type="checkbox" name="inputRemember" value="remember-me"> Remember me
+            <input id="inputRememberMe" type="checkbox" name="inputRememberMe" {{ inputRememberMe }}> Remember me
         </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
