@@ -30,4 +30,46 @@ class DashboardController{
         return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
     }
 
+    public function upload(Request $request, Response $response)
+    {
+        $uploadedFiles = $request->getUploadedFiles();
+        $errors = [];
+
+        try {
+            if (isset($uploadedFiles['inputFiles'])) {
+
+                foreach ($uploadedFiles['inputFiles'] as $uploadedFile) {
+
+                    if ($uploadedFile->getSize() >= 2000000) {
+                        $errors['errorFileSize'] = "File size must be less than 2MB";
+                        break;
+                    }
+                }
+            }
+
+            if (count($errors) == 0) {
+                if (isset($uploadedFiles['inputFiles'])) {
+                    foreach ($uploadedFiles['inputFiles'] as $uploadedFile) {
+                        $directory = __DIR__ . '/../../public/uploads/' . $_COOKIE['user_id'];
+
+                        //Comprovar si la carpeta existeix i si no crear-la
+                        if (!file_exists($directory)) {
+                            mkdir($directory, 0777, true);
+                        }
+
+                        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $uploadedFile->getClientFilename());
+
+                    }
+                }
+                return $response->withStatus(302)->withHeader("Location", "/dashboard");
+            } else {
+                return $this->container->get('view')->render($response, 'dashboard.twig', ['error_array' => $errors]);
+            }
+
+        } catch (\Exception $e) {
+            //$response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write('Something went wrong');
+            $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write($e->getMessage());
+        }
+        return $response;
+    }
 }
