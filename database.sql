@@ -27,6 +27,26 @@ CREATE TABLE Directori(
 	nomCarpeta VARCHAR(255),
 	isRoot BOOLEAN,
   carpetaParent INT,
-  urlPath VARCHAR(255)
+  urlPath VARCHAR(255),
 	PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS AdminCarpeta;
+
+CREATE TABLE AdminCarpeta(
+	id_usuari INT,
+	id_carpeta INT,
+	FOREIGN KEY (id_usuari) REFERENCES User(id),
+    FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
+	PRIMARY KEY(id_usuari, id_carpeta)
+);
+
+DROP TABLE IF EXISTS RearderCarpeta;
+
+CREATE TABLE ReaderCarpeta(
+	id_usuari INT,
+	id_carpeta INT,
+	FOREIGN KEY (id_usuari) REFERENCES User(id),
+    FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
+	PRIMARY KEY(id_usuari, id_carpeta)
 );

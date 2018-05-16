@@ -19,4 +19,6 @@ $app->get('/dashboard', 'PwBox\Controller\DashboardController')->add('PwBox\Cont
 
 $app->get('/logout', 'PwBox\Controller\LogoutController:logout');
 
+$app->get('/profile', 'PwBox\Controller\ProfileController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
 ?>
