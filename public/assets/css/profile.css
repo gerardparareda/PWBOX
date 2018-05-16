@@ -1,0 +1,24 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: rgba(170,170,170,0.5);
+}
+
+.logo {
+    margin-right: 5px;
+}
+
+.usernameAndEmail{
+    background-color: #fefeff;
+}
+
+.inputs{
+    width: 600px;
+}
+
+.changeButton{
+    margin-bottom: 10px;
+}

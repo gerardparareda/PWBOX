@@ -34,3 +34,11 @@ $container['post_user_use_case'] = function ($container){
     );
     return $useCase;
 };
+
+//Override the default Not Found Handler
+$container['notFoundHandler'] = function ($container) {
+    return function ($request, $response) use ($container) {
+
+        return $container['view']->render($response, 'error.twig', ['errorCode' => 404, 'errorMessage' => 'You stupid motherfucker...']);
+    };
+};

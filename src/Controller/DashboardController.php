@@ -21,6 +21,8 @@ class DashboardController{
 
     public function __invoke(Request $request, Response $response, array $args){
 
+        $repo = $this->container->get('user_repository');
+
         $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
 
         if(count($result) == 0){

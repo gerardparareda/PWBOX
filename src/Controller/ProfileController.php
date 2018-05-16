@@ -23,7 +23,36 @@ class ProfileController{
      */
     public function __invoke(Request $request, Response $response){
 
-        return $this->container->get('view')->render($response, 'profile.twig', []);
+        $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
 
+        $repo = $this->container->get('user_repository');
+
+        if(count($result) == 0){
+            $result[0] = "./uploads/default-avatar.jpg";
+        }
+
+        $username = $repo->getUsernameById($_COOKIE['user_id']);
+        $email = $repo->getEmailById($_COOKIE['user_id']);
+
+        return $this->container->get('view')->render($response, 'profile.twig', ['user_avatar' => $result[0], 'username' => $username, 'email' => $email]);
+    }
+
+    public function editProfile(Request $request, Response $response){
+
+        //Moure la seva imatge de perfil al directori que toca
+        if (isset($uploadedFile)) {
+            $directory = __DIR__ . '/../../public/uploads';
+            $this->moveUploadedImage($directory, $uploadedFile, $_COOKIE['user_id']);
+        }
+
+    }
+
+    private function moveUploadedImage($directory, UploadedFile $uploadedFile, int $id)
+    {
+        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+        $filename = sprintf('%s.%0.8s', $id, $extension);
+        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+        return $filename;
     }
 }

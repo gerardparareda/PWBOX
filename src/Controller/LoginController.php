@@ -124,7 +124,8 @@ class LoginController{
                         }
                     }
 
-                    return $this->container->get('view')->render($response, 'dashboard.twig', []); //El render
+                    //return $this->container->get('view')->render($response, 'dashboard.twig', []); //El render
+                    return $response->withStatus(302)->withHeader("Location", "/dashboard");
                     //L'altre rediracció no funciona
                 } else {
                     $errors['userNotFound'] = 'Usuari o contrasenya incorrectes.';

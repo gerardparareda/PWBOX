@@ -1,0 +1,8 @@
+body{
+    background-image: url("../img/404-background.jpg");
+    background-position: 50% 30%;
+}
+
+p,h4{
+    color: white;
+}

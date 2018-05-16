@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+{% block title %} Error {{ errorCode }} {% endblock %}
+{% block styles %}
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/error.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <body class="text-center">
+
+    {% block header %}
+    <header></header>
+    {% endblock %}
+
+    {% block content %}
+
+        <div class="d-flex flex-column justify-content-center ">
+            <div class="p-2">
+                <h4><b>Ｅｒｒｏｒ　－ {{ errorCode }} へ゠虞</h4>
+            </div>
+
+            <div class="p-2">
+            <p>{{ errorMessage }}</p>
+            </div>
+
+            <div class="p-2">
+            <p>You dun goofed son, how did ya even get here? You must've really fucked up back there you.
+                <a href="/">Click here </a>to get yo ass back inside. Ya'll better not see this shit again.</p>
+            </div>
+
+        </div>
+
+    {% endblock %}
+
+    {% block footer %}
+
+    {% endblock %}
+
+    </body>
+{% endblock %}
