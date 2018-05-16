@@ -20,7 +20,15 @@ class DashboardController{
     }
 
     public function __invoke(Request $request, Response $response, array $args){
-        return $this->container->get('view')->render($response, 'dashboard.twig', []);
+
+        $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
+
+        if(!isset($result)){
+            $result = "./uploads/default-avatar.jpg";
+        }
+
+
+        return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
     }
 
 }

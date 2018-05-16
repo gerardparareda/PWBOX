@@ -23,6 +23,10 @@
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
                 </ul>
+
+                <div class=" ml-auto p-2">
+                    <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
+                </div>
             </nav>
         </header>
     {% endblock %}
@@ -30,9 +34,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark utils">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">
-                        <img src="/assets/img/upload-button.png" class="float-left" title="Upload File" alt="Upload File" width="20" height="20">
-                    </a>
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><img src="/assets/img/folder-storage.png" class="float-left" title="New Folder" alt="New Folder" width="20" height="20"></a>
@@ -51,8 +53,14 @@
                 </li>
             </ul>
         </nav>
+
     {% endblock %}
     {% block footer %}
     {% endblock %}
+
+    {% block scripts %}
+        {{ parent() }}
+    {% endblock %}
+
 </body>
 {% endblock %}
