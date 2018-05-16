@@ -90,9 +90,11 @@
 
             <label for="inputProfileImage">Profile image</label>
             <input type="file" accept="image/*" name="inputProfileImage" class="form-control-file" id="inputProfileImage">
+            <p id="error-profilepicture" class="error text-danger"></p>
             {%  if error_array['errorProfilePicture'] %}
-                <p id="error-profilepicure" class="error text-danger">{{ error_array['errorProfilePicture'] }}</p>
+                <p id="error-profilepicture" class="error text-danger">{{ error_array['errorProfilePicture'] }}</p>
             {%  endif %}
+
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>

@@ -6,6 +6,7 @@ function validateForm(){
     var birthDay = document.forms["register-form"]["inputBirthDay"].value;
     var birthMonth = document.forms["register-form"]["inputMonthBirth"].value;
     var birthYear = document.forms["register-form"]["inputBirthYear"].value;
+    var filePath = document.forms["register-form"]['inputProfileImage'].value;
     var errors = true;
 
     if(username.toString().length > 20 || username.toString().match("[^A-Za-z0-9]+")){
@@ -50,8 +51,20 @@ function validateForm(){
         errors = false;
     }
 
+    if (!fileValidation(filePath)) {
+        document.getElementById("error-profilepicture").innerHTML = "Profile image must be .jpg, .jpeg, .gif or .png";
+        errors = false;
+    }
 
     return errors;
 
+}
 
+function fileValidation(filePath){
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if(!allowedExtensions.exec(filePath)){
+        return false;
+    }else{
+        return true;
+    }
 }

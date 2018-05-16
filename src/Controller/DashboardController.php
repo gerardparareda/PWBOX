@@ -42,8 +42,16 @@ class DashboardController{
 
                 foreach ($uploadedFiles['inputFiles'] as $uploadedFile) {
 
+
+                    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+
+                    if (!$this->validate_extension($extension)){
+                        $errors['errorFileType'] = "Unknown file type! Only .pdf, .txt, .md, .jpg, .jpeg, .gif, .png accepted";
+                        break;
+                    }
+
                     if ($uploadedFile->getSize() >= 2000000) {
-                        $errors['errorFileSize'] = "File size must be less than 2MB";
+                        $errors['errorFileSize'] = "Each file size must be less than 2MB";
                         break;
 
                     }
@@ -74,5 +82,15 @@ class DashboardController{
             $response = $response->withStatus(500)->withHeader('Content-type', 'text/html')->write($e->getMessage());
         }
         return $response;
+    }
+
+    private function validate_extension($fileExtension){
+        $filetypes = ['png', 'jpg', 'jpeg', 'gif', 'pdf', 'txt', 'md'];
+        foreach ($filetypes as $filetype) {
+            if ($fileExtension == $filetype) {
+                return true;
+            }
+        }
+        return false;
     }
 }
