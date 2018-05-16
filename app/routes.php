@@ -17,4 +17,6 @@ $app->post('/login', 'PwBox\Controller\LoginController:submit');
 
 $app->get('/dashboard', 'PwBox\Controller\DashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->get('/logout', 'PwBox\Controller\LogoutController:logout');
+
 ?>
