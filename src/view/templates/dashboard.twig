@@ -72,6 +72,33 @@
                     </td>
                 </tr>
             </tbody>
+
+            {% for carpeta in carpetes %}
+                <tr>
+                    <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
+                        {% if carpeta['esCarpeta'] == true %}
+                            <img src="/assets/img/folder.png" width="20" height="20">
+                        {% else %}
+                            <img src="/assets/img/file.png" width="20" height="20">
+                        {% endif %}
+
+                        <p>{{ carpeta['nomCarpeta'] }}</p>
+
+                        {% if carpeta['admin'] == 1 %}
+                            <div class="actions float-right">
+                                <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item"></a>
+                                <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
+                                <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
+                                <a href = "#"><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item"></a>
+                            </div>
+                        {% else %}
+                            <div class="actions float-right">
+                                <a href = "#"><img src="/assets/img/download-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
         </table>
 
         <!-- Modal pujar fitxers -->
@@ -106,6 +133,7 @@
         {{ parent() }}
         <script src="/fine-uploader/fineuploader.js"></script>
         <script src="/fine-uploader/fineuploader.js"></script>
+        <script src="/assets/js/dashboard.js"></script>
     {% endblock %}
 
 </body>

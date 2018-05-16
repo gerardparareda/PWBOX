@@ -19,6 +19,14 @@ class DashboardController{
         $this->container = $container;
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function __invoke(Request $request, Response $response, array $args){
 
         $repo = $this->container->get('user_repository');
@@ -29,7 +37,57 @@ class DashboardController{
             $result[0] = "./uploads/default-avatar.jpg";
         }
 
-        return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
+        //Comprovem si l'usuari ha entrat amb un path a una carpeta o no. Nomes entra aqui si te la cookie perque
+        //hi ha el middleware d'abans que mira si hi ha cookie.
+        if (empty($args)) {
+            //L'usuari ha entrat a la dashboard general, carpeta root.
+
+            //Busquem que hi ha a la carpeta.
+            //Aqui he de cridar una funcio que buscara una carpeta root fent uc.id_usuari = uc.id_carpeta = idUsuari
+            // i d.id = uc.id_carpeta i d.root = true;
+            //$carpeta = $repo->funciiiiiiiioooooooooo($args['path']);
+
+            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
+
+        } else {
+            //Carpeta concreta
+
+            //Comprovem si la carpeta existeix a la bbdd.
+
+            $carpeta = $repo->lookIfDirectoryExists($args['path']);
+
+            if ($carpeta == null) {
+                var_dump($args);
+
+                return $response->withStatus(302)->withHeader("Location", "/dashboard");
+
+            } else {
+                var_dump($args['path']);
+                var_dump($carpeta);
+
+                //$idUsuari = $_SESSION['user_id'];
+                $idUsuari = $_COOKIE['user_id'];
+
+                $privileges = $repo->userPrivileges($carpeta['id'], $idUsuari);
+
+                var_dump($privileges);
+
+                if ($privileges['admin'] || $privileges['reader']) {
+
+                    //Mostrem el contingut de la carpeta.
+                    $carpetes = $repo->showDirectory($carpeta['id'], $idUsuari);
+
+                    var_dump($carpetes);
+
+                    return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
+
+                } else {
+                    return $response->withStatus(302)->withHeader("Location", "/forbidden");
+                }
+            }
+        }
+
+        //return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
     }
 
     public function upload(Request $request, Response $response)

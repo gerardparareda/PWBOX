@@ -243,7 +243,7 @@ class DoctrineUserRepository implements UserRepository{
         //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
         //diferent.
 
-        $sql = "SELECT d.nomCarpeta, uc.admin, uc.reader  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
+        $sql = "SELECT d.id, d.nomCarpeta, d.urlPath, d.esCarpeta, uc.admin, uc.reader  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idCarpetaClicada", $idCarpetaClicada, 'integer');
         $stmt->bindValue("idUsuari", $idUsuari, 'integer');
