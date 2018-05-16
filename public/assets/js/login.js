@@ -16,16 +16,12 @@ function validateLogin() {
             errors = false;
         }
 
-        console.log('Es un email.');
-
     } else {
 
         if (email.toString().length > 20 || email.toString().match("[^A-Za-z0-9]+")) {
             document.getElementById("error-nom").innerHTML = "Nom d'usuari invàlid. Insereixi només majúscules, minúscules i números.";
             errors = false;
         }
-
-        console.log('Es un username.');
 
     }
 
@@ -41,8 +37,6 @@ function validateLogin() {
         //document.getElementById("error-password").innerHTML = "Password incorrecte ";
         errors = false;
     }
-
-    console.log('aaaa');
 
     if (errors == false) {
         /*divError = document.createElement('p');
@@ -68,8 +62,7 @@ function validateLogin() {
 
     }
 
-    alert('cosa');
-    return false;
+    return errors;
 
 }
 
