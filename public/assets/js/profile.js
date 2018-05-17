@@ -3,6 +3,11 @@ var errors = true;
 
 function validateEditProfile() {
 
+    document.getElementById('error-newEmail').innerHTML = "";
+    document.getElementById('error-newPassword').innerHTML = "";
+    document.getElementById('error-oldPassword').innerHTML = "";
+    document.getElementById('error-newProfileImage').innerHTML = "";
+
     var email = document.forms["form-editProfile"]["inputNewEmail"].value;
     var password_new = document.forms["form-editProfile"]["inputNewPassword"].value;
     var password_old = document.forms["form-editProfile"]["inputOldPassword"].value;
@@ -15,8 +20,9 @@ function validateEditProfile() {
         validatePassword(password__new_s);
     }
 
-    if (password_old_s > 0){
-        validateOldPassword(password_old_s);
+    if (password_old_s.length === 0){
+        document.getElementById("error-oldPassword").innerHTML = "Introduce your old password";
+        errors = false;
     }
 
     if (email.toString().length > 0){
@@ -41,26 +47,6 @@ function validatePassword(password_s){
 
     } else {
         document.getElementById("error-newPassword").innerHTML = "Password must contain at least one number and one upper case letter.";
-        errors = false;
-    }
-}
-
-function validateOldPassword(password_s){
-    if (password_s.length < 6 || password_s > 12) {
-        document.getElementById("error-oldPassword").innerHTML = "Incorrect password.";
-        errors = false;
-    }
-    if (password_s.toLowerCase() !== password_s && password_s.toUpperCase() !== password_s) {
-
-    } else {
-        document.getElementById("error-oldPassword").innerHTML = "Incorrect password.";
-        errors = false;
-    }
-
-    if (password_s.toLowerCase() !== password_s && password_s.toUpperCase() !== password_s){
-
-    } else {
-        document.getElementById("error-oldPassword").innerHTML = "Incorrect password.";
         errors = false;
     }
 }
@@ -111,24 +97,27 @@ $('#form-editProfile').on('submit', function(e) {
                 contentType: false,
                 dataType : 'json',
                 success: function(data) {
-                        document.getElementById('error-newEmail').innerHTML = data.errors['errorEmail'];
-                        document.getElementById('error-newPassword').innerHTML = data.errors['errorNewPassword'];
-                        document.getElementById('error-oldPassword').innerHTML = data.errors['errorOldPassword'];
-                        document.getElementById('error-newProfileImage').innerHTML = data.errors['errorNewProfileImage'];
 
-                        //if()
-                        document.forms["form-editProfile"]["inputNewEmail"].value = "";
-                        document.forms["form-editProfile"]["inputNewPassword"].value = "";
-                        document.forms["form-editProfile"]["inputOldPassword"].value = "";
-                        document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
+                    document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];
+                    document.getElementById('error-newPassword').innerHTML = data['errors']['errorNewPassword'];
+                    document.getElementById('error-oldPassword').innerHTML = data['errors']['errorOldPassword'];
+                    document.getElementById('error-newProfileImage').innerHTML = data['errors']['errorNewProfileImage'];
 
-                        console.log("ok");
+                    document.forms["form-editProfile"]["inputNewEmail"].value = "";
+                    document.forms["form-editProfile"]["inputNewPassword"].value = "";
+                    document.forms["form-editProfile"]["inputOldPassword"].value = "";
+                    document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
+
+                    $("#user-avatar").attr("src", "./uploads/" + data['image']);
+
+                    console.log("ok");
                 },
                 error: function(data){
-                        document.getElementById('error-newEmail').innerHTML = data.errors['errorEmail'];
-                        document.getElementById('error-newPassword').innerHTML = data.errors['errorNewPassword'];
-                        document.getElementById('error-oldPassword').innerHTML = data.errors['errorOldPassword'];
-                        document.getElementById('error-newProfileImage').innerHTML = data.errors['errorNewProfileImage'];}
+                    document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];
+                    document.getElementById('error-newPassword').innerHTML = data['errors']['errorNewPassword'];
+                    document.getElementById('error-oldPassword').innerHTML = data['errors']['errorOldPassword'];
+                    document.getElementById('error-newProfileImage').innerHTML = data['errors']['errorNewProfileImage'];
+                }
             }
         );
     }

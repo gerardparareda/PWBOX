@@ -5,6 +5,7 @@ namespace PwBox\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\UploadedFile;
 
 class ProfileController{
 
@@ -49,9 +50,11 @@ class ProfileController{
         $errors['errorOldPassword'] = '';
         $errors['errorNewProfileImage'] = '';
 
-        if(isset($_POST['email'])) {
-            if($_POST['email'] != '') {
-                if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $data = $request->getParsedBody();
+
+        if(isset($data['inputNewEmail'])) {
+            if($data['inputNewEmail'] != '') {
+                if (filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 
                 } else {
                     $errors['errorEmail'] = 'Invalid email';
@@ -59,14 +62,14 @@ class ProfileController{
             }
         }
 
-        if(isset($_POST['newPassword'])){
-            if($_POST['newPassword'] == '') {
+        if(isset($data['inputNewPassword'])){
+            if($data['inputNewPassword'] == '') {
 
             }else {
-                if (strlen($_POST['newPassword']) < 6 || strlen($_POST['newPassword']) > 12) {
-                    $errors['errorNewPassword'] = 'Password length must be between 6 and 12 characters';
+                if (strlen($data['inputNewPassword']) < 6 || strlen($data['newPassword']) > 12) {
+                    $errors['inputNewPassword'] = 'Password length must be between 6 and 12 characters';
                 }
-                if (strtolower($_POST['newPassword']) != $_POST['newPassword'] && strtoupper($_POST['newPassword']) != $_POST['newPassword']) {
+                if (strtolower($data['inputNewPassword']) != $data['inputNewPassword'] && strtoupper($data['inputNewPassword']) != $data['inputNewPassword']) {
 
                 } else {
                     $errors['errorNewPassword'] = 'Password must have one lowercase and one uppercase';
@@ -74,47 +77,50 @@ class ProfileController{
             }
         }
 
-        if(isset($_POST['oldPassword'])){
-            if($_POST['oldPassword'] != '') {
+        if($data['inputOldPassword'] != '') {
 
-                //TODO: Fer una crida a la base de dades
+            //TODO: Fer una crida a la base de dades
 
-            }else{
-                $errors['errorOldPassword'] = 'Introduce your old password';
-            }
-        } else {
+        }else{
             $errors['errorOldPassword'] = 'Introduce your old password';
         }
 
+        $uploadedImage = $request->getUploadedFiles()['inputNewProfileImage'];
 
-        /*if(isset($_POST['newProfileImage'])){
-
-            if($_POST['newProfileImage'] != ''){
-
-
+        if(isset($uploadedImage)){
+            if ($uploadedImage->getSize() >= 500000){
+                $errors['errorProfilePicture'] = "Profile picture size must be less than 500KB";
             }
+        }
 
-        }*/
+        if($errors['errorOldPassword'] == ''){
+            $directory = './uploads';
+            $imageName = $this->moveUploadedImage($directory, $uploadedImage, $_COOKIE['user_id']);
+        }
 
-        if($errors['errorOldPassword'] != '') {
+        if($errors['errorEmail'] == '' && $errors['errorNewPassword'] == '' && $errors['errorOldPassword'] == '' && $errors['errorNewProfileImage'] == '') {
             $response_array['errors'] = $errors;
-            $response_array['status'] = 'failure';
+            $response_array['image'] = $imageName;
             return $response->withJson($response_array, 200);
         }else{
             $response_array['errors'] = $errors;
-            $response_array['status'] = 'success';
             return $response->withJson($response_array, 500);
 
         }
 
-
     }
 
-    private function moveUploadedImage($directory, UploadedFile $uploadedFile, int $id)
+    private function moveUploadedImage($directory, $uploadedImage, int $id)
     {
-        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+
+        $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
+        if(count($result) == 1){
+            unlink($result[0]);
+        }
+
+        $extension = pathinfo($uploadedImage->getClientFilename(), PATHINFO_EXTENSION);
         $filename = sprintf('%s.%0.8s', $id, $extension);
-        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+        $uploadedImage->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
         return $filename;
     }
