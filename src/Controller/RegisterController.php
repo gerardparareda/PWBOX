@@ -124,6 +124,14 @@ class RegisterController{
                     $this->moveUploadedImage($directory, $uploadedFile, $id);
                 }
 
+                //Crear la seva carpeta personal
+                $directory = __DIR__ . '/../../public/uploads/' . $id;
+
+                //Comprovar si la carpeta existeix i si no crear-la
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+
                 //Iniciar una cookie
 
                 //Portar l'usuari a la seva home
