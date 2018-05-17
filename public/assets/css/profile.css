@@ -22,3 +22,7 @@ body {
 .changeButton{
     margin-bottom: 10px;
 }
+
+.btn:hover{
+    background-color: rgba(181, 0, 255, 0.5);
+}

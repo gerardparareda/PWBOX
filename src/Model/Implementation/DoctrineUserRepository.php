@@ -362,6 +362,17 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function insertNotification($idUsuari, $notificationTitle ,$notificationMessage)
+    {
+
+        $sql = "INSERT INTO UserNotification(id_notificacio, id_usuari, title, message, time_sent) VALUES (null, :idUsuari, :notificationTitle, :notificationMessage, now());";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $stmt->bindValue("notificationTitle", $notificationTitle, 'string');
+        $stmt->bindValue("notificationMessage", $notificationMessage, 'string');
+        $result = $stmt->execute();
+
+    }
 
 
 

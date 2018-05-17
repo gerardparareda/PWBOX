@@ -31,14 +31,24 @@ class EmailSenderController
 
     public function sendEmail(Request $request, Response $response)
     {
+        //$data = $request->getParsedBody();
+        $data['notificationTitle'] = 'Example Title';
+        $data['notificationToName'] = 'Example To Name';
+        $data['notificationHTML'] = '<html>Test HTML</html>';
+        $data['notificationBody'] = 'Information can go here what this notification is about';
+
         // Create a message
-        $message = (new \Swift_Message('Fills de puta'))
-            ->setFrom(['john@doe.com' => 'John Doe'])
-            ->setTo(['parareda8@gmail.com', 'r.ceci.97@gmail.com' => 'Holas'])
-            ->setBody('<html>Here is the message itself, yolo</html>');
+        $message = (new \Swift_Message($data['notificationTitle']))
+            ->setFrom(['doNotReply@pwbox.test' => 'PwBox'])
+            ->setTo(['parareda8@gmail.com', 'r.ceci.97@gmail.com' => $data['notificationToName']])
+            ->setBody($data['notificationHTML']);
 
         // Send the message
         $result = $this->mailer->send($message);
+
+        $repo = $this->container->get('user_repository');
+
+        $repo->insertNotification($_COOKIE['user_id'], $data['notificationTitle'] ,$data['notificationBody']);
 
         return $response->withStatus(302)->withHeader("Location", "/dashboard");
     }

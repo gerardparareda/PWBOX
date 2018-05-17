@@ -1,3 +1,5 @@
+DROP DATABASE PWBOX;
+
 CREATE DATABASE PWBOX;
 USE PWBOX;
 
@@ -16,9 +18,6 @@ CREATE TABLE User(
 	PRIMARY KEY(id)
 );
 
-INSERT INTO User(name) VALUES('hola');
-
-SELECT * FROM User;
 
 DROP TABLE IF EXISTS Directori;
 
@@ -44,3 +43,21 @@ CREATE TABLE UserCarpeta(
     FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
 	PRIMARY KEY(id_usuari, id_carpeta)
 );
+
+DROP TABLE UserNotification;
+
+CREATE TABLE UserNotification(
+	id_notificacio INT NOT NULL AUTO_INCREMENT,
+	id_usuari INT,
+    title VARCHAR(255),
+    message VARCHAR(255),
+    time_sent DATE,
+    FOREIGN KEY (id_usuari) REFERENCES User(id),
+	PRIMARY KEY(id_notificacio)
+);
+
+SELECT * FROM User;
+
+INSERT INTO UserNotification(id_notificacio, id_usuari, title, message, time_sent) VALUES (null, 1, 'Yolo', 'Body!', now());
+
+SELECT * FROM UserNotification;
