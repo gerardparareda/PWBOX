@@ -111,9 +111,6 @@ $('#form-editProfile').on('submit', function(e) {
                 contentType: false,
                 dataType : 'json',
                 success: function(data) {
-                    if(data.status === 'success'){
-
-                        //document.getElementById('actualEmail').innerHTML = document.forms["form-editProfile"]["inputNewEmail"].value;
                         document.getElementById('error-newEmail').innerHTML = data.errors['errorEmail'];
                         document.getElementById('error-newPassword').innerHTML = data.errors['errorNewPassword'];
                         document.getElementById('error-oldPassword').innerHTML = data.errors['errorOldPassword'];
@@ -126,13 +123,12 @@ $('#form-editProfile').on('submit', function(e) {
                         document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
 
                         console.log("ok");
-                    }else if(data.status === 'failure'){
+                },
+                error: function(data){
                         document.getElementById('error-newEmail').innerHTML = data.errors['errorEmail'];
                         document.getElementById('error-newPassword').innerHTML = data.errors['errorNewPassword'];
                         document.getElementById('error-oldPassword').innerHTML = data.errors['errorOldPassword'];
-                        document.getElementById('error-newProfileImage').innerHTML = data.errors['errorNewProfileImage'];
-                    }
-                }
+                        document.getElementById('error-newProfileImage').innerHTML = data.errors['errorNewProfileImage'];}
             }
         );
     }

@@ -288,10 +288,4 @@ class DashboardController{
 
         }
     }*/
-
-    public function renameFolder(Request $request, Response $response) {
-
-
-
-    }
 }

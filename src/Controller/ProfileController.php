@@ -99,13 +99,14 @@ class ProfileController{
         if($errors['errorOldPassword'] != '') {
             $response_array['errors'] = $errors;
             $response_array['status'] = 'failure';
+            return $response->withJson($response_array, 200);
         }else{
             $response_array['errors'] = $errors;
             $response_array['status'] = 'success';
+            return $response->withJson($response_array, 500);
+
         }
 
-        header('Content-type: application/json');
-        echo json_encode($response_array);
 
     }
 
