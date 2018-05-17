@@ -29,6 +29,7 @@ CREATE TABLE Directori(
   carpetaParent INT,
   urlPath VARCHAR(255),
   esCarpeta BOOLEAN,
+  esShared BOOLEAN,
 	PRIMARY KEY(id)
 );
 

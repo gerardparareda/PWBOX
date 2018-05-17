@@ -54,7 +54,7 @@ class DashboardController{
             var_dump($rootFolderId);
             var_dump($carpetes);
 
-            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes]);
+            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes, 'carpetaParent' => null]);
 
         } else {
             //Carpeta concreta
@@ -94,12 +94,12 @@ class DashboardController{
                         //downloadFileFromURL($args['path']);
 
                         return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id']]);
 
                     } else {
 
                         return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id']]);
                     }
 
 
@@ -154,7 +154,15 @@ class DashboardController{
                 }
                 return $response->withStatus(302)->withHeader("Location", "/dashboard");
             } else {
-                return $this->container->get('view')->render($response, 'dashboard.twig', ['error_array' => $errors]);
+
+                $repo = $this->container->get('user_repository');
+
+                $rootFolderId = $repo->getRootFolderId($_COOKIE['user_id']);
+
+                //$carpetes = $repo->showDirectory($rootFolderId, $_SESSION['user_id']);
+                $carpetes = $repo->showDirectory($rootFolderId, $_COOKIE['user_id']);
+
+                return $this->container->get('view')->render($response, 'dashboard.twig', ['error_array' => $errors, 'carpetes' => $carpetes, 'carpetaParent' => null]);
             }
 
         } catch (\Exception $e) {

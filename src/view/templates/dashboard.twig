@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><img src="/assets/img/folder-storage.png" class="float-left" title="New Folder" alt="New Folder" width="20" height="20"></a>
+                    <a class="nav-link" href="#"><img src="/assets/img/folder-storage.png" class="float-left" title="New Folder" alt="New Folder" width="20" height="20" onclick="createFolder('{{ carpetaParent }}')"></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><img src="/assets/img/reload-button.png" class="float-left" title="Reload Files" alt="Reload Files" width="20" height="20"></a>
@@ -52,7 +52,7 @@
         </nav>
         <table class="table table-hover">
             <tbody>
-                <tr>
+                <!--tr>
                     <td  ondblclick="alert('double clicked');">
                         <img src="/assets/img/folder.png" width="20" height="20">
                         <p>Carpeta 1</p>
@@ -73,10 +73,11 @@
                             <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
                         </div>
                     </td>
-                </tr>
-            </tbody>
+                </tr-->
+
 
             {% for carpeta in carpetes %}
+                {% if carpeta['esShared'] == false %}
                 <tr>
                     {% if carpeta['esCarpeta'] == true %}
                         <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
@@ -108,7 +109,9 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
+            </tbody>
         </table>
 
         <!-- Modal pujar fitxers -->

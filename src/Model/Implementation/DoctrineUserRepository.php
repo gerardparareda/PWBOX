@@ -162,11 +162,12 @@ class DoctrineUserRepository implements UserRepository{
         $stmt = $this->database->prepare($sql);
         $result = $stmt->execute();
         $idHash = $stmt->fetchColumn (0);
+        $idHash++;
 
 
         //Despres creem la carpeta a la base de dades.
 
-        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta)";
+        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta, :esShared)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
 
@@ -174,7 +175,7 @@ class DoctrineUserRepository implements UserRepository{
 
             $stmt->bindValue("isRoot", 1, 'integer');
             $stmt->bindValue("carpetaParent", null, 'integer');
-            $stmt->bindValue("ulrPath", md5($idHash), 'string');
+            $stmt->bindValue("ulrPath", '', 'string');
 
         } else {
 
@@ -185,6 +186,7 @@ class DoctrineUserRepository implements UserRepository{
         }
 
         $stmt->bindValue("esCarpeta", $esCarpeta, 'boolean');
+        $stmt->bindValue("esShared", false, 'boolean');
 
         //$stmt->bindValue("email", , 'string');
         //$stmt->bindValue("password", md5($user->getPassword()), 'string');
@@ -325,7 +327,7 @@ class DoctrineUserRepository implements UserRepository{
         //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
         //diferent.
 
-        $sql = "SELECT d.id, d.nomCarpeta, d.urlPath, d.esCarpeta, uc.admin, uc.reader  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
+        $sql = "SELECT d.id, d.nomCarpeta, d.urlPath, d.esCarpeta, uc.admin, uc.reader, d.esShared  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idCarpetaClicada", $idCarpetaClicada, 'integer');
         $stmt->bindValue("idUsuari", $idUsuari, 'integer');

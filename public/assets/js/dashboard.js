@@ -73,3 +73,41 @@ function renameFolder(idCarpeta, nomCarpeta) {
 
 
 
+function createFolder(pathCarpetaRoot) {
+
+    console.log("abans de fer post!");
+
+    var newName = prompt("Folder name: ", nomCarpeta);
+
+    if () {
+
+    }
+
+
+    $.ajax(
+        {
+            url: '/newFolder',
+            type: 'GET',
+            data: {
+                pathCarpetaRoot: idCarpeta,
+                newNameCarpeta: newName
+            },
+            dataType : 'json',
+            success: function(data) {
+                console.log(data);
+
+                document.getElementById(data.id).innerHTML = data.newName1;
+
+            },
+            error: function(error) {
+                //console.log(error);
+                alert("You don't have permission to rename this item");
+            }
+        }
+    );
+
+    console.log("fet post!");
+}
+
+
+
