@@ -9,6 +9,7 @@ function goToURL(url) {
 
 function downloadFile(url) {
 
+    window.open(url, "_blank");
     //console.log(url);
     //window.location.href = '/dashboard/' + url;
     //ondblclick='location.href = "/dashboard/ {{ carpeta['urlPath'] }}";'
@@ -45,14 +46,27 @@ function renameFolder(idCarpeta, nomCarpeta) {
     var newName = prompt("Rename the folder", nomCarpeta);
 
 
-    $.post("/renameFolder",
+    $.ajax(
         {
-            idCarpeta: idCarpeta,
-            newNameCarpeta: newName
-        },
-        function() {
-            //alert( "success" );
-        });
+            url: '/renameFolder',
+            type: 'POST',
+            data: {
+                idCarpeta: idCarpeta,
+                newNameCarpeta: newName
+            },
+            dataType : 'json',
+            success: function(data) {
+                console.log(data);
+
+                document.getElementById(data.id).innerHTML = data.newName1;
+
+            },
+            error: function(error) {
+                //console.log(error);
+                alert("You don't have permission to rename this item");
+            }
+        }
+    );
 
     console.log("fet post!");
 }

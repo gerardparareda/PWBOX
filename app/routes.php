@@ -17,7 +17,7 @@ $app->post('/login', 'PwBox\Controller\LoginController:submit');
 //$app->get('/dashboard', 'PwBox\Controller\DashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 $app->get('/dashboard[/{path}]', 'PwBox\Controller\DashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
-$app->post('/dashboard[/{path}]', 'PwBox\Controller\DashboardController:downloadFile'); //->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+$app->get('/file/{id}', 'PwBox\Controller\DashboardController:downloadFile'); //->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 //$app->get('/aaa', 'PwBox\Controller\DashboardController:downloadFile')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 $app->post('/upload_files', 'PwBox\Controller\DashboardController:upload')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');

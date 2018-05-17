@@ -33,44 +33,43 @@ class RenameFolderController
 
         $idFolder = $data['idCarpeta'];
         $newNameCarpeta = $data['newNameCarpeta'];
-
-        //$idUsuari = $_SESSION['user_id'];
         $idUsuari = $_COOKIE['user_id'];
 
-
+        /** @var UserRepository $repo */
         $repo = $this->container->get('user_repository');
 
         $permisos = $repo->userPrivileges($idFolder, $idUsuari);
 
         if ($permisos['admin']) {
-            $repo->renameFolder($idFolder, $newNameCarpeta);
 
+            $folderPath = $repo->getFolderPath($idFolder);
+
+            $repo->renameFolder($idFolder, $newNameCarpeta);
             $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
 
             if(count($result) == 0){
                 $result[0] = "./uploads/default-avatar.jpg";
             }
 
-            $idCarpetaParent = $repo->getParentFolderId($args['path']);
+            $idCarpetaParent = $repo->getParentFolderId($folderPath['urlPath']);
 
             $urlPath = $repo->getFolderPath($idCarpetaParent);
 
-            $carpetes = $repo->showDirectory($idCarpetaParent, $idUsuari);
+            /*$carpetes = $repo->showDirectory($idCarpetaParent, $idUsuari);
 
-            var_dump($data);
-            var_dump($data);
-            var_dump($data);
+            $url = "/dashboard/" . $urlPath;*/
 
-            $url = "/dashboard/" . $urlPath;
+            $response_array['id'] = $idFolder;
+            $response_array['newName1'] = $newNameCarpeta;
 
-            //return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes]);
+            return $response->withJson($response_array, 200);
 
         } else {
-            ?>
-                <script>
-                    alert("You don't have the rights to rename this folder");
-                </script>
-            <?php
+
+            $response_array['status'] = 'Error';
+
+            header('Content-type: application/json');
+            echo json_encode($response_array);
         }
 
 

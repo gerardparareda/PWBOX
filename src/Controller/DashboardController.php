@@ -181,30 +181,29 @@ class DashboardController{
     /**
      * @param Request $request
      * @param Response $response
+     * @param array $args
      * @return Response
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function downloadFile(Request $request, Response $response) {
+    public function downloadFile(Request $request, Response $response, array $args) {
 
-        echo 'entrat';
-        //die;
+        $fieldId = $args['id'];
 
-        $data = $request->getParsedBody();
-        echo 'entrat!!!!';
-
-        if (isset($data['urlPath'])) {
-
-            $filePath = $data['urlPath'];
-            var_dump($filePath);
+        if (!empty($fieldId)) {
 
             //Busquem si tenim el fitxer a la bbdd.
             $repo = $this->container->get('user_repository');
 
-            $fileName = $repo->getIdByUrlPath($filePath);
-            $fileName = glob ("./uploads/" . $fileName . ".*");
+            $dirInfo = $repo->getIdByUrlPath($fieldId);
 
-            var_dump($fileName);
+            //$fileName = __DIR__ . '/../../public/uploads/' . $dirInfo['nomCarpeta'];
+            $fileName = __DIR__ . '/../../public/uploads/default-avatar.jpg';
+
+            if (!file_exists($fileName)) {
+                // Return error
+                die('file not exist');
+            }
 
 
             /*if (file_exists('./uploads/default-avatar.jpg')) {
@@ -222,9 +221,8 @@ class DashboardController{
             }*/
 
             //$file = __DIR__ . '/test.html';
-            $file = './uploads/default-avatar.jpg';
-            //$fh = fopen($fileName[0], 'rb');
-            $fh = fopen($file, 'rb');
+            //$file = './uploads/default-avatar.jpg';
+            $fh = fopen($fileName, 'r');
 
             $stream = new \Slim\Http\Stream($fh); // create a stream instance for the response body
 

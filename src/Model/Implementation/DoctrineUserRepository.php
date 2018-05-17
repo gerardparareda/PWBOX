@@ -138,18 +138,13 @@ class DoctrineUserRepository implements UserRepository{
 
     public function getIdByUrlPath($urlPath)
     {
-        $sql = "SELECT id, esCarpeta FROM Directori WHERE urlPath = :urlPath;";
+        $sql = "SELECT * FROM Directori WHERE urlPath = :urlPath;";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("urlPath", $urlPath, 'string');
 
         $result = $stmt->execute();
-        $file = $stmt->fetch();
 
-        if (!$file['esCarpeta']) {
-            return $file['id'];
-        }
-
-        return null;
+        return $stmt->fetch();
     }
 
     /**
