@@ -153,6 +153,12 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function createDirectory($nomCarpetaActual, $idCarpetaParent, $idUsuari, $esCarpeta)
     {
+
+        var_dump($nomCarpetaActual);
+        var_dump($idUsuari);
+        var_dump($idCarpetaParent);
+        var_dump($esCarpeta);
+
         $idHash = 0;
 
         //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
@@ -202,12 +208,12 @@ class DoctrineUserRepository implements UserRepository{
 
         //Ara que tenim l'id de la carpeta relacionem la carpeta amb el rol de l'usuari.
         //Afegim fila id_carpeta i id_usuari a taula Admin.
-        $sql = "INSERT INTO Carpeta (id_usuari, id_carpeta, admin, reader) VALUES (:id_usuari, :id_carpeta, :admin, :reader)";
+        $sql = "INSERT INTO userCarpeta (id_usuari, id_carpeta, admin, reader) VALUES (:id_usuari, :id_carpeta, :admin, :reader)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("id_usuari", $idUsuari, 'integer');
         $stmt->bindValue("id_carpeta", $idCarpeta, 'integer');
-        $stmt->bindValue("admin", $idCarpeta, 'boolean');
-        $stmt->bindValue("reader", $idCarpeta, 'boolean');
+        $stmt->bindValue("admin", true, 'boolean');
+        $stmt->bindValue("reader", false, 'boolean');
         $result = $stmt->execute();
 
 

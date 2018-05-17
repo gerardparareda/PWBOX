@@ -36,4 +36,7 @@ $app->get('/sendEmail', 'PwBox\Controller\EmailSenderController:sendEmail');
 
 $app->get('/sharedDashboard', 'PwBox\Controller\SharedDashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->post('/newItem', 'PwBox\Controller\NewFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
+
 ?>
