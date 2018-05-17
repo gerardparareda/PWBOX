@@ -77,31 +77,67 @@ function createFolder(pathCarpetaRoot) {
 
     console.log("abans de fer post!");
 
-    var newName = prompt("Folder name: ", nomCarpeta);
+    var newName = prompt("Folder name: ", '');
 
-    if () {
+    if (pathCarpetaRoot === 'null') {
+        pathCarpetaRoot = null;
+    }
 
+
+    $.ajax(
+        {
+            url: '/newItem',
+            type: 'POST',
+            data: {
+                esCarpeta: true,
+                pathCarpetaRoot: pathCarpetaRoot,
+                nameCarpeta: newName
+            },
+            success: function(data) {
+                console.log(data);
+
+                location.reload();
+
+            },
+            error: function(error) {
+                //console.log(error);
+                alert("Error");
+            }
+        }
+    );
+
+    console.log("fet post!");
+}
+
+function createFile(pathCarpetaRoot) {
+
+    console.log("abans de fer post!");
+
+    var newName = prompt("Folder name: ", '');
+
+    if (pathCarpetaRoot === 'null') {
+        pathCarpetaRoot = null;
     }
 
 
     $.ajax(
         {
             url: '/newFolder',
-            type: 'GET',
+            type: 'POST',
             data: {
-                pathCarpetaRoot: idCarpeta,
-                newNameCarpeta: newName
+                esCarpeta: false,
+                pathCarpetaRoot: pathCarpetaRoot,
+                nameCarpeta: newName
             },
             dataType : 'json',
             success: function(data) {
-                console.log(data);
 
-                document.getElementById(data.id).innerHTML = data.newName1;
+                location.reload();
 
             },
             error: function(error) {
                 //console.log(error);
-                alert("You don't have permission to rename this item");
+                alert("Error");
             }
         }
     );
