@@ -28,6 +28,7 @@ CREATE TABLE Directori(
 	isRoot BOOLEAN,
   carpetaParent INT,
   urlPath VARCHAR(255),
+  esCarpeta BOOLEAN,
 	PRIMARY KEY(id)
 );
 

@@ -75,12 +75,13 @@
 
             {% for carpeta in carpetes %}
                 <tr>
-                    <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
-                        {% if carpeta['esCarpeta'] == true %}
+                    {% if carpeta['esCarpeta'] == true %}
+                        <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/folder.png" width="20" height="20">
-                        {% else %}
+                    {% else %}
+                        <td  ondblclick="downloadFile('{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/file.png" width="20" height="20">
-                        {% endif %}
+                    {% endif %}
 
                         <p>{{ carpeta['nomCarpeta'] }}</p>
 
@@ -133,6 +134,7 @@
         {{ parent() }}
         <script src="/fine-uploader/fineuploader.js"></script>
         <script src="/fine-uploader/fineuploader.js"></script>
+        <script src="/assets/js/jquery-3.3.1.min.js"></script>
         <script src="/assets/js/dashboard.js"></script>
     {% endblock %}
 

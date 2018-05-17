@@ -45,9 +45,16 @@ class DashboardController{
             //Busquem que hi ha a la carpeta.
             //Aqui he de cridar una funcio que buscara una carpeta root fent uc.id_usuari = uc.id_carpeta = idUsuari
             // i d.id = uc.id_carpeta i d.root = true;
-            //$carpeta = $repo->funciiiiiiiioooooooooo($args['path']);
+            //$carpeta = $repo->getRootFolderId($_SESSION['user_id']);
+            $rootFolderId = $repo->getRootFolderId($_COOKIE['user_id']);
 
-            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
+            //$carpetes = $repo->showDirectory($rootFolderId, $_SESSION['user_id']);
+            $carpetes = $repo->showDirectory($rootFolderId, $_COOKIE['user_id']);
+
+            var_dump($rootFolderId);
+            var_dump($carpetes);
+
+            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes]);
 
         } else {
             //Carpeta concreta
@@ -79,7 +86,20 @@ class DashboardController{
 
                     var_dump($carpetes);
 
-                    return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
+                    if (!$repo->esCarpeta($args['path'])) {
+
+                        $idCarpetaParent = $repo->getParentFolderId($args['path']);
+                        $carpetes = $repo->showDirectory($idCarpetaParent, $idUsuari);
+
+                        return $this->container->get('view')->render($response, 'dashboard.twig',
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
+
+                    } else {
+
+                        return $this->container->get('view')->render($response, 'dashboard.twig',
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
+                    }
+
 
                 } else {
                     return $response->withStatus(302)->withHeader("Location", "/forbidden");
@@ -150,5 +170,73 @@ class DashboardController{
             }
         }
         return false;
+    }
+
+    /*public function hola (Request $request, Response $response) {
+        echo 'holaaa';
+    }*/
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function downloadFile(Request $request, Response $response) {
+
+        echo 'entrat';
+        die;
+
+        $data = $request->getParsedBody();
+        echo 'entrat!!!!';
+
+        if (isset($data['urlPath'])) {
+
+            $filePath = $data['urlPath'];
+            var_dump($filePath);
+
+            //Busquem si tenim el fitxer a la bbdd.
+            $repo = $this->container->get('user_repository');
+
+            $fileName = $repo->getIdByUrlPath($filePath);
+            $fileName = glob ("./uploads/" . $fileName . ".*");
+
+            var_dump($fileName);
+
+
+            /*if (file_exists('./uploads/default-avatar.jpg')) {
+            //if (file_exists($fileName)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                //header('Content-Disposition: attachment; filename="' . basename($fileName) . '"');
+                header('Content-Disposition: attachment; filename="' . basename('./uploads/default-avatar.jpg') . '"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize('./uploads/default-avatar.jpg'));
+                readfile('./uploads/default-avatar.jpg');
+                exit;
+            }*/
+
+            //$file = __DIR__ . '/test.html';
+            $file = './uploads/default-avatar.jpg';
+            //$fh = fopen($fileName[0], 'rb');
+            $fh = fopen($file, 'rb');
+
+            $stream = new \Slim\Http\Stream($fh); // create a stream instance for the response body
+
+            return $response->withHeader('Content-Type', 'application/force-download')
+                ->withHeader('Content-Type', 'application/octet-stream')
+                ->withHeader('Content-Type', 'application/download')
+                ->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Content-Disposition', 'attachment; filename="' . basename($file) . '"')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+                ->withHeader('Pragma', 'public')
+                ->withBody($stream); // all stream contents will be sent to the response
+
+        }
     }
 }

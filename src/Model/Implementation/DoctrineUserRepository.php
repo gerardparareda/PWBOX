@@ -136,11 +136,27 @@ class DoctrineUserRepository implements UserRepository{
         return $username;
     }
 
+    public function getIdByUrlPath($urlPath)
+    {
+        $sql = "SELECT id, esCarpeta FROM Directori WHERE urlPath = :urlPath;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("urlPath", $urlPath, 'string');
+
+        $result = $stmt->execute();
+        $file = $stmt->fetch();
+
+        if (!$file['esCarpeta']) {
+            return $file['id'];
+        }
+
+        return null;
+    }
+
     /**
      * @return mixed
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function createDirectory($nomCarpetaActual, $idCarpetaParent, $idUsuari)
+    public function createDirectory($nomCarpetaActual, $idCarpetaParent, $idUsuari, $esCarpeta)
     {
         $idHash = 0;
 
@@ -155,7 +171,7 @@ class DoctrineUserRepository implements UserRepository{
 
         //Despres creem la carpeta a la base de dades.
 
-        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath)";
+        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
 
@@ -172,6 +188,9 @@ class DoctrineUserRepository implements UserRepository{
             $stmt->bindValue("ulrPath", md5($idHash), 'string');
 
         }
+
+        $stmt->bindValue("esCarpeta", $esCarpeta, 'boolean');
+
         //$stmt->bindValue("email", , 'string');
         //$stmt->bindValue("password", md5($user->getPassword()), 'string');
         $result = $stmt->execute();
@@ -194,6 +213,19 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("reader", $idCarpeta, 'boolean');
         $result = $stmt->execute();
 
+
+    }
+
+    public function getRootFolderId($idUsuari)
+    {
+
+        $sql = "SELECT d.id, d.nomCarpeta, d.urlPath, uc.admin, uc.reader FROM Directori AS d, UserCarpeta AS uc WHERE d.id = uc.id_carpeta AND uc.id_usuari = :idUsuari AND d.isRoot = 1; ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $rootFolderId = $stmt->fetchColumn(0);
+
+        return $rootFolderId;
 
     }
 
@@ -227,6 +259,37 @@ class DoctrineUserRepository implements UserRepository{
         $permisos = $stmt->fetch();
 
         return $permisos;
+
+    }
+
+    public function getParentFolderId($urlPath)
+    {
+
+        $sql = "SELECT carpetaParent FROM Directori WHERE urlPath = :urlPath;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("urlPath", $urlPath, 'string');
+        $result = $stmt->execute();
+        $parentId = $stmt->fetch();
+
+        return $parentId;
+
+    }
+
+    /**
+     * @param $urlPath
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function esCarpeta($urlPath)
+    {
+
+        $sql = "SELECT esCarpeta FROM Directori WHERE urlPath = :urlPath;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("urlPath", $urlPath, 'string');
+        $result = $stmt->execute();
+        $esCarpeta = $stmt->fetch();
+
+        return $esCarpeta;
 
     }
 
