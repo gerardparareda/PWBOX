@@ -17,4 +17,6 @@ interface UserRepository{
     public function getIdByUrlPath($urlPath);
     public function getParentFolderId($urlPath);
     public function esCarpeta($urlPath);
+    public function renameFolder($idCarpetaActual, $newName);
+    public function getFolderPath($idCarpeta);
 }

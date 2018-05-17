@@ -91,6 +91,8 @@ class DashboardController{
                         $idCarpetaParent = $repo->getParentFolderId($args['path']);
                         $carpetes = $repo->showDirectory($idCarpetaParent, $idUsuari);
 
+                        //downloadFileFromURL($args['path']);
+
                         return $this->container->get('view')->render($response, 'dashboard.twig',
                             ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
 
@@ -186,7 +188,7 @@ class DashboardController{
     public function downloadFile(Request $request, Response $response) {
 
         echo 'entrat';
-        die;
+        //die;
 
         $data = $request->getParsedBody();
         echo 'entrat!!!!';
@@ -238,5 +240,60 @@ class DashboardController{
                 ->withBody($stream); // all stream contents will be sent to the response
 
         }
+    }
+
+    /*public function downloadFileFromURL($url) {
+
+            $filePath = $url;
+            var_dump($filePath);
+
+            //Busquem si tenim el fitxer a la bbdd.
+            $repo = $this->container->get('user_repository');
+
+            $fileName = $repo->getIdByUrlPath($filePath);
+            $fileName = glob ("./uploads/" . $fileName . ".*");
+
+            var_dump($fileName);
+
+
+            /*if (file_exists('./uploads/default-avatar.jpg')) {
+            //if (file_exists($fileName)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                //header('Content-Disposition: attachment; filename="' . basename($fileName) . '"');
+                header('Content-Disposition: attachment; filename="' . basename('./uploads/default-avatar.jpg') . '"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize('./uploads/default-avatar.jpg'));
+                readfile('./uploads/default-avatar.jpg');
+                exit;
+            }*/
+
+            /*//$file = __DIR__ . '/test.html';
+            $file = './uploads/default-avatar.jpg';
+            $fh = fopen($fileName[0], 'rb');
+            //$fh = fopen($file, 'rb');
+
+            $stream = new \Slim\Http\Stream($fh); // create a stream instance for the response body
+
+            return $response->withHeader('Content-Type', 'application/force-download')
+                ->withHeader('Content-Type', 'application/octet-stream')
+                ->withHeader('Content-Type', 'application/download')
+                ->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Content-Disposition', 'attachment; filename="' . basename($file) . '"')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+                ->withHeader('Pragma', 'public')
+                ->withBody($stream); // all stream contents will be sent to the response
+
+        }
+    }*/
+
+    public function renameFolder(Request $request, Response $response) {
+
+
+
     }
 }

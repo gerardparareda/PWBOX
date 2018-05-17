@@ -87,14 +87,14 @@
 
                         {% if carpeta['admin'] == 1 %}
                             <div class="actions float-right">
-                                <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item"></a>
-                                <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
-                                <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
-                                <a href = "#"><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item"></a>
+                                <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
+                                <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="renameFolder({{ carpeta['id'] }})"></a>
+                                <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="renameFolder({{ carpeta['id'] }})"></a>
+                                <a href = "#"><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="renameFolder({{ carpeta['id'] }})"></a>
                             </div>
                         {% else %}
                             <div class="actions float-right">
-                                <a href = "#"><img src="/assets/img/download-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
+                                <a href = "#"><img src="/assets/img/download-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="renameFolder({{ carpeta['id'] }})"></a>
                             </div>
                         {% endif %}
                     </td>
