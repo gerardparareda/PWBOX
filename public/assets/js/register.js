@@ -62,7 +62,7 @@ function validateForm(){
 
 function fileValidation(filePath){
     var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-    if(!allowedExtensions.exec(filePath)){
+    if(!allowedExtensions.exec(filePath.toLowerCase())){
         return false;
     }else{
         return true;

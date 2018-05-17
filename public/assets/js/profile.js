@@ -76,7 +76,7 @@ function validateEmail(email){
 
 function validateFile(filePath) {
     var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-    if (!allowedExtensions.exec(filePath)) {
+    if (!allowedExtensions.exec(filePath.toLowerCase())) {
         document.getElementById("error-newProfileImage").innerHTML = "Profile image must be .jpg, .jpeg, .gif or .png";
         errors = false;
     }
@@ -84,27 +84,31 @@ function validateFile(filePath) {
 
 
 
-$('.save-changes').click(function(e) {
+$('#form-editProfile').on('submit', function(e) {
     e.preventDefault();
 
     var email = document.forms["form-editProfile"]["inputNewEmail"].value;
     var newPassword = document.forms["form-editProfile"]["inputNewPassword"].value;
     var oldPassword = document.forms["form-editProfile"]["inputOldPassword"].value;
-    var newProfileImage = document.forms["form-editProfile"]['inputNewProfileImage'].value;
+    var newProfileImage = document.forms["form-editProfile"]['inputNewProfileImage'].files[0];
 
+    var formData  = new FormData();
+
+    formData.append('inputNewEmail', email);
+    formData.append('inputNewPassword', newPassword);
+    formData.append('inputOldPassword', oldPassword);
+    formData.append('inputNewProfileImage', newProfileImage);
 
     //if(oldPassword !== "" && (email !== "" || newPassword !== "")){
     if(validateEditProfile() && oldPassword !== "" && (email !== "" || newPassword !== "" || newProfileImage !== "")){
+
         $.ajax(
             {
                 url: '/profile',
                 type: 'POST',
-                data: {
-                    email: document.forms["form-editProfile"]["inputNewEmail"].value,
-                    newPassword: document.forms["form-editProfile"]["inputNewPassword"].value,
-                    oldPassword: document.forms["form-editProfile"]["inputOldPassword"].value,
-                    newProfileImage: document.forms["form-editProfile"]['inputNewProfileImage'].value
-                },
+                data: formData,
+                processData: false,
+                contentType: false,
                 dataType : 'json',
                 success: function(data) {
                     if(data.status === 'success'){
