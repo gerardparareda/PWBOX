@@ -26,6 +26,6 @@ $app->get('/logout', 'PwBox\Controller\LogoutController:logout');
 
 $app->get('/profile', 'PwBox\Controller\ProfileController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
-$app->post('/profile', 'PwBox\Controller\ProfileController:editProfile')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+$app->post('/profile', 'PwBox\Controller\ProfileController:editProfile');
 
 ?>
