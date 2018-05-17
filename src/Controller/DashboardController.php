@@ -34,7 +34,7 @@ class DashboardController{
         $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
 
         if(count($result) == 0){
-            $result[0] = "./uploads/default-avatar.jpg";
+            $result[0] = "/../uploads/default-avatar.jpg";
         }
 
         //Comprovem si l'usuari ha entrat amb un path a una carpeta o no. Nomes entra aqui si te la cookie perque
