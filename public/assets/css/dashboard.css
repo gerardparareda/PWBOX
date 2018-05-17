@@ -34,3 +34,7 @@ td:hover p{
 td .actions img:hover{
     filter: contrast(350%);
 }
+
+.btn:hover{
+    background-color: rgba(181, 0, 255, 0.5);
+}

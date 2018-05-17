@@ -32,6 +32,8 @@ $app->get('/forbidden', 'PwBox\Controller\ForbiddenController')->add('PwBox\Cont
 
 $app->post('/renameFolder', 'PwBox\Controller\RenameFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->get('/sendEmail', 'PwBox\Controller\EmailSenderController:sendEmail');
 
+$app->get('/sharedDashboard', 'PwBox\Controller\SharedDashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 ?>
