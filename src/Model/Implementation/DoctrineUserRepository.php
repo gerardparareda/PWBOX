@@ -275,6 +275,30 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function getFolderPath($idCarpeta)
+    {
+
+        $sql = "SELECT urlPath FROM Directori WHERE id = :idCarpeta;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpeta", $idCarpeta, 'integer');
+        $result = $stmt->execute();
+        $urlPath = $stmt->fetch();
+
+        return $urlPath;
+
+    }
+
+    public function renameFolder($idCarpetaActual, $newName)
+    {
+
+        $sql = "UPDATE Directori SET nomCarpeta = :newNameCarpeta WHERE id = :idCarpeta;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpeta", $idCarpetaActual, 'integer');
+        $stmt->bindValue("newNameCarpeta", $newName, 'string');
+        $result = $stmt->execute();
+
+    }
+
     /**
      * @param $urlPath
      * @return mixed

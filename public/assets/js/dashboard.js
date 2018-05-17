@@ -34,6 +34,27 @@ function downloadFile(url) {
     xhttp.send("urlPath=" + url);*/
 
     console.log("fet post!");
+
+    //document.getElementById('my_iframe').src = url;
+}
+
+function renameFolder(idCarpeta, nomCarpeta) {
+
+    console.log("abans de fer post!");
+
+    var newName = prompt("Rename the folder", nomCarpeta);
+
+
+    $.post("/renameFolder",
+        {
+            idCarpeta: idCarpeta,
+            newNameCarpeta: newName
+        },
+        function() {
+            //alert( "success" );
+        });
+
+    console.log("fet post!");
 }
 
 

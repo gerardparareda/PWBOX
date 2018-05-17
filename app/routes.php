@@ -28,4 +28,10 @@ $app->get('/profile', 'PwBox\Controller\ProfileController')->add('PwBox\Controll
 
 $app->post('/profile', 'PwBox\Controller\ProfileController:editProfile');
 
+$app->get('/forbidden', 'PwBox\Controller\ForbiddenController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
+$app->post('/renameFolder', 'PwBox\Controller\RenameFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
+
+
 ?>
