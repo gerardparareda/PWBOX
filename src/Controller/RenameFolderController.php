@@ -74,7 +74,7 @@ class RenameFolderController
         }
 
 
-        return $this->container->get('view')->render($response, 'error.twig', ['errorCode' => 'Forbidden']);
+        //return $this->container->get('view')->render($response, 'error.twig', ['errorCode' => 'Forbidden']);
 
     }
 }
