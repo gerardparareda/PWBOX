@@ -89,9 +89,8 @@ $('#form-editProfile').on('submit', function(e) {
     formData.append('inputOldPassword', oldPassword);
     formData.append('inputNewProfileImage', newProfileImage);
 
-    //if(oldPassword !== "" && (email !== "" || newPassword !== "")){
-    if(true){
-    //if(validateEditProfile() && oldPassword !== "" && (email !== "" || newPassword !== "" || newProfileImage !== "")){
+
+    if(validateEditProfile() && oldPassword !== "" && (email !== "" || newPassword !== "" || newProfileImage !== "")){
 
         $.ajax(
             {
@@ -115,9 +114,14 @@ $('#form-editProfile').on('submit', function(e) {
                         document.forms["form-editProfile"]["inputOldPassword"].value = "";
                         document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
 
+                        if (data['newEmail'].length > 0){
+                            document.getElementById('actualEmail').innerHTML = data['newEmail'];
+                        }
+
                         d = new Date();
                         $("#user-avatar").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
                         $("#user-avatar-nav").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
+
 
                     } else {
                         document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];

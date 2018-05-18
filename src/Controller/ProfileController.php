@@ -104,18 +104,33 @@ class ProfileController{
 
         if($errors['errorEmail'] == '' && $errors['errorNewPassword'] == '' && $errors['errorOldPassword'] == '' && $errors['errorNewProfileImage'] == '') {
 
+            //Canviar el correu
+            if ($data['inputNewEmail'] != ''){
+                $repo->updateEmailById($data['inputNewEmail'], $_COOKIE['user_id']);
 
+            }
+
+            //Canviar la contrasenya
+            if ($data['inputNewPassword'] != ''){
+                $repo->updatePasswordById($data['inputNewPassword'], $_COOKIE['user_id']);
+            }
 
             //Canviar la foto de perfil
             if(isset($uploadedImage)) {
                 $directory = './uploads';
                 $imageName = $this->moveUploadedImage($directory, $uploadedImage, $_COOKIE['user_id']);
             } else {
-                $imageName = 'default-avatar.jpg';
+                $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
+                if(count($result) == 1){
+                    $imageName = basename($result[0]);
+                } else {
+                    $imageName = 'default-avatar.jpg';
+                }
             }
 
             $response_array['image'] = $imageName;
             $response_array['errors'] = $errors;
+            $response_array['newEmail'] = $data['inputNewEmail'];
             return $response->withJson($response_array, 200);
         }else{
 
