@@ -49,7 +49,7 @@ class SharedDashboardController{
             $carpetes = $repo->showSharedDirectory($_COOKIE['user_id']);
 
             //var_dump($rootFolderId);
-            var_dump($carpetes);
+            //var_dump($carpetes);
             //die;
 
             return $this->container->get('view')->render($response, 'sharedDashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes]);

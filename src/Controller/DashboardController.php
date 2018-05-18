@@ -66,27 +66,27 @@ class DashboardController{
             $carpeta = $repo->lookIfDirectoryExists($args['path']);
 
             if ($carpeta == null) {
-                var_dump($args);
+                //var_dump($args);
 
                 return $response->withStatus(302)->withHeader("Location", "/dashboard");
 
             } else {
-                var_dump($args['path']);
-                var_dump($carpeta);
+                //var_dump($args['path']);
+                //var_dump($carpeta);
 
                 //$idUsuari = $_SESSION['user_id'];
                 $idUsuari = $_COOKIE['user_id'];
 
                 $privileges = $repo->userPrivileges($carpeta['id'], $idUsuari);
 
-                var_dump($privileges);
+                //var_dump($privileges);
 
                 if ($privileges['admin'] || $privileges['reader']) {
 
                     //Mostrem el contingut de la carpeta.
                     $carpetes = $repo->showDirectory($carpeta['id'], $idUsuari);
 
-                    var_dump($carpetes);
+                    //var_dump($carpetes);
 
                     if (!$repo->esCarpeta($args['path'])) {
 

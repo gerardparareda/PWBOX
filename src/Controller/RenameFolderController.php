@@ -30,7 +30,7 @@ class RenameFolderController
 
         $data = $request->getParsedBody();
 
-        var_dump($data);
+        //var_dump($data);
         die;
 
         $idFolder = $data['idCarpeta'];

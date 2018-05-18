@@ -194,10 +194,10 @@ class DoctrineUserRepository implements UserRepository{
     public function createDirectory($nomCarpetaActual, $idCarpetaParent, $idUsuari, $esCarpeta)
     {
 
-        var_dump($nomCarpetaActual);
-        var_dump($idUsuari);
-        var_dump($idCarpetaParent);
-        var_dump($esCarpeta);
+        //var_dump($nomCarpetaActual);
+        //var_dump($idUsuari);
+        //var_dump($idCarpetaParent);
+        //var_dump($esCarpeta);
 
         $idHash = 0;
 
