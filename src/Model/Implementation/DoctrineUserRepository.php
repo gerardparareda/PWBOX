@@ -272,6 +272,35 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function isFile($idCarpeta)
+    {
+
+        $sql = "SELECT * FROM Directori WHERE id = :idCarpeta; ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpeta", $idCarpeta, 'integer');
+        $result = $stmt->execute();
+        $carpeta = $stmt->fetch();
+
+        if ($carpeta['esCarpeta'] == true) {
+            return false;
+        }
+        return true;
+
+    }
+
+    public function getFileById($idCarpeta)
+    {
+
+        $sql = "SELECT * FROM Directori WHERE id = :idCarpeta; ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpeta", $idCarpeta, 'integer');
+        $result = $stmt->execute();
+        $fitxer = $stmt->fetch();
+
+        return $fitxer;
+
+    }
+
     public function getRootFolderId($idUsuari)
     {
 
@@ -412,6 +441,21 @@ class DoctrineUserRepository implements UserRepository{
         $carpetes = $stmt->fetchAll();
 
         return $carpetes;*/
+
+    }
+
+    public function removeFolder($idCarpetaAEsborrar)
+    {
+
+        $sql = "DELETE FROM Directori WHERE id = :idCarpetaAEsborrar;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
+        $result = $stmt->execute();
+
+        $sql = "DELETE FROM UserCarpeta WHERE id_carpeta = :idCarpeta; ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpeta", $idCarpetaAEsborrar, 'integer');
+        $result = $stmt->execute();
 
     }
 

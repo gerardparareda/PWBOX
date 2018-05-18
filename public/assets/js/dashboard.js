@@ -146,4 +146,31 @@ function createFile(pathCarpetaRoot) {
 }
 
 
+function removeFolder(idCarpetaEsborrar) {
 
+    console.log("abans d'esborrar!");
+
+
+    //window.location.href = '/removeFolder/' + idCarpetaEsborrar;
+    //console.log('/removeFolder/' + idCarpetaEsborrar);
+    $.ajax(
+        {
+            url: '/removeFolder',
+            type: 'POST',
+            data: {
+                idCarpetaAEsborrar: idCarpetaEsborrar
+            },
+            success: function(data) {
+
+                //location.reload();
+
+            },
+            error: function(error) {
+                //console.log(error);
+                alert("Error, no s'ha pogut esborrar la carpeta");
+            }
+        }
+    );
+
+    console.log("Esborrat!");
+}

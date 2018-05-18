@@ -38,6 +38,10 @@ $app->get('/sharedDashboard', 'PwBox\Controller\SharedDashboardController')->add
 
 $app->post('/newItem', 'PwBox\Controller\NewFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->post('/removeFolder', 'PwBox\Controller\RemoveFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
+//$app->get('/removeFolder/{id}', 'PwBox\Controller\RemoveFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
 $app->get('/notifications', 'PwBox\Controller\NotificationController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 
