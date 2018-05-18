@@ -205,6 +205,8 @@ class DashboardController{
 
             $dirInfo = $repo->getIdByUrlPath($fieldId);
 
+            // TODO: Fer que segons l'arxiu que cliqui el path varii, perque ara nomes agafa el default avatar.
+
             //$fileName = __DIR__ . '/../../public/uploads/' . $dirInfo['nomCarpeta'];
             $fileName = __DIR__ . '/../../public/uploads/default-avatar.jpg';
 
@@ -239,7 +241,7 @@ class DashboardController{
                 ->withHeader('Content-Type', 'application/download')
                 ->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Transfer-Encoding', 'binary')
-                ->withHeader('Content-Disposition', 'attachment; filename="' . basename($file) . '"')
+                ->withHeader('Content-Disposition', 'attachment; filename="' . basename($fileName) . '"')
                 ->withHeader('Expires', '0')
                 ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
                 ->withHeader('Pragma', 'public')

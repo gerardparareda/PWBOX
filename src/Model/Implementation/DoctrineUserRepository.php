@@ -200,7 +200,7 @@ class DoctrineUserRepository implements UserRepository{
 
         //Despres creem la carpeta a la base de dades.
 
-        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta, :esShared)";
+        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta, :esShared); ";
         $stmt = $this->database->prepare($sql);
 
 
@@ -209,14 +209,14 @@ class DoctrineUserRepository implements UserRepository{
             $stmt->bindValue("nomCarpeta", $idUsuari, 'string');
             $stmt->bindValue("isRoot", 1, 'boolean');
             $stmt->bindValue("carpetaParent", null, 'integer');
-            $stmt->bindValue("ulrPath", '', 'string');
+            $stmt->bindValue("urlPath", '', 'string');
 
         } else {
 
             $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
-            $stmt->bindValue("isRoot", 0, 'integer');
+            $stmt->bindValue("isRoot", false, 'boolean');
             $stmt->bindValue("carpetaParent", $idCarpetaParent, 'integer');
-            $stmt->bindValue("ulrPath", md5($idHash), 'string');
+            $stmt->bindValue("urlPath", md5($idHash), 'string');
 
         }
 
@@ -230,14 +230,14 @@ class DoctrineUserRepository implements UserRepository{
         //Ara linkem la carpeta a l'usuari que l'ha creat donant permisos.
         $sql = "SELECT id FROM Directori WHERE urlPath = :urlPath";
         $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("ulrPath", md5($idHash), 'string');
+        $stmt->bindValue("urlPath", md5($idHash), 'string');
         $result = $stmt->execute();
         $idCarpeta = $stmt->fetchColumn (0);
 
 
         //Ara que tenim l'id de la carpeta relacionem la carpeta amb el rol de l'usuari.
         //Afegim fila id_carpeta i id_usuari a taula Admin.
-        $sql = "INSERT INTO userCarpeta (id_usuari, id_carpeta, admin, reader) VALUES (:id_usuari, :id_carpeta, :admin, :reader)";
+        $sql = "INSERT INTO UserCarpeta (id_usuari, id_carpeta, admin, reader) VALUES (:id_usuari, :id_carpeta, :admin, :reader)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("id_usuari", $idUsuari, 'integer');
         $stmt->bindValue("id_carpeta", $idCarpeta, 'integer');
