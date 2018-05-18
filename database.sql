@@ -26,10 +26,10 @@ CREATE TABLE Directori(
 	id INT NOT NULL AUTO_INCREMENT,
 	nomCarpeta VARCHAR(255),
 	isRoot BOOLEAN,
-  carpetaParent INT,
-  urlPath VARCHAR(255),
-  esCarpeta BOOLEAN,
-  esShared BOOLEAN,
+	carpetaParent INT,
+	urlPath VARCHAR(255),
+	esCarpeta BOOLEAN,
+	esShared BOOLEAN,
 	PRIMARY KEY(id)
 );
 
@@ -41,9 +41,11 @@ CREATE TABLE UserCarpeta(
     admin BOOLEAN,
     reader BOOLEAN,
 	FOREIGN KEY (id_usuari) REFERENCES User(id),
-    FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
+    FOREIGN KEY (id_carpeta) REFERENCES Directori(id) ON DELETE CASCADE,
 	PRIMARY KEY(id_usuari, id_carpeta)
 );
+
+DROP TABLE IF EXISTS UserNotification;
 
 CREATE TABLE UserNotification(
 	id_notificacio INT NOT NULL AUTO_INCREMENT,

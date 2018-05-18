@@ -413,6 +413,24 @@ class DoctrineUserRepository implements UserRepository{
         return $esCarpeta;
 
     }
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getFitxerPerId($id)
+    {
+
+        $sql = "SELECT esCarpeta, nomCarpeta FROM Directori WHERE id = :id;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("id", $id, 'integer');
+        $result = $stmt->execute();
+        $esCarpeta = $stmt->fetch();
+
+        return $esCarpeta['esCarpeta'] ? false : $esCarpeta['nomCarpeta'];
+
+    }
+
 
     /**
      * @param $idCarpetaClicada
@@ -458,14 +476,6 @@ class DoctrineUserRepository implements UserRepository{
 
     public function removeFolder($idCarpetaAEsborrar)
     {
-
-        var_dump($idCarpetaAEsborrar);
-        die;
-
-        $sql = "DELETE FROM UserCarpeta WHERE id_carpeta = :idCarpeta; ";
-        $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("idCarpeta", $idCarpetaAEsborrar, 'integer');
-        $result = $stmt->execute();
 
         $sql = "DELETE FROM Directori WHERE id = :idCarpetaAEsborrar;";
         $stmt = $this->database->prepare($sql);

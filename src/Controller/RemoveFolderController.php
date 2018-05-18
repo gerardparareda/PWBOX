@@ -30,14 +30,9 @@ class RemoveFolderController
 
         $data = $request->getParsedBody();
 
-        $idFolderEsborrar[0] = $data['idCarpetaAEsborrar'];
-
-        //$idFolderEsborrar = $args['id'];
-        //var_dump($idFolderEsborrar);
+        $idFolderEsborrar = $data['idCarpetaAEsborrar'];
 
         $this->deleteDirectory($idFolderEsborrar);
-
-        die;
 
         $response_array = [];
 
@@ -48,69 +43,27 @@ class RemoveFolderController
 
     }
 
-    public function deleteDirectory ($idCarpetesBorrar) {
-
-
-        //var_dump($idCarpetesBorrar);
-        //die;
+    //Rep un id de la carpeta que s'ha d'esborrar.
+    public function deleteDirectory ($idCarpetesBorrar) { //3
 
         $repo = $this->container->get('user_repository');
 
-        //foreach ($idCarpetesBorrar as $idCarpetaBorrar) {
-        for ($i = 0; $i < sizeof($idCarpetesBorrar); $i++) {
+        $idsCarpetesChildDeBorrar = $repo->getCarpetesChildId($idCarpetesBorrar); // 0 => 4
 
-            $idCarpetesChild = $repo->getCarpetesChildId($idCarpetesBorrar[$i]);
-
-            if($i>0){
-                var_dump('Pos actual' . $i);
-                die;
-            }
-
-            //var_dump($idCarpetesBorrar[i]);
-            //var_dump($idCarpetesChild);
-            //die;
+        //var_dump($idsCarpetesChildDeBorrar[0]); //4
 
 
-            if (sizeof($idCarpetesChild) > 0) {
+        for ($i = 0; $i < count($idsCarpetesChildDeBorrar); $i++) { //Sizeof = 1; i = 0
 
-                var_dump($idCarpetesChild);
-
-                $info = $repo->getFileById($idCarpetesChild);
-                var_dump($info);
-                //var_dump(sizeof($idCarpetesChild));
-
-                $this->deleteDirectory($idCarpetesChild);
-
-            } else {
-
-                //Remove current folder.
-
-                //Borrar els fitxers fisics del sistema.
-
-                //Primer recuperem si es un fitxer, i el nom del fitxer.
-
-                $isFile = $repo->isFile($idCarpetesBorrar[$i]);
-
-                if ($isFile) {
-
-                    $file = $repo->getFileById($idCarpetesBorrar[$i]);
-
-                    $userId = $_COOKIE['user_id']; //Es necessita per al path es /../userId/file['nomCarpeta']
-
-                    //TODO: Borrar fitxer fisicament del sistema a partir del nom.
-
-                }
-
-
-                //Despres borrem la carpeta de la bbdd.
-
-                $repo->removeFolder($idCarpetesBorrar[$i]);
-
-
-
-            }
-
+            $this->deleteDirectory($idsCarpetesChildDeBorrar[$i]['id']);
         }
 
+        $nom = $repo->getFitxerPerId($idCarpetesBorrar);
+        if ($nom) {
+            unlink(dirname(__FILE__).'/../../public/uploads/' . $_COOKIE['user_id'] . '/' . $nom);
+        }
+        $repo->removeFolder($idCarpetesBorrar);
+
     }
+
 }
