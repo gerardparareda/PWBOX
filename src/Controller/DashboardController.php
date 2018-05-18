@@ -114,7 +114,7 @@ class DashboardController{
         //return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
     }
 
-    public function upload(Request $request, Response $response)
+    public function upload(Request $request, Response $response, array $args)
     {
         $uploadedFiles = $request->getUploadedFiles();
         $errors = [];
@@ -149,11 +149,15 @@ class DashboardController{
                         $directory = __DIR__ . '/../../public/uploads/' . $_COOKIE['user_id'];
 
                         //Comprovar si la carpeta existeix i si no crear-la
-                        if (!file_exists($directory)) {
+                        /*if (!file_exists($directory)) {
                             mkdir($directory, 0777, true);
-                        }
+                        }*/
 
                         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $uploadedFile->getClientFilename());
+
+                        $repo = $this->container->get('user_repository');
+
+                        $repo->createDirectory($uploadedFile->getClientFilename(), $args['parent'], $_COOKIE['user_id'], false);
 
                     }
                 }
@@ -225,8 +229,8 @@ class DashboardController{
 
             // TODO: Fer que segons l'arxiu que cliqui el path varii, perque ara nomes agafa el default avatar.
 
-            //$fileName = __DIR__ . '/../../public/uploads/' . $dirInfo['nomCarpeta'];
-            $fileName = __DIR__ . '/../../public/uploads/default-avatar.jpg';
+            $fileName = __DIR__ . '/../../public/uploads/' . $dirInfo['nomCarpeta'];
+            //$fileName = __DIR__ . '/../../public/uploads/default-avatar.jpg';
 
             if (!file_exists($fileName)) {
                 // Return error

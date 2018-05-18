@@ -15,7 +15,7 @@
                 <a class="navbar-brand" href="/dashboard">PWBOX</a>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link btn" href="/dashboard">Home</a>
+                        <a class="nav-link btn" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn" href="/sharedDashboard">Shared</a>
@@ -27,10 +27,11 @@
                         <a class="nav-link btn" href="/logout">Logout</a>
                     </li>
                 </ul>
-
-                <div class=" ml-auto p-2">
-                        <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
-                </div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/profile"><img id="user-avatar-nav" src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
+                    </li>
+                </ul>
             </nav>
         </header>
     {% endblock %}

@@ -15,7 +15,7 @@
                 <a class="navbar-brand" href="/dashboard">PWBOX</a>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link btn" href="/dashboard">Home</a>
+                        <a class="nav-link btn" href="/">Home</a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link btn" href="/sharedDashboard">Shared</a>
@@ -27,73 +27,56 @@
                         <a class="nav-link btn" href="/logout">Logout</a>
                     </li>
                 </ul>
-
-                <div class=" ml-auto p-2">
-                    <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
-                </div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/profile"><img id="user-avatar-nav" src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
+                    </li>
+                </ul>
             </nav>
         </header>
     {% endblock %}
     {% block content %}
         <table class="table table-hover">
             <tbody>
-                <tr>
-                    <td  ondblclick="alert('double clicked');">
-                        <img src="/assets/img/folder.png" width="20" height="20">
-                        <p>Carpeta 1</p>
-                        <div class="actions float-right">
-                            <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item"></a>
-                            <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
-                            <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td  ondblclick="alert('double clicked');">
-                        <img src="/assets/img/file.png" width="20" height="20">
-                        <p>Arxiu 1</p>
-                        <div class="actions float-right">
-                            <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item"></a>
-                            <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
-                            <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
+
 
             {% for carpeta in carpetes %}
-                <tr>
-                    {% if carpeta['esCarpeta'] == true %}
+                {% if carpeta['esShared'] == true %}
+                    <tr>
+                        {% if carpeta['esCarpeta'] == true %}
                         <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/folder.png" width="20" height="20">
-                    {% else %}
+                            {% else %}
                         <td  ondblclick="downloadFile('/file/{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/file.png" width="20" height="20">
-                    {% endif %}
+                            {% endif %}
 
-                        <p id = "{{ carpeta['id'] }}">{{ carpeta['nomCarpeta'] }}</p>
+                            <p id = "{{ carpeta['id'] }}">{{ carpeta['nomCarpeta'] }}</p>
 
-                        {% if carpeta['admin'] == 1 %}
-                            <div class="actions float-right">
-                                {% if carpeta['esCarpeta'] == true %}
-                                    <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
-                                    <a href = ""><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})"></a>
-                                    <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
-                                {% else %}
-                                    <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
-                                    <a href = ""><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})"></a>
-                                    <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
-                                    <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFolder({{ carpeta['id'] }})"></a>
-                                {% endif %}
-                            </div>
-                        {% else %}
-                            <div class="actions float-right">
-                                <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="renameFolder({{ carpeta['id'] }})"></a>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
+                            {% if carpeta['admin'] == 1 %}
+                                <div class="actions float-right">
+                                    {% if carpeta['esCarpeta'] == true %}
+                                        <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
+                                        <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
+                                        <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
+                                    {% else %}
+                                        <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
+                                        <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
+                                        <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
+                                        <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="actions float-right">
+                                    <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
+            </tbody>
+
         </table>
 
     {% endblock %}

@@ -33,6 +33,7 @@ class RenameFolderController
 
         $idFolder = $data['idCarpeta'];
         $newNameCarpeta = $data['newNameCarpeta'];
+        $oldNameCarpeta = $data['nomCarpeta'];
         $idUsuari = $_COOKIE['user_id'];
 
         /** @var UserRepository $repo */
@@ -40,16 +41,25 @@ class RenameFolderController
 
         $permisos = $repo->userPrivileges($idFolder, $idUsuari);
 
+
         if ($permisos['admin']) {
 
             $folderPath = $repo->getFolderPath($idFolder);
 
             $repo->renameFolder($idFolder, $newNameCarpeta);
-            $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
+            //$result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
 
-            if(count($result) == 0){
+            /*if(count($result) == 0){
                 $result[0] = "./uploads/default-avatar.jpg";
-            }
+            }*/
+
+            $oldPath = '/../uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
+
+            // Define the new directory
+            $newPath = '/../uploads/' . $_COOKIE['user_id'] . '/' . $newNameCarpeta;
+
+            // Renames the directory
+            rename($oldPath, $newPath);
 
             $idCarpetaParent = $repo->getParentFolderId($folderPath['urlPath']);
 

@@ -52,7 +52,8 @@ function renameFolder(idCarpeta, nomCarpeta) {
             type: 'POST',
             data: {
                 idCarpeta: idCarpeta,
-                newNameCarpeta: newName
+                newNameCarpeta: newName,
+                oldNameCarpeta: nomCarpeta
             },
             dataType : 'json',
             success: function(data) {

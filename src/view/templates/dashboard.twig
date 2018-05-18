@@ -14,7 +14,7 @@
                 <a class="navbar-brand" href="/dashboard">PWBOX</a>
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link btn" href="/dashboard">Home</a>
+                        <a class="nav-link btn" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn" href="/sharedDashboard">Shared</a>
@@ -26,10 +26,11 @@
                         <a class="nav-link btn" href="/logout">Logout</a>
                     </li>
                 </ul>
-
-                <div class="ml-auto p-2">
-                    <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
-                </div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/profile"><img id="user-avatar-nav" src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
+                    </li>
+                </ul>
             </nav>
         </header>
     {% endblock %}
@@ -37,7 +38,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark utils">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter">
+                    <a class="nav-link" data-toggle="modal" data-target="#loadModal">
                         <img src="/assets/img/upload-button.png" class="float-left" title="Upload File" alt="Upload File" width="20" height="20">
                     </a>
                 </li>
@@ -45,7 +46,7 @@
                     <a class="nav-link" href="#"><img src="/assets/img/folder-storage.png" class="float-left" title="New Folder" alt="New Folder" width="20" height="20" onclick="createFolder('{{ carpetaParent }}')"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><img src="/assets/img/reload-button.png" class="float-left" title="Reload Files" alt="Reload Files" width="20" height="20"></a>
+                    <a class="nav-link" href="/dashboard/{{ carpetaParent }}"><img src="/assets/img/reload-button.png" class="float-left" title="Reload Files" alt="Reload Files" width="20" height="20"></a>
                 </li>
             </ul>
         </nav>
@@ -54,30 +55,6 @@
         </div>
         <table class="table table-hover">
             <tbody>
-                <!--tr>
-                    <td  ondblclick="alert('double clicked');">
-                        <img src="/assets/img/folder.png" width="20" height="20">
-                        <p>Carpeta 1</p>
-                        <div class="actions float-right">
-                            <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item"></a>
-                            <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
-                            <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td  ondblclick="alert('double clicked');">
-                        <img src="/assets/img/file.png" width="20" height="20">
-                        <p>Arxiu 1</p>
-                        <div class="actions float-right">
-                            <a href = "#"><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item"></a>
-                            <a href = "#"><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item"></a>
-                            <a href = "#"><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item"></a>
-                        </div>
-                    </td>
-                </tr-->
-
-
             {% for carpeta in carpetes %}
                 {% if carpeta['esShared'] == false %}
                 <tr>
@@ -117,16 +94,16 @@
         </table>
 
         <!-- Modal pujar fitxers -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Upload your file</h5>
+                        <h5 class="modal-title" id="loadModalLongTitle">Upload your file</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="files-form" method="POST" enctype="multipart/form-data" onsubmit="return validateFiles();" action="/upload_files">
+                    <form id="files-form" method="POST" enctype="multipart/form-data" action="/upload_files/{{ carpetaParent }}">
                         <div>
                             <input type="file" class="form-control-file border" id="inputFiles" name="inputFiles[]"
                                    multiple="multiple" accept=".pdf, .jpg, .jpeg, .png, .gif, .md, .txt">
@@ -139,6 +116,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal compartir fitxers/carpetes -->
+        <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Share file or folder</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="files-form" method="POST" action="/share">
+                        <div>
+                            <input type="text" name="shareTargetUser">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
 
     {% endblock %}
     {% block footer %}

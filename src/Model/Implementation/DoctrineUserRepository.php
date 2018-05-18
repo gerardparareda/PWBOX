@@ -551,3 +551,4 @@ class DoctrineUserRepository implements UserRepository{
         $result = $stmt->execute();
     }
 }
+
