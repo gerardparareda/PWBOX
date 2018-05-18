@@ -272,6 +272,40 @@ class DashboardController{
         }
     }
 
+    public function shareFolder(Request $request, Response $response, array $args){
+
+        $data = $request->getParsedBody();
+
+        $repo = $this->container->get('user_repository');
+
+
+        $result_query = $repo->getIdByUsername($data['userShare']);
+
+        if (count($result_query) > 0){
+
+            $user_id = $result_query[0]['id'];
+
+            $repo->share($user_id, $data['idCarpeta']);
+
+            $response_array['par'] = 'coses';
+
+            return $response->withJson($response_array, 200);
+
+        } else {
+
+
+
+        }
+
+
+
+
+
+
+
+    }
+
+
     /*public function downloadFileFromURL($url) {
 
             $filePath = $url;

@@ -560,5 +560,30 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("idUser", $idUser, 'integer');
         $result = $stmt->execute();
     }
+
+
+
+    public function getIdByUsername($username)
+    {
+        $sql = "SELECT id FROM User WHERE username = :username;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("username", $username, 'string');
+
+        $result = $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function share($id_user, $id_folder){
+        $sql = "INSERT INTO UserCarpeta(id_usuari, id_carpeta, admin, reader) VALUES (:id_user, :id_carpeta, :admin, :reader);";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("id_user", $id_user, 'integer');
+        $stmt->bindValue("id_carpeta", $id_folder, 'integer');
+        $stmt->bindValue("admin", true, 'boolean');
+        $stmt->bindValue("reader", true, 'boolean');
+        $result = $stmt->execute();
+    }
+
+
 }
 

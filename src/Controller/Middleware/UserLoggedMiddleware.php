@@ -11,7 +11,7 @@ class UserLoggedMiddleware{
         if(!isset($_COOKIE['user_id'])){
 
             if ($request->getUri()->getPath() == '/profile'){
-                return $response->withStatus(302)->withHeader("Location", "/logiasdasdasdn");
+                return $response->withStatus(302)->withHeader("Location", "/denied");
             } else {
                 return $response->withStatus(302)->withHeader("Location", "/login");
 

@@ -46,4 +46,6 @@ $app->get('/notifications', 'PwBox\Controller\NotificationController')->add('PwB
 
 $app->get('/emailActivate/{activatorId}', 'PwBox\Controller\EmailActivatorController');
 
+$app->post('/shareFolder', 'PwBox\Controller\DashboardController:shareFolder')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
 ?>

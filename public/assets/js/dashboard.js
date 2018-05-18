@@ -57,19 +57,19 @@ function renameFolder(idCarpeta, nomCarpeta) {
             },
             dataType : 'json',
             success: function(data) {
+                console.log("fet post!");
+                if (data.permision){
+                    document.getElementById(data.id).innerHTML = data.newName;
+                } else {
+                    console.log('no hi ha permissos');
+                }
+            },
+            error: function (data) {
                 console.log(data);
 
-                document.getElementById(data.id).innerHTML = data.newName1;
-
-            },
-            error: function(error) {
-                //console.log(error);
-                alert("You don't have permission to rename this item");
             }
         }
     );
-
-    console.log("fet post!");
 }
 
 
@@ -106,7 +106,6 @@ function createFolder(pathCarpetaRoot) {
             }
         }
     );
-
     console.log("fet post!");
 }
 
@@ -175,4 +174,44 @@ function removeFolder(idCarpetaEsborrar) {
     );
 
     console.log("Esborrat!");
+}
+
+
+function shareFolder(id) {
+    var userShare = prompt("Share with: ", '');
+
+    $.ajax(
+        {
+            url: '/shareFolder',
+            type: 'POST',
+            data: {
+                userShare: userShare,
+                idCarpeta: id
+            },
+            dataType : 'json',
+            success: function(data) {
+                console.log('s', data);
+            },
+            error: function(data) {
+                console.log('e', data);
+                //alert("Error");
+            }
+        }
+    );
+
+    console.log("fet post!");
+}
+
+$('#droppable-modal').on("dragenter dragstart dragend dragleave dragover drag drop", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+});
+
+
+function handleDrop(evt) {
+
+    document.getElementById('inputFiles').files = evt.dataTransfer.files;
+    document.getElementById('files-form').submit();
+
+    return false;
 }

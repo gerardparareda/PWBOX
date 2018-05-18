@@ -71,9 +71,9 @@
                         {% if carpeta['admin'] == 1 %}
                             <div class="actions float-right">
                                 {% if carpeta['esCarpeta'] == true %}
-                                    <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
-                                    <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
-                                    <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
+                                    <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')" style="cursor:pointer;">
+                                    <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})" style="cursor:pointer;">
+                                    <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})" style="cursor:pointer;">
                                 {% else %}
                                     <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
                                     <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
@@ -96,7 +96,7 @@
         <!-- Modal pujar fitxers -->
         <div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+                <div class="modal-content" ondrop="handleDrop(event)" style="z-index:1111" id="droppable-modal">
                     <div class="modal-header">
                         <h5 class="modal-title" id="loadModalLongTitle">Upload your file</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

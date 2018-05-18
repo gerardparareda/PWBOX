@@ -30,6 +30,8 @@ class RenameFolderController
 
         $data = $request->getParsedBody();
 
+        var_dump($data);
+        die;
 
         $idFolder = $data['idCarpeta'];
         $newNameCarpeta = $data['newNameCarpeta'];
@@ -41,6 +43,8 @@ class RenameFolderController
 
         $permisos = $repo->userPrivileges($idFolder, $idUsuari);
 
+        /*var_dump($permisos);
+        die;*/
 
         if ($permisos['admin']) {
 
@@ -70,20 +74,15 @@ class RenameFolderController
             $url = "/dashboard/" . $urlPath;*/
 
             $response_array['id'] = $idFolder;
-            $response_array['newName1'] = $newNameCarpeta;
-
+            $response_array['newName'] = $newNameCarpeta;
+            $response_array['permision'] = true;
             return $response->withJson($response_array, 200);
 
         } else {
 
-            $response_array['status'] = 'Error';
-
-            header('Content-type: application/json');
-            echo json_encode($response_array);
+            $response_array['permision'] = false;
+            return $response->withJson($response_array, 200);
         }
-
-
         //return $this->container->get('view')->render($response, 'error.twig', ['errorCode' => 'Forbidden']);
-
     }
 }
