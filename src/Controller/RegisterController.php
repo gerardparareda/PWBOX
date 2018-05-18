@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use PwBox\Model\User;
+use PwBox\Model\EmailSender;
 use Slim\Http\UploadedFile;
 
 class RegisterController{
@@ -151,6 +152,19 @@ class RegisterController{
                 //Iniciar una cookie
 
                 //Portar l'usuari a la seva home
+
+                $dataForEmail = [];
+                $dataForEmail['notificationTitle'] = 'Thanks for registering';
+                $dataForEmail['notificationToName'] = $data['inputUsername'];
+                $dataForEmail['notificationEmail'] = $data['inputEmail'];
+                $dataForEmail['notificationId'] = $id;
+                $dataForEmail['notificationHTML'] = 'Here goes the html';
+                $dataForEmail['notificationBody'] = 'Here goes information';
+
+                $emailSender = new EmailSender($this->container);
+
+                $emailSender->sendEmail($dataForEmail);
+
                 return $this->container->get('view')->render($response, 'login.twig', []);
             } else {
                 return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors, 'lastingData' => $data]);

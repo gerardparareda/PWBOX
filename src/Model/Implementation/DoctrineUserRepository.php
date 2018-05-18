@@ -30,7 +30,7 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function save(User $user)
     {
-        $sql = "INSERT INTO User(id, username, email, pass, birthDay, birthMonth, birthYear, created_at, updated_at) VALUES(null, :username, :email, :password, :birthDay, :birthMonth, :birthYear, :created_at, :updated_at)";
+        $sql = "INSERT INTO User(id, username, email, pass, birthDay, birthMonth, birthYear, activatedAccount, created_at, updated_at) VALUES(null, :username, :email, :password, :birthDay, :birthMonth, :birthYear, 0,:created_at, :updated_at)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("username", $user->getUsername(), 'string');
         $stmt->bindValue("email", $user->getEmail(), 'string');
