@@ -11,13 +11,14 @@ CREATE TABLE User(
     email VARCHAR(255),
     pass VARCHAR(255), -- Seran Hashes MD5
     birthDay INT,
-    birthMonth Varchar(255),
+    birthMonth VARCHAR(255),
     birthYear INT,
+    activateHash VARCHAR(255),
+    activatedAccount INT,
     created_at DATE,
     updated_at DATE,
 	PRIMARY KEY(id)
 );
-
 
 DROP TABLE IF EXISTS Directori;
 
@@ -44,8 +45,6 @@ CREATE TABLE UserCarpeta(
 	PRIMARY KEY(id_usuari, id_carpeta)
 );
 
-DROP TABLE UserNotification;
-
 CREATE TABLE UserNotification(
 	id_notificacio INT NOT NULL AUTO_INCREMENT,
 	id_usuari INT,
@@ -55,9 +54,3 @@ CREATE TABLE UserNotification(
     FOREIGN KEY (id_usuari) REFERENCES User(id),
 	PRIMARY KEY(id_notificacio)
 );
-
-SELECT * FROM User;
-
-INSERT INTO UserNotification(id_notificacio, id_usuari, title, message, time_sent) VALUES (null, 1, 'Yolo', 'Body!', now());
-
-SELECT * FROM UserNotification;

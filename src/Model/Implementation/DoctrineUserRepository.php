@@ -30,7 +30,7 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function save(User $user)
     {
-        $sql = "INSERT INTO User(id, username, email, pass, birthDay, birthMonth, birthYear, created_at, updated_at) VALUES(null, :username, :email, :password, :birthDay, :birthMonth, :birthYear, :created_at, :updated_at)";
+        $sql = "INSERT INTO User(id, username, email, pass, birthDay, birthMonth, birthYear, activateHash, activatedAccount, created_at, updated_at) VALUES(null, :username, :email, :password, :birthDay, :birthMonth, :birthYear, :activateHash, 0,:created_at, :updated_at)";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("username", $user->getUsername(), 'string');
         $stmt->bindValue("email", $user->getEmail(), 'string');
@@ -38,6 +38,7 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("birthDay", $user->getBirthDay(), 'integer');
         $stmt->bindValue("birthMonth", $user->getBirthMonth(), 'string');
         $stmt->bindValue("birthYear", $user->getBirthYear(), 'integer');
+        $stmt->bindValue("activateHash", md5($user->getUsername()), 'string');
         $stmt->bindValue("created_at", $user->getCreatedAt()->format(self::DATE_FORMAT));
         $stmt->bindValue("updated_at", $user->getUpdatedAt()->format(self::DATE_FORMAT));
         $stmt->execute();
@@ -122,6 +123,18 @@ class DoctrineUserRepository implements UserRepository{
         $email = $stmt->fetchColumn (0);
 
         return $email;
+    }
+
+    public function getPasswordById($idUsuari)
+    {
+        $sql = "SELECT pass FROM User WHERE id = :id";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("id", $idUsuari, 'integer');
+
+        $result = $stmt->execute();
+        $password = $stmt->fetchColumn (0);
+
+        return $password;
     }
 
     public function getUsernameById($idUsuari)
@@ -473,10 +486,6 @@ class DoctrineUserRepository implements UserRepository{
 
     public function showNotifications($idUsuari)
     {
-        $idHash = 0;
-
-        //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
-        //diferent.
 
         $sql = "SELECT title, message, time_sent FROM UserNotification WHERE id_usuari = :idUsuari;";
         $stmt = $this->database->prepare($sql);
@@ -487,5 +496,43 @@ class DoctrineUserRepository implements UserRepository{
         return $notificacions;
 
     }
+
+    public function getActivationById($idUsuari)
+    {
+
+        $sql = "SELECT activatedAccount FROM User WHERE id = :idUsuari;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $activated = $stmt->fetchAll();
+
+        if($activated[0]['activatedAccount'] == 1){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public function getIdByHash($hash)
+    {
+        $sql = "SELECT id FROM User WHERE activateHash = :hash;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("hash", $hash, 'string');
+        $result = $stmt->execute();
+        return ($stmt->fetchAll())[0]['id'];
+
+    }
+
+    public function activateUserById($idUser)
+    {
+        $sql = "UPDATE User SET activatedAccount = 1 WHERE id = :idUser;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUser", $idUser, 'integer');
+        $result = $stmt->execute();
+
+    }
+
+
 
 }

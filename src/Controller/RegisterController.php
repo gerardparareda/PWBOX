@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use PwBox\Model\User;
+use PwBox\Model\EmailSender;
 use Slim\Http\UploadedFile;
 
 class RegisterController{
@@ -84,15 +85,13 @@ class RegisterController{
 
             //Comprovar que la imatge no sigui més gran de 500kB
             $uploadedFiles = $request->getUploadedFiles();
-            if(isset($uploadedFiles)){
-                if (isset($uploadedFiles['inputProfileImage'])){
 
-                    $uploadedFile = $uploadedFiles['inputProfileImage'];
+            if ($uploadedFiles['inputProfileImage']->getClientFilename()  != '' ){
 
-                    if ($uploadedFile->getSize() >= 500000){
-                        $errors['errorProfilePicture'] = "Profile picture size must be less than 500KB";
-                    }
+                $uploadedFile = $uploadedFiles['inputProfileImage'];
 
+                if ($uploadedFile->getSize() >= 500000){
+                    $errors['errorProfilePicture'] = "Profile picture size must be less than 500KB";
                 }
 
             }
@@ -151,6 +150,19 @@ class RegisterController{
                 //Iniciar una cookie
 
                 //Portar l'usuari a la seva home
+
+                $dataForEmail = [];
+                $dataForEmail['notificationTitle'] = 'Thanks for registering';
+                $dataForEmail['notificationToName'] = $data['inputUsername'];
+                $dataForEmail['notificationEmail'] = $data['inputEmail'];
+                $dataForEmail['notificationId'] = $id;
+                $dataForEmail['notificationHTML'] = '<html>pwbox.test/emailActivate/' . md5($data['inputUsername']) . '</html>';
+                $dataForEmail['notificationBody'] = 'Register Email';
+
+                $emailSender = new EmailSender($this->container);
+
+                $emailSender->sendEmail($dataForEmail);
+
                 return $this->container->get('view')->render($response, 'login.twig', []);
             } else {
                 return $this->container->get('view')->render($response, 'register.twig', ['error_array' => $errors, 'lastingData' => $data]);

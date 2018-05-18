@@ -10,6 +10,7 @@ class User{
     private $birthDay;
     private $birthMonth;
     private $birthYear;
+    private $activatedAccount;
     private $createdAt;
     private $updatedAt;
 
@@ -92,6 +93,14 @@ class User{
     public function getBirthYear()
     {
         return $this->birthYear;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivatedAccount()
+    {
+        return $this->activatedAccount;
     }
 
     /**

@@ -44,5 +44,6 @@ $app->post('/removeFolder', 'PwBox\Controller\RemoveFolderController')->add('PwB
 
 $app->get('/notifications', 'PwBox\Controller\NotificationController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->get('/emailActivate/{activatorId}', 'PwBox\Controller\EmailActivatorController');
 
 ?>
