@@ -217,21 +217,10 @@ class DoctrineUserRepository implements UserRepository{
         $stmt = $this->database->prepare($sql);
 
 
-        if ($idCarpetaParent == null) {
-
-            $stmt->bindValue("nomCarpeta", $idUsuari, 'string');
-            $stmt->bindValue("isRoot", 1, 'boolean');
-            $stmt->bindValue("carpetaParent", null, 'integer');
-            $stmt->bindValue("urlPath", '', 'string');
-
-        } else {
-
-            $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
-            $stmt->bindValue("isRoot", false, 'boolean');
-            $stmt->bindValue("carpetaParent", $idCarpetaParent, 'integer');
-            $stmt->bindValue("urlPath", md5($idHash), 'string');
-
-        }
+        $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
+        $stmt->bindValue("isRoot", false, 'boolean');
+        $stmt->bindValue("carpetaParent", $idCarpetaParent, 'integer');
+        $stmt->bindValue("urlPath", md5($idHash), 'string');
 
         $stmt->bindValue("esCarpeta", $esCarpeta, 'boolean');
         $stmt->bindValue("esShared", false, 'boolean');
@@ -246,7 +235,6 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("urlPath", md5($idHash), 'string');
         $result = $stmt->execute();
         $idCarpeta = $stmt->fetchColumn (0);
-
 
         //Ara que tenim l'id de la carpeta relacionem la carpeta amb el rol de l'usuari.
         //Afegim fila id_carpeta i id_usuari a taula Admin.
@@ -360,6 +348,19 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function getCarpetesChildId($idCarpetaActual)
+    {
+
+        $sql = "SELECT id FROM Directori WHERE carpetaParent = :idCarpetaActual";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaActual", $idCarpetaActual, 'integer');
+        $result = $stmt->execute();
+        $carpetes = $stmt->fetchAll();
+
+        return $carpetes;
+
+    }
+
     public function getParentFolderId($urlPath)
     {
 
@@ -460,14 +461,17 @@ class DoctrineUserRepository implements UserRepository{
     public function removeFolder($idCarpetaAEsborrar)
     {
 
-        $sql = "DELETE FROM Directori WHERE id = :idCarpetaAEsborrar;";
-        $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
-        $result = $stmt->execute();
+        var_dump($idCarpetaAEsborrar);
+        die;
 
         $sql = "DELETE FROM UserCarpeta WHERE id_carpeta = :idCarpeta; ";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idCarpeta", $idCarpetaAEsborrar, 'integer');
+        $result = $stmt->execute();
+
+        $sql = "DELETE FROM Directori WHERE id = :idCarpetaAEsborrar;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
         $result = $stmt->execute();
 
     }

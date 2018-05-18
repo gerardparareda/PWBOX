@@ -30,25 +30,18 @@ class RemoveFolderController
 
         $data = $request->getParsedBody();
 
-        $idFolderEsborrar = $data['idCarpetaAEsborrar'];
+        $idFolderEsborrar[0] = $data['idCarpetaAEsborrar'];
 
         //$idFolderEsborrar = $args['id'];
         //var_dump($idFolderEsborrar);
 
-        $repo = $this->container->get('user_repository');
-
         $this->deleteDirectory($idFolderEsborrar);
 
+        die;
 
-        /** @var UserRepository $repo */
-        $repo = $this->container->get('user_repository');
+        $response_array = [];
 
-        $path = $repo->getFolderPath($idFolderEsborrar);
-
-        $fullPath = '/dashboard' . $path;
-
-        return $response->withStatus(200)->withHeader("Location", $fullPath);
-
+        return $response->withJson($response_array, 200);
         //return $response;
 
         //return $this->container->get('view')->render($response, 'dashboard.twig', []);
@@ -57,13 +50,34 @@ class RemoveFolderController
 
     public function deleteDirectory ($idCarpetesBorrar) {
 
+
+        //var_dump($idCarpetesBorrar);
+        //die;
+
         $repo = $this->container->get('user_repository');
 
-        foreach ($idCarpetesBorrar as $idCarpetaBorrar) {
+        //foreach ($idCarpetesBorrar as $idCarpetaBorrar) {
+        for ($i = 0; $i < sizeof($idCarpetesBorrar); $i++) {
 
-            $idCarpetesChild = $repo->getCarpetesChildId();
+            $idCarpetesChild = $repo->getCarpetesChildId($idCarpetesBorrar[$i]);
 
-            if (!empty($idCarpetesChild)) {
+            if($i>0){
+                var_dump('Pos actual' . $i);
+                die;
+            }
+
+            //var_dump($idCarpetesBorrar[i]);
+            //var_dump($idCarpetesChild);
+            //die;
+
+
+            if (sizeof($idCarpetesChild) > 0) {
+
+                var_dump($idCarpetesChild);
+
+                $info = $repo->getFileById($idCarpetesChild);
+                var_dump($info);
+                //var_dump(sizeof($idCarpetesChild));
 
                 $this->deleteDirectory($idCarpetesChild);
 
@@ -75,11 +89,11 @@ class RemoveFolderController
 
                 //Primer recuperem si es un fitxer, i el nom del fitxer.
 
-                $isFile = $repo->isFile($idCarpetaBorrar);
+                $isFile = $repo->isFile($idCarpetesBorrar[$i]);
 
                 if ($isFile) {
 
-                    $file = $repo->getFileById($idCarpetaBorrar);
+                    $file = $repo->getFileById($idCarpetesBorrar[$i]);
 
                     $userId = $_COOKIE['user_id']; //Es necessita per al path es /../userId/file['nomCarpeta']
 
@@ -90,7 +104,7 @@ class RemoveFolderController
 
                 //Despres borrem la carpeta de la bbdd.
 
-                $repo->removeFolder($idCarpetaBorrar);
+                $repo->removeFolder($idCarpetesBorrar[$i]);
 
 
 

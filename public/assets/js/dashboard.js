@@ -162,6 +162,7 @@ function removeFolder(idCarpetaEsborrar) {
             },
             success: function(data) {
 
+
                 //location.reload();
 
             },

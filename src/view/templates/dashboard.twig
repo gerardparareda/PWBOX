@@ -2,7 +2,6 @@
 {% block title %} Dashboard {% endblock %}
 {% block styles %}
     <!-- Custom styles for this template -->
-    <link href="fine-uploader/fine-uploader-new.css" rel="stylesheet">
     <link href="/assets/css/dashboard.css" rel="stylesheet">
 {% endblock %}
 {% block body %}
@@ -96,11 +95,11 @@
                             <div class="actions float-right">
                                 {% if carpeta['esCarpeta'] == true %}
                                     <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
-                                    <a href = ""><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})"></a>
+                                    <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
                                     <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
                                 {% else %}
                                     <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
-                                    <a href = ""><img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})"></a>
+                                    <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
                                     <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
                                     <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
                                 {% endif %}
@@ -147,8 +146,6 @@
 
     {% block scripts %}
         {{ parent() }}
-        <script src="/fine-uploader/fineuploader.js"></script>
-        <script src="/fine-uploader/fineuploader.js"></script>
         <script src="/assets/js/jquery-3.3.1.min.js"></script>
         <script src="/assets/js/dashboard.js"></script>
     {% endblock %}
