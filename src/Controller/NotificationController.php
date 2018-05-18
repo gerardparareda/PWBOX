@@ -23,9 +23,15 @@ class NotificationController{
 
         $repo = $this->container->get('user_repository');
 
+        $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
+
+        if(count($result) == 0){
+            $result[0] = "/../uploads/default-avatar.jpg";
+        }
+
         $notifications = $repo->showNotifications($_COOKIE['user_id']);
 
-        return $this->container->get('view')->render($response, 'notifications.twig', ['notifications' => $notifications]);
+        return $this->container->get('view')->render($response, 'notifications.twig', ['user_avatar' => $result[0], 'notifications' => $notifications]);
     }
 
 }
