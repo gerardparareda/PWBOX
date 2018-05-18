@@ -54,7 +54,7 @@ class DashboardController{
             var_dump($rootFolderId);
             var_dump($carpetes);
 
-            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes, 'carpetaParent' => null]);
+            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes, 'carpetaParent' => null, 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
 
         } else {
             //Carpeta concreta
@@ -94,12 +94,12 @@ class DashboardController{
                         //downloadFileFromURL($args['path']);
 
                         return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id']]);
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id'], 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
 
                     } else {
 
                         return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id']]);
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id'], 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
                     }
 
 
@@ -134,6 +134,9 @@ class DashboardController{
                         $errors['errorFileSize'] = "Each file size must be less than 2MB";
                         break;
 
+                    } else if($uploadedFile->getSize() + $this->getDirectorySize() > 1000000000){
+                        $errors['errorFilled'] = "You reached your drive unit size of 1GB";
+                        break;
                     }
                 }
             }
@@ -171,6 +174,19 @@ class DashboardController{
         }
         return $response;
     }
+
+    private function GetDirectorySize(){
+        $path = __DIR__ . '/../../public/uploads/' . $_COOKIE['user_id'];
+        $bytestotal = 0;
+        $path = realpath($path);
+        if($path!==false && $path!='' && file_exists($path)){
+            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS)) as $object){
+                $bytestotal += $object->getSize();
+            }
+        }
+        return $bytestotal;
+    }
+
 
     private function validate_extension($fileExtension){
         $filetypes = ['png', 'jpg', 'jpeg', 'gif', 'pdf', 'txt', 'md'];

@@ -28,7 +28,7 @@
                     </li>
                 </ul>
 
-                <div class=" ml-auto p-2">
+                <div class="ml-auto p-2">
                     <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
                 </div>
             </nav>
@@ -50,6 +50,9 @@
                 </li>
             </ul>
         </nav>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ usedSpace }}%; background-color: rgb(181,0,255)" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ usedSpace }}% used of 1GB</div>
+        </div>
         <table class="table table-hover">
             <tbody>
                 <!--tr>
