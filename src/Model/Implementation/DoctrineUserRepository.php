@@ -148,6 +148,33 @@ class DoctrineUserRepository implements UserRepository{
     }
 
     /**
+     * @param $username
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getUserByUsername($username)
+    {
+        $sql = "SELECT * FROM User WHERE username = :username;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("username", $username, 'string');
+
+        $result = $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    public function getUserByEmail($email)
+    {
+        $sql = "SELECT * FROM User WHERE email = :email;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("email", $email, 'string');
+
+        $result = $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    /**
      * @return mixed
      * @throws \Doctrine\DBAL\DBALException
      */
@@ -175,16 +202,18 @@ class DoctrineUserRepository implements UserRepository{
 
         $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta, :esShared)";
         $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
+
 
         if ($idCarpetaParent == null) {
 
-            $stmt->bindValue("isRoot", 1, 'integer');
+            $stmt->bindValue("nomCarpeta", $idUsuari, 'string');
+            $stmt->bindValue("isRoot", 1, 'boolean');
             $stmt->bindValue("carpetaParent", null, 'integer');
             $stmt->bindValue("ulrPath", '', 'string');
 
         } else {
 
+            $stmt->bindValue("nomCarpeta", $nomCarpetaActual, 'string');
             $stmt->bindValue("isRoot", 0, 'integer');
             $stmt->bindValue("carpetaParent", $idCarpetaParent, 'integer');
             $stmt->bindValue("ulrPath", md5($idHash), 'string');
@@ -216,6 +245,30 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("reader", false, 'boolean');
         $result = $stmt->execute();
 
+
+    }
+
+    public function createRootDirectory($idUsuari)
+    {
+
+        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :idUsuari, true, null, '', true, false); ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+
+        $sql = "SELECT * FROM Directori ORDER BY id desc limit 1;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $rootFolderId = $stmt->fetchColumn(0);
+
+        $sql = "INSERT INTO UserCarpeta (id_usuari, id_carpeta, admin, reader) VALUES (:idUsuari, :idCarpeta, true, false); ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $stmt->bindValue("idCarpeta", $rootFolderId, 'integer');
+        $result = $stmt->execute();
+
+        return $rootFolderId;
 
     }
 

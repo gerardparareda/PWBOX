@@ -97,12 +97,26 @@ class RegisterController{
 
             }
 
+            $service = $this->container->get('user_repository');
+
+            //Comprovem que l'email o l'usuari no estigui repetit a la base de dades.
+            $coincidencies = $service->getUserByUsername($data['inputUsername']);
+
+            if (!empty($coincidencies)) {
+                $errors['errorUsername'] = "This username already exists in our database";
+            }
+
+            $coincidencies = $service->getUserByEmail($data['inputEmail']);
+
+            if (!empty($coincidencies)) {
+                $errors['errorEmail'] = "This email already exists in our database";
+            }
+
             //var_dump($data);
 
             if(sizeof($errors) == 0) {
 
                 //Registrar l'usuari (ARREGLAR)
-                $service = $this->container->get('user_repository');
 
                 $now = new \DateTime('now');
 
@@ -117,6 +131,8 @@ class RegisterController{
                          $now,
                          $now)
                  );
+
+                $service->createRootDirectory($id);
 
                 //Moure la seva imatge de perfil al directori que toca
                 if (isset($uploadedFile)) {
