@@ -14,11 +14,14 @@
                 <img src="/assets/img/ln.png" class="rounded float-left logo" alt="LateNight Group" width="50" height="50">
                 <a class="navbar-brand" href="/dashboard">PWBOX</a>
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link btn" href="/dashboard">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn" href="/sharedDashboard">Shared</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link btn" href="/notifications">Notifications</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn" href="/logout">Logout</a>
@@ -26,7 +29,7 @@
                 </ul>
 
                 <div class=" ml-auto p-2">
-                    <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
+                        <a href="/profile"><img src="{{ user_avatar }}" class="rounded-circle" alt="Avatar" width="50" height="50"></a>
                 </div>
             </nav>
         </header>

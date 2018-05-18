@@ -245,8 +245,6 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("admin", true, 'boolean');
         $stmt->bindValue("reader", false, 'boolean');
         $result = $stmt->execute();
-
-
     }
 
     public function createRootDirectory($idUsuari)
@@ -537,6 +535,19 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function updateEmailById($newEmail, $idUser){
+        $sql = "UPDATE User SET email = :newEmail WHERE id = :idUser;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("newEmail", $newEmail, 'string');
+        $stmt->bindValue("idUser", $idUser, 'integer');
+        $result = $stmt->execute();
+    }
 
-
+    public function updatePasswordById($newPassword, $idUser){
+        $sql = "UPDATE User SET pass = :newPassword WHERE id = :idUser;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("newPassword", md5($newPassword), 'string');
+        $stmt->bindValue("idUser", $idUser, 'integer');
+        $result = $stmt->execute();
+    }
 }

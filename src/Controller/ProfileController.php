@@ -52,41 +52,49 @@ class ProfileController{
         $errors['errorNewProfileImage'] = '';
 
         $data = $request->getParsedBody();
+        $repo = $this->container->get('user_repository');
 
-        if(isset($data['inputNewEmail'])) {
-            if($data['inputNewEmail'] != '') {
-                if (filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 
-                } else {
-                    $errors['errorEmail'] = 'Invalid email';
-                }
+        if($data['inputNewEmail'] != '') {
+            if (filter_var($data['inputNewEmail'], FILTER_VALIDATE_EMAIL)) {
+
+            } else {
+                $errors['errorEmail'] = 'Invalid email';
             }
         }
 
-        if(isset($data['inputNewPassword'])){
-            if($data['inputNewPassword'] == '') {
 
-            }else {
-                if (strlen($data['inputNewPassword']) < 6 || strlen($data['newPassword']) > 12) {
-                    $errors['inputNewPassword'] = 'Password length must be between 6 and 12 characters';
-                }
-                if (strtolower($data['inputNewPassword']) != $data['inputNewPassword'] && strtoupper($data['inputNewPassword']) != $data['inputNewPassword']) {
-
-                } else {
-                    $errors['errorNewPassword'] = 'Password must have one lowercase and one uppercase';
-                }
+        if($data['inputNewPassword'] != '') {
+            if (strlen($data['inputNewPassword']) < 6 || strlen($data['inputNewPassword']) > 12) {
+                $errors['errorNewPassword'] = 'Password length must be between 6 and 12 characters';
             }
+            if (strtolower($data['inputNewPassword']) != $data['inputNewPassword'] && strtoupper($data['inputNewPassword']) != $data['inputNewPassword']) {
+
+            } else {
+                $errors['errorNewPassword'] = 'Password must have one lowercase and one uppercase';
+            }
+            if (preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $data['inputNewPassword'])) {
+
+            } else {
+                $errors['errorNewPassword'] = 'Password must contain at least one number and one letter';
+            }
+
         }
 
         if($data['inputOldPassword'] != '') {
-
-            //TODO: Fer una crida a la base de dades
-
+            $old_password = $repo->getPasswordByID($_COOKIE['user_id']);
+            if(md5($data['inputOldPassword']) != $old_password){
+                $errors['errorOldPassword'] = 'Incorrect password';
+            }
         }else{
-            $errors['errorOldPassword'] = 'Introduce your old password';
+            $errors['errorOldPassword'] = 'Introduce your old password!';
         }
 
-        $uploadedImage = $request->getUploadedFiles()['inputNewProfileImage'];
+        $uploadedFiles = $request->getUploadedFiles();
+
+        if (sizeof($uploadedFiles) > 0){
+            $uploadedImage = $uploadedFiles['inputNewProfileImage'];
+        }
 
         if(isset($uploadedImage)){
             if ($uploadedImage->getSize() >= 500000){
@@ -94,18 +102,40 @@ class ProfileController{
             }
         }
 
-        if($errors['errorOldPassword'] == ''){
-            $directory = './uploads';
-            $imageName = $this->moveUploadedImage($directory, $uploadedImage, $_COOKIE['user_id']);
-        }
-
         if($errors['errorEmail'] == '' && $errors['errorNewPassword'] == '' && $errors['errorOldPassword'] == '' && $errors['errorNewProfileImage'] == '') {
-            $response_array['errors'] = $errors;
+
+            //Canviar el correu
+            if ($data['inputNewEmail'] != ''){
+                $repo->updateEmailById($data['inputNewEmail'], $_COOKIE['user_id']);
+
+            }
+
+            //Canviar la contrasenya
+            if ($data['inputNewPassword'] != ''){
+                $repo->updatePasswordById($data['inputNewPassword'], $_COOKIE['user_id']);
+            }
+
+            //Canviar la foto de perfil
+            if(isset($uploadedImage)) {
+                $directory = './uploads';
+                $imageName = $this->moveUploadedImage($directory, $uploadedImage, $_COOKIE['user_id']);
+            } else {
+                $result = glob ("./uploads/" . $_COOKIE['user_id'] . ".*");
+                if(count($result) == 1){
+                    $imageName = basename($result[0]);
+                } else {
+                    $imageName = 'default-avatar.jpg';
+                }
+            }
+
             $response_array['image'] = $imageName;
+            $response_array['errors'] = $errors;
+            $response_array['newEmail'] = $data['inputNewEmail'];
             return $response->withJson($response_array, 200);
         }else{
+
             $response_array['errors'] = $errors;
-            return $response->withJson($response_array, 500);
+            return $response->withJson($response_array, 200);
 
         }
 
