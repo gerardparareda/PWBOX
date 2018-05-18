@@ -427,6 +427,21 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function showNotifications($idUsuari)
+    {
+        $idHash = 0;
 
+        //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
+        //diferent.
+
+        $sql = "SELECT title, message, time_sent FROM UserNotification WHERE id_usuari = :idUsuari;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $notificacions = $stmt->fetchAll();
+
+        return $notificacions;
+
+    }
 
 }
