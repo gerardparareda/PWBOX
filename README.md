@@ -35,3 +35,9 @@ Es pot observar que hi ha un missatge que ens demana activar el correu. Per fer 
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+
+##Altres
+Hi hem dedicat com a mínim unes 15 hores cada integrant del grup.
+
+Enllaç al repositori:
+https://gitlab.com/LateNight/PW2Final
