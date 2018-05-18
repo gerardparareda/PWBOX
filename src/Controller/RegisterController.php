@@ -71,6 +71,13 @@ class RegisterController{
                     $errors['errorPasswordCase'] = 'Password must have one lowercase and one uppercase';
                 }
 
+                if (preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $data['inputPassword'])) {
+
+                } else {
+                    $errors['errorPasswordNumber'] = 'Password must contain at least one number and one letter';
+                }
+
+
             } else {
                 $errors['errorPassword'] = 'Password is missing';
             }

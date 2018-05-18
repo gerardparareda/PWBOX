@@ -46,7 +46,11 @@ function validatePassword(password_s){
     if (password_s.toLowerCase() !== password_s && password_s.toUpperCase() !== password_s) {
 
     } else {
-        document.getElementById("error-newPassword").innerHTML = "Password must contain at least one number and one upper case letter.";
+        document.getElementById("error-newPassword").innerHTML = "Password must contain at least one lower case and one upper case latter.";
+        errors = false;
+    }
+    if (!password_s.match(/^[0-9a-zA-Z]+$/)){
+        document.getElementById("error-newPassword").innerHTML = "Password must contain at least one number and one letter";
         errors = false;
     }
 }
@@ -86,7 +90,8 @@ $('#form-editProfile').on('submit', function(e) {
     formData.append('inputNewProfileImage', newProfileImage);
 
     //if(oldPassword !== "" && (email !== "" || newPassword !== "")){
-    if(validateEditProfile() && oldPassword !== "" && (email !== "" || newPassword !== "" || newProfileImage !== "")){
+    if(true){
+    //if(validateEditProfile() && oldPassword !== "" && (email !== "" || newPassword !== "" || newProfileImage !== "")){
 
         $.ajax(
             {
@@ -98,29 +103,29 @@ $('#form-editProfile').on('submit', function(e) {
                 dataType : 'json',
                 success: function(data) {
 
-                    document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];
-                    document.getElementById('error-newPassword').innerHTML = data['errors']['errorNewPassword'];
-                    document.getElementById('error-oldPassword').innerHTML = data['errors']['errorOldPassword'];
-                    document.getElementById('error-newProfileImage').innerHTML = data['errors']['errorNewProfileImage'];
+                    if (data['errors']['errorEmail'] == '' && data['errors']['errorNewPassword'] == '' && data['errors']['errorOldPassword'] =='' && data['errors']['errorNewProfileImage'] =='') {
 
-                    document.forms["form-editProfile"]["inputNewEmail"].value = "";
-                    document.forms["form-editProfile"]["inputNewPassword"].value = "";
-                    document.forms["form-editProfile"]["inputOldPassword"].value = "";
-                    document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
+                        document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];
+                        document.getElementById('error-newPassword').innerHTML = data['errors']['errorNewPassword'];
+                        document.getElementById('error-oldPassword').innerHTML = data['errors']['errorOldPassword'];
+                        document.getElementById('error-newProfileImage').innerHTML = data['errors']['errorNewProfileImage'];
 
-                    d = new Date();
-                    $("#user-avatar").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
-                    $("#user-avatar-nav").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
+                        document.forms["form-editProfile"]["inputNewEmail"].value = "";
+                        document.forms["form-editProfile"]["inputNewPassword"].value = "";
+                        document.forms["form-editProfile"]["inputOldPassword"].value = "";
+                        document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
 
+                        d = new Date();
+                        $("#user-avatar").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
+                        $("#user-avatar-nav").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
 
-
+                    } else {
+                        document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];
+                        document.getElementById('error-newPassword').innerHTML = data['errors']['errorNewPassword'];
+                        document.getElementById('error-oldPassword').innerHTML = data['errors']['errorOldPassword'];
+                        document.getElementById('error-newProfileImage').innerHTML = data['errors']['errorNewProfileImage'];
+                    }
                     console.log("ok");
-                },
-                error: function(data){
-                    document.getElementById('error-newEmail').innerHTML = data['errors']['errorEmail'];
-                    document.getElementById('error-newPassword').innerHTML = data['errors']['errorNewPassword'];
-                    document.getElementById('error-oldPassword').innerHTML = data['errors']['errorOldPassword'];
-                    document.getElementById('error-newProfileImage').innerHTML = data['errors']['errorNewProfileImage'];
                 }
             }
         );

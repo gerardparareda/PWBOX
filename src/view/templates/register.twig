@@ -70,21 +70,29 @@
             </div>
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" value = "{{ lastingData['inputPassword'] }}" required>
-            <label for="inputPasswordConf" class="sr-only">Confirm password</label>
+            <label for="inputPasswordConf" name="inputPasswordConf" class="sr-only">Confirm password</label>
             <input type="password" id="inputPasswordConf" name="inputPasswordConf" class="form-control" placeholder="Confirm password" value = "{{ lastingData['inputPasswordConf'] }}" required>
+            <p id="error-password-length" class="error text-danger"></p>
+            <p id="error-password-case" class="error text-danger"></p>
+            <p id="error-password-mismatch" class="error text-danger"></p>
+            <p id="error-password-number" class="error text-danger"></p>
             <p id="error-password" class="error text-danger"></p>
             {%  if error_array['errorPasswordLength'] %}
-                <p id="error-password" class="error text-danger">{{ error_array['errorPasswordLength'] }}</p>
+                <p id="error-password-length" class="error text-danger">{{ error_array['errorPasswordLength'] }}</p>
             {%  endif %}
             {%  if error_array['errorPasswordCase'] %}
-                <p id="error-password" class="error text-danger">{{ error_array['errorPasswordCase'] }}</p>
+                <p id="error-password-case" class="error text-danger">{{ error_array['errorPasswordCase'] }}</p>
             {%  endif %}
             {%  if error_array['errorPasswordMismatch'] %}
-                <p id="error-password" class="error text-danger">{{ error_array['errorPasswordMismatch'] }}</p>
+                <p id="error-password-mismatch" class="error text-danger">{{ error_array['errorPasswordMismatch'] }}</p>
+            {%  endif %}
+            {%  if error_array['errorPasswordNumber'] %}
+                <p id="error-password-number" class="error text-danger">{{ error_array['errorPasswordNumber'] }}</p>
             {%  endif %}
             {%  if error_array['errorPassword'] %}
                 <p id="error-password" class="error text-danger">{{ error_array['errorPassword'] }}</p>
             {%  endif %}
+
 
 
 

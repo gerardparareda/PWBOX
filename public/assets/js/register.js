@@ -3,6 +3,7 @@ function validateForm(){
     var username = document.forms["register-form"]["inputUsername"].value;
     var email = document.forms["register-form"]["inputEmail"].value;
     var password = document.forms["register-form"]["inputPassword"].value;
+    var passwordConf = document.forms["register-form"]["inputPasswordConf"].value;
     var birthDay = document.forms["register-form"]["inputBirthDay"].value;
     var birthMonth = document.forms["register-form"]["inputMonthBirth"].value;
     var birthYear = document.forms["register-form"]["inputBirthYear"].value;
@@ -40,14 +41,24 @@ function validateForm(){
     }
 
     var password_s = password.toString();
+    var password_conf_s = passwordConf.toString();
+
+    if (password_s != password_conf_s){
+        document.getElementById("error-password-mismatch").innerHTML = "Password length must be between 6 and 12 characters";
+        errors = false;
+    }
     if (password_s.length < 6 || password_s > 12){
-        document.getElementById("error-password").innerHTML = "Password length must be between 6 and 12 characters";
+        document.getElementById("error-password-length").innerHTML = "Password length must be between 6 and 12 characters";
         errors = false;
     }
     if (password_s.toLowerCase() !== password_s && password_s.toUpperCase() !== password_s){
 
     } else {
-        document.getElementById("error-password").innerHTML = "Password must contain at least one number and one upper case letter";
+        document.getElementById("error-password-case").innerHTML = "Password must contain at least one number and one upper case letter";
+        errors = false;
+    }
+    if (!password_s.match(/^[0-9a-zA-Z]+$/)){
+        document.getElementById("error-password-number").innerHTML = "Password must contain at least one number and one upper case letter";
         errors = false;
     }
 
