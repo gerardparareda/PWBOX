@@ -51,11 +51,12 @@ function validateForm(){
         errors = false;
     }
 
-    if (!fileValidation(filePath)) {
-        document.getElementById("error-profilepicture").innerHTML = "Profile image must be .jpg, .jpeg, .gif or .png";
-        errors = false;
+    if(filePath != '') {
+        if (!fileValidation(filePath)) {
+            document.getElementById("error-profilepicture").innerHTML = "Profile image must be .jpg, .jpeg, .gif or .png";
+            errors = false;
+        }
     }
-
     return errors;
 
 }

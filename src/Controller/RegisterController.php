@@ -84,18 +84,18 @@ class RegisterController{
 
             //Comprovar que la imatge no sigui més gran de 500kB
             $uploadedFiles = $request->getUploadedFiles();
-            if(isset($uploadedFiles)){
-                if (isset($uploadedFiles['inputProfileImage'])){
 
-                    $uploadedFile = $uploadedFiles['inputProfileImage'];
+            if ($uploadedFiles['inputProfileImage']->getClientFilename()  != '' ){
 
-                    if ($uploadedFile->getSize() >= 500000){
-                        $errors['errorProfilePicture'] = "Profile picture size must be less than 500KB";
-                    }
+                $uploadedFile = $uploadedFiles['inputProfileImage'];
 
+                if ($uploadedFile->getSize() >= 500000){
+                    $errors['errorProfilePicture'] = "Profile picture size must be less than 500KB";
                 }
 
             }
+
+
 
             $service = $this->container->get('user_repository');
 
