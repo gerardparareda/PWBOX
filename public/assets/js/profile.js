@@ -108,7 +108,11 @@ $('#form-editProfile').on('submit', function(e) {
                     document.forms["form-editProfile"]["inputOldPassword"].value = "";
                     document.forms["form-editProfile"]['inputNewProfileImage'].value = "";
 
-                    $("#user-avatar").attr("src", "./uploads/" + data['image']);
+                    d = new Date();
+                    $("#user-avatar").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
+                    $("#user-avatar-nav").attr("src", "./uploads/" + data['image'] + "?" + d.getTime());
+
+
 
                     console.log("ok");
                 },
