@@ -41,7 +41,6 @@
 
 
             {% for carpeta in carpetes %}
-                {% if carpeta['esShared'] == true %}
                     <tr>
                         {% if carpeta['esCarpeta'] == true %}
                         <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
@@ -73,7 +72,6 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
             {% endfor %}
             </tbody>
 

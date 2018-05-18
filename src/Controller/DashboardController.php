@@ -48,13 +48,13 @@ class DashboardController{
             //$carpeta = $repo->getRootFolderId($_SESSION['user_id']);
             $rootFolderId = $repo->getRootFolderId($_COOKIE['user_id']);
 
-            var_dump($rootFolderId);
+            //var_dump($rootFolderId);
 
             //$carpetes = $repo->showDirectory($rootFolderId, $_SESSION['user_id']);
             $carpetes = $repo->showDirectory($rootFolderId, $_COOKIE['user_id']);
 
-            var_dump($rootFolderId);
-            var_dump($carpetes);
+            //var_dump($rootFolderId);
+            //var_dump($carpetes);
 
             return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes, 'carpetaParent' => $rootFolderId, 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
 

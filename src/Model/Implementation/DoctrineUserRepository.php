@@ -460,6 +460,23 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function showSharedDirectory($idUsuari)
+    {
+
+        $sql = "SELECT d.id, d.nomCarpeta, d.urlPath, d.esCarpeta, uc.admin, uc.reader FROM Directori AS d, SharedUserCarpeta AS uc WHERE d.id = uc.id_carpeta AND uc.id_usuari = :idUsuari";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $carpetes = $stmt->fetchAll();
+
+        /*foreach ($carpetes as $carpeta) {
+
+        }*/
+
+        return $carpetes;
+
+    }
+
     public function deleteDirectory($idCarpetaAEsborrar, $idUsuari)
     {
 
@@ -575,7 +592,7 @@ class DoctrineUserRepository implements UserRepository{
     }
 
     public function share($id_user, $id_folder){
-        $sql = "INSERT INTO UserCarpeta(id_usuari, id_carpeta, admin, reader) VALUES (:id_user, :id_carpeta, :admin, :reader);";
+        $sql = "INSERT INTO SharedUserCarpeta(id_usuari, id_carpeta, admin, reader) VALUES (:id_user, :id_carpeta, :admin, :reader);";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("id_user", $id_user, 'integer');
         $stmt->bindValue("id_carpeta", $id_folder, 'integer');

@@ -39,29 +39,26 @@ class SharedDashboardController{
 
         //Comprovem si l'usuari ha entrat amb un path a una carpeta o no. Nomes entra aqui si te la cookie perque
         //hi ha el middleware d'abans que mira si hi ha cookie.
-        if (empty($args)) {
+
             //L'usuari ha entrat a la dashboard general, carpeta root.
 
             //Busquem que hi ha a la carpeta.
             //Aqui he de cridar una funcio que buscara una carpeta root fent uc.id_usuari = uc.id_carpeta = idUsuari
             // i d.id = uc.id_carpeta i d.root = true;
             //$carpeta = $repo->getRootFolderId($_SESSION['user_id']);
-            $rootFolderId = $repo->getRootFolderId($_COOKIE['user_id']);
+            $carpetes = $repo->showSharedDirectory($_COOKIE['user_id']);
 
-            //$carpetes = $repo->showDirectory($rootFolderId, $_SESSION['user_id']);
-            $carpetes = $repo->showDirectory($rootFolderId, $_COOKIE['user_id']);
-
-            var_dump($rootFolderId);
+            //var_dump($rootFolderId);
             var_dump($carpetes);
+            //die;
 
             return $this->container->get('view')->render($response, 'sharedDashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes]);
 
-        } else {
             //Carpeta concreta
 
             //Comprovem si la carpeta existeix a la bbdd.
 
-            $carpeta = $repo->lookIfDirectoryExists($args['path']);
+            /*$carpeta = $repo->lookIfDirectoryExists($args['path']);
 
             if ($carpeta == null) {
                 var_dump($args);
@@ -96,18 +93,10 @@ class SharedDashboardController{
                         return $this->container->get('view')->render($response, 'dashboard.twig',
                             ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
 
-                    } else {
-
-                        return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes]);
-                    }
 
 
-                } else {
-                    return $response->withStatus(302)->withHeader("Location", "/forbidden");
-                }
             }
-        }
+        }*/
 
         //return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0]]);
     }

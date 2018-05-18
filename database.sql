@@ -21,6 +21,7 @@ CREATE TABLE User(
 );
 
 DROP TABLE IF EXISTS Directori;
+-- SELECT * FROM Directori;
 
 CREATE TABLE Directori(
 	id INT NOT NULL AUTO_INCREMENT,
@@ -35,6 +36,8 @@ CREATE TABLE Directori(
 
 DROP TABLE IF EXISTS UserCarpeta;
 
+-- SELECT * FROM UserCarpeta;
+
 CREATE TABLE UserCarpeta(
 	id_usuari INT,
 	id_carpeta INT,
@@ -44,6 +47,19 @@ CREATE TABLE UserCarpeta(
     FOREIGN KEY (id_carpeta) REFERENCES Directori(id) ON DELETE CASCADE,
 	PRIMARY KEY(id_usuari, id_carpeta)
 );
+
+DROP TABLE IF EXISTS SharedUserCarpeta;
+
+CREATE TABLE SharedUserCarpeta(
+	id_usuari INT,
+	id_carpeta INT,
+    admin BOOLEAN,
+    reader BOOLEAN,
+	FOREIGN KEY (id_usuari) REFERENCES User(id),
+    FOREIGN KEY (id_carpeta) REFERENCES Directori(id),
+	PRIMARY KEY(id_usuari, id_carpeta)
+);
+
 
 DROP TABLE IF EXISTS UserNotification;
 
