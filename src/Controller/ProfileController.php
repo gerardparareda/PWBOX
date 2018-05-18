@@ -34,8 +34,9 @@ class ProfileController{
 
         $username = $repo->getUsernameById($_COOKIE['user_id']);
         $email = $repo->getEmailById($_COOKIE['user_id']);
+        $activated = $repo->getActivationById($_COOKIE['user_id']);
 
-        return $this->container->get('view')->render($response, 'profile.twig', ['user_avatar' => $result[0], 'username' => $username, 'email' => $email]);
+        return $this->container->get('view')->render($response, 'profile.twig', ['activated' => $activated, 'user_avatar' => $result[0], 'username' => $username, 'email' => $email]);
     }
 
     /**

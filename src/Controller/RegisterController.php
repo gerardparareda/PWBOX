@@ -96,8 +96,6 @@ class RegisterController{
 
             }
 
-
-
             $service = $this->container->get('user_repository');
 
             //Comprovem que l'email o l'usuari no estigui repetit a la base de dades.
@@ -158,8 +156,8 @@ class RegisterController{
                 $dataForEmail['notificationToName'] = $data['inputUsername'];
                 $dataForEmail['notificationEmail'] = $data['inputEmail'];
                 $dataForEmail['notificationId'] = $id;
-                $dataForEmail['notificationHTML'] = 'Here goes the html';
-                $dataForEmail['notificationBody'] = 'Here goes information';
+                $dataForEmail['notificationHTML'] = '<html>pwbox.test/emailActivate/' . md5($data['inputUsername']) . '</html>';
+                $dataForEmail['notificationBody'] = 'Register Email';
 
                 $emailSender = new EmailSender($this->container);
 

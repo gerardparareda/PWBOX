@@ -40,5 +40,6 @@ $app->post('/newItem', 'PwBox\Controller\NewFolderController')->add('PwBox\Contr
 
 $app->get('/notifications', 'PwBox\Controller\NotificationController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->get('/emailActivate/{activatorId}', 'PwBox\Controller\EmailActivatorController');
 
 ?>

@@ -11,8 +11,9 @@ CREATE TABLE User(
     email VARCHAR(255),
     pass VARCHAR(255), -- Seran Hashes MD5
     birthDay INT,
-    birthMonth Varchar(255),
+    birthMonth VARCHAR(255),
     birthYear INT,
+    activateHash VARCHAR(255),
     activatedAccount INT,
     created_at DATE,
     updated_at DATE,
@@ -53,5 +54,3 @@ CREATE TABLE UserNotification(
     FOREIGN KEY (id_usuari) REFERENCES User(id),
 	PRIMARY KEY(id_notificacio)
 );
-
-SELECT title, message, time_sent FROM UserNotification WHERE id_usuari = 1;

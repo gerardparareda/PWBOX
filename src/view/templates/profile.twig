@@ -33,6 +33,11 @@
 {% block content %}
 
     <body>
+        {% if activated == false %}
+            <div class="container-fluid bg-danger">
+                <p class="text-white text-center">You have to confirm your email</p>
+            </div>
+        {% endif %}
         <div class="content d-flex flex-row justify-content-center rounded">
             <div class="p-2">
                 <img id="user-avatar" src="{{ user_avatar }}" alt="Avatar" class="rounded" width="200" height="200">
