@@ -38,8 +38,6 @@
     {% block content %}
         <table class="table table-hover">
             <tbody>
-
-
             {% for carpeta in carpetes %}
                     <tr>
                         {% if carpeta['esCarpeta'] == true %}
@@ -55,14 +53,13 @@
                             {% if carpeta['admin'] == 1 %}
                                 <div class="actions float-right">
                                     {% if carpeta['esCarpeta'] == true %}
-                                        <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
+                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
                                         <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
-                                        <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
+                                        <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})">
                                     {% else %}
-                                        <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
+                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
                                         <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
-                                        <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
-                                        <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
+                                        <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')">
                                     {% endif %}
                                 </div>
                             {% else %}

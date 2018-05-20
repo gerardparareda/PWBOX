@@ -30,16 +30,14 @@ class RemoveFolderController
 
         $data = $request->getParsedBody();
 
+
         $idFolderEsborrar = $data['idCarpetaAEsborrar'];
 
         $this->deleteDirectory($idFolderEsborrar);
 
-        $response_array = [];
+        $response_array = ['elementBorrat' => $idFolderEsborrar];
 
         return $response->withJson($response_array, 200);
-        //return $response;
-
-        //return $this->container->get('view')->render($response, 'dashboard.twig', []);
 
     }
 
@@ -52,9 +50,7 @@ class RemoveFolderController
 
         //var_dump($idsCarpetesChildDeBorrar[0]); //4
 
-
         for ($i = 0; $i < count($idsCarpetesChildDeBorrar); $i++) { //Sizeof = 1; i = 0
-
             $this->deleteDirectory($idsCarpetesChildDeBorrar[$i]['id']);
         }
 

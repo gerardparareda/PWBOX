@@ -57,7 +57,7 @@
             <tbody>
             {% for carpeta in carpetes %}
                 {% if carpeta['esShared'] == false %}
-                <tr>
+                <tr id="{{ carpeta['id'] }}">
                     {% if carpeta['esCarpeta'] == true %}
                         <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/folder.png" width="20" height="20">
@@ -71,19 +71,18 @@
                         {% if carpeta['admin'] == 1 %}
                             <div class="actions float-right">
                                 {% if carpeta['esCarpeta'] == true %}
-                                    <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')" style="cursor:pointer;">
-                                    <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})" style="cursor:pointer;">
-                                    <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})" style="cursor:pointer;">
-                                {% else %}
-                                    <a href = ""><img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')"></a>
+                                    <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
                                     <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
-                                    <a href = ""><img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})"></a>
-                                    <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
+                                    <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})">
+                                {% else %}
+                                    <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
+                                    <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
+                                    <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')">
                                 {% endif %}
                             </div>
                         {% else %}
                             <div class="actions float-right">
-                                <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
+                                <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')">
                             </div>
                         {% endif %}
                     </td>
@@ -107,29 +106,6 @@
                         <div>
                             <input type="file" class="form-control-file border" id="inputFiles" name="inputFiles[]"
                                    multiple="multiple" accept=".pdf, .jpg, .jpeg, .png, .gif, .md, .txt">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal compartir fitxers/carpetes -->
-        <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Share file or folder</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="files-form" method="POST" action="/share">
-                        <div>
-                            <input type="text" name="shareTargetUser">
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Upload</button>

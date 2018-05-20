@@ -477,23 +477,8 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
-    public function deleteDirectory($idCarpetaAEsborrar, $idUsuari)
-    {
-
-        /*$sql = "SELECT d.nomCarpeta, uc.admin, uc.reader  FROM Directori AS d, UserCarpeta AS uc WHERE d.carpetaParent = :idCarpetaClicada AND d.id = uc.id_carpeta AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
-        $stmt = $this->database->prepare($sql);
-        $stmt->bindValue("idCarpetaClicada", $idCarpetaClicada, 'integer');
-        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
-        $result = $stmt->execute();
-        $carpetes = $stmt->fetchAll();
-
-        return $carpetes;*/
-
-    }
-
     public function removeFolder($idCarpetaAEsborrar)
     {
-
         $sql = "DELETE FROM Directori WHERE id = :idCarpetaAEsborrar;";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');

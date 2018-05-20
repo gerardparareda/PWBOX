@@ -58,14 +58,18 @@ function renameFolder(idCarpeta, nomCarpeta) {
             dataType : 'json',
             success: function(data) {
                 console.log("fet post!");
+                console.log("Data name: ", data.newName);
+                console.log("Data permission: ", data.permision);
                 if (data.permision){
-                    document.getElementById(data.id).innerHTML = data.newName;
+                    //document.getElementById(data.id).innerHTML = data.newName;
+                    location.reload();
                 } else {
-                    console.log('no hi ha permissos');
+                    alert('No tens permisos');
                 }
             },
             error: function (data) {
-                console.log(data);
+                alert('Hi ha hagut un error');
+                //console.log(data);
 
             }
         }
@@ -147,12 +151,6 @@ function createFile(pathCarpetaRoot) {
 
 
 function removeFolder(idCarpetaEsborrar) {
-
-    console.log("abans d'esborrar!");
-
-
-    //window.location.href = '/removeFolder/' + idCarpetaEsborrar;
-    //console.log('/removeFolder/' + idCarpetaEsborrar);
     $.ajax(
         {
             url: '/removeFolder',
@@ -161,19 +159,13 @@ function removeFolder(idCarpetaEsborrar) {
                 idCarpetaAEsborrar: idCarpetaEsborrar
             },
             success: function(data) {
-
-
-                //location.reload();
-
+                document.getElementById(data.elementBorrat).remove();
             },
             error: function(error) {
-                //console.log(error);
-                alert("Error, no s'ha pogut esborrar la carpeta");
+                alert("Error borrant la carpeta")
             }
         }
     );
-
-    console.log("Esborrat!");
 }
 
 

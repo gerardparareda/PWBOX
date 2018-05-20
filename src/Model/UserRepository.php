@@ -13,7 +13,6 @@ interface UserRepository{
     public function lookIfDirectoryExists($URLPath);
     public function userPrivileges($idCarpetaActual, $idUsuari);
     public function showDirectory($idCarpetaClicada, $idUsuari);
-    public function deleteDirectory($idCarpetaAEsborrar, $idUsuari);
     public function getIdByUrlPath($urlPath);
     public function getParentFolderId($urlPath);
     public function esCarpeta($urlPath);
