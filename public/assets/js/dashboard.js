@@ -182,11 +182,10 @@ function shareFolder(id) {
             },
             dataType : 'json',
             success: function(data) {
-                console.log('s', data);
+                alert(data.message);
             },
             error: function(data) {
-                console.log('e', data);
-                //alert("Error");
+                console.log('Error inesperat"')
             }
         }
     );
