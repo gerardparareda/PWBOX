@@ -460,6 +460,19 @@ class DoctrineUserRepository implements UserRepository{
 
     }
 
+    public function showFilesOfSharedDirectory($idCarpetaClicada)
+    {
+
+        $sql = " SELECT id, nomCarpeta, urlPath, esCarpeta FROM Directori WHERE carpetaParent = :idCarpetaClicada AND esCarpeta = false; ";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaClicada", $idCarpetaClicada, 'integer');
+        $result = $stmt->execute();
+        $fitxers = $stmt->fetchAll();
+
+       return $fitxers;
+
+    }
+
     public function showSharedDirectory($idUsuari)
     {
 
@@ -584,6 +597,30 @@ class DoctrineUserRepository implements UserRepository{
         $stmt->bindValue("admin", true, 'boolean');
         $stmt->bindValue("reader", true, 'boolean');
         $result = $stmt->execute();
+    }
+
+    public function userPrivilegesShared($idCarpetaActual, $idUsuari)
+    {
+
+        $sql = "SELECT uc.admin, uc.reader FROM SharedUserCarpeta AS uc WHERE uc.id_carpeta = :idCarpetaActual AND (uc.admin = true OR uc.reader = true) AND uc.id_usuari = :idUsuari";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaActual", $idCarpetaActual, 'integer');
+        $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $permisos = $stmt->fetch();
+
+        return $permisos;
+    }
+
+    public function getUserIdByDirectoryId($directoryId)
+    {
+        $sql = "SELECT id_usuari FROM UserCarpeta WHERE id_carpeta = :idDirectori;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idDirectori", $directoryId, 'integer');
+        $result = $stmt->execute();
+
+        $userId = $stmt->fetch();
+        return $userId;
     }
 
 

@@ -41,10 +41,10 @@
             {% for carpeta in carpetes %}
                     <tr>
                         {% if carpeta['esCarpeta'] == true %}
-                        <td  ondblclick="goToURL('{{ carpeta['urlPath'] }}')">
+                        <td  ondblclick="goToURLShared('{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/folder.png" width="20" height="20">
                             {% else %}
-                        <td  ondblclick="downloadFile('/file/{{ carpeta['urlPath'] }}')">
+                        <td  ondblclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
                             <img src="/assets/img/file.png" width="20" height="20">
                             {% endif %}
 
@@ -59,12 +59,12 @@
                                     {% else %}
                                         <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
                                         <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
-                                        <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')">
+                                        <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
                                     {% endif %}
                                 </div>
                             {% else %}
                                 <div class="actions float-right">
-                                    <a href = ""><img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadFile('/file/{{ carpeta['urlPath'] }}')"></a>
+                                    <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
                                 </div>
                             {% endif %}
                         </td>

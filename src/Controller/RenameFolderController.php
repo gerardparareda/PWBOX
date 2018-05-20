@@ -30,9 +30,6 @@ class RenameFolderController
 
         $data = $request->getParsedBody();
 
-        //var_dump($data);
-        //die;
-
         $idFolder = $data['idCarpeta'];
         $newNameCarpeta = $data['newNameCarpeta'];
         $oldNameCarpeta = $data['oldNameCarpeta'];
@@ -42,9 +39,6 @@ class RenameFolderController
         $repo = $this->container->get('user_repository');
 
         $permisos = $repo->userPrivileges($idFolder, $idUsuari);
-
-        /*var_dump($permisos);
-        die;*/
 
         if ($permisos['admin']) {
 

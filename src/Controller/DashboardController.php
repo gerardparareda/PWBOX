@@ -56,7 +56,7 @@ class DashboardController{
             //var_dump($rootFolderId);
             //var_dump($carpetes);
 
-            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes, 'carpetaParent' => $rootFolderId, 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
+            return $this->container->get('view')->render($response, 'dashboard.twig', ['user_avatar' => $result[0], 'carpetes' =>$carpetes, 'carpetaParent' => $rootFolderId, 'usedSpace' => (int)($this->GetDirectorySize()/1000000000)]);
 
         } else {
             //Carpeta concreta
@@ -96,12 +96,12 @@ class DashboardController{
                         //downloadFileFromURL($args['path']);
 
                         return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id'], 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id'], 'usedSpace' => (int)($this->GetDirectorySize()/1000000000)]);
 
                     } else {
 
                         return $this->container->get('view')->render($response, 'dashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id'], 'usedSpace' => ($this->GetDirectorySize()/1000000000)]);
+                            ['user_avatar' => $result[0], 'carpetes' => $carpetes, 'carpetaParent' => $carpeta['id'], 'usedSpace' => (int)($this->GetDirectorySize()/1000000000)]);
                     }
 
 
@@ -227,9 +227,7 @@ class DashboardController{
 
             $dirInfo = $repo->getIdByUrlPath($fieldId);
 
-            // TODO: Fer que segons l'arxiu que cliqui el path varii, perque ara nomes agafa el default avatar.
-
-            $fileName = __DIR__ . '/../../public/uploads/' . $dirInfo['nomCarpeta'];
+            $fileName = __DIR__ . '/../../public/uploads/' . $_COOKIE['user_id'] . '/' . $dirInfo['nomCarpeta'];
             //$fileName = __DIR__ . '/../../public/uploads/default-avatar.jpg';
 
             if (!file_exists($fileName)) {

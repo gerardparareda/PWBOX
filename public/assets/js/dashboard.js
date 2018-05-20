@@ -207,3 +207,44 @@ function handleDrop(evt) {
 
     return false;
 }
+
+
+
+function goToURLShared(url) {
+
+    window.location.href = '/sharedDashboard/' + url;
+
+
+}
+
+function downloadSharedFile(url) {
+
+    window.open(url, "_blank");
+    //console.log(url);
+    //window.location.href = '/dashboard/' + url;
+    //ondblclick='location.href = "/dashboard/ {{ carpeta['urlPath'] }}";'
+
+    console.log("abans de fer post!");
+
+    $.post("/sharedDashboard",
+        {
+            urlPath: url
+        },
+        function() {
+            //alert( "success" );
+        });
+
+    /*var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+        }
+    };
+    xhttp.open("POST", "/dashboard", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("urlPath=" + url);*/
+
+    console.log("fet post!");
+
+    //document.getElementById('my_iframe').src = url;
+}

@@ -20,6 +20,8 @@ $app->get('/dashboard[/{path}]', 'PwBox\Controller\DashboardController')->add('P
 $app->get('/file/{id}', 'PwBox\Controller\DashboardController:downloadFile'); //->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 //$app->get('/aaa', 'PwBox\Controller\DashboardController:downloadFile')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->get('/sharedFile/{id}', 'PwBox\Controller\SharedDashboardController:downloadFile'); //->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
 $app->post('/upload_files[/{parent}]', 'PwBox\Controller\DashboardController:upload')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 //
 $app->get('/logout', 'PwBox\Controller\LogoutController:logout');
@@ -34,7 +36,7 @@ $app->post('/renameFolder', 'PwBox\Controller\RenameFolderController')->add('PwB
 
 $app->get('/sendEmail', 'PwBox\Controller\EmailSenderController:sendEmail');
 
-$app->get('/sharedDashboard', 'PwBox\Controller\SharedDashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+$app->get('/sharedDashboard[/{path}]', 'PwBox\Controller\SharedDashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 $app->post('/newItem', 'PwBox\Controller\NewFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
