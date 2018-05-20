@@ -285,12 +285,15 @@ class DashboardController{
 
             $repo->share($user_id, $data['idCarpeta']);
 
-            $response_array['par'] = 'coses';
+            $response_array['message'] = 'Carpeta compartida correctament';
 
             return $response->withJson($response_array, 200);
 
         } else {
 
+            $response_array['message'] = "L'usuari no existeix!";
+
+            return $response->withJson($response_array, 200);
 
 
         }
