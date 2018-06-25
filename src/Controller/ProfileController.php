@@ -5,6 +5,8 @@ namespace PwBox\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Slim\Http\UploadedFile;
 
 class ProfileController{
@@ -154,5 +156,34 @@ class ProfileController{
         $uploadedImage->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
         return $filename;
+    }
+
+    public function deleteProfile(Request $request, Response $response){
+
+        $id = $_COOKIE['user_id'];
+
+        $repo = $this->container->get('user_repository');
+
+        $repo->deleteAllUserInformation($id);
+
+        unlink("./uploads/" . $_COOKIE['user_id'] . ".png");
+        unlink("./uploads/" . $_COOKIE['user_id'] . ".jpeg");
+        unlink("./uploads/" . $_COOKIE['user_id'] . ".jpg");
+        unlink("./uploads/" . $_COOKIE['user_id'] . ".gif");
+
+        $dir = './uploads/' . $_COOKIE['user_id'];
+        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it,
+            RecursiveIteratorIterator::CHILD_FIRST);
+        foreach($files as $file) {
+            unlink($file->getRealPath());
+        }
+        rmdir($dir);
+
+        return $response->withStatus(302)->withHeader("Location", "/logout");
+
+
+
+
     }
 }

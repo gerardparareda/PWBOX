@@ -28,6 +28,8 @@ $app->get('/logout', 'PwBox\Controller\LogoutController:logout');
 
 $app->get('/profile', 'PwBox\Controller\ProfileController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->get('/deleteprofile', 'PwBox\Controller\ProfileController:deleteProfile')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
 $app->post('/profile', 'PwBox\Controller\ProfileController:editProfile');
 
 $app->get('/forbidden', 'PwBox\Controller\ForbiddenController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');

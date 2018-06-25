@@ -213,7 +213,7 @@ class DoctrineUserRepository implements UserRepository{
 
         //Despres creem la carpeta a la base de dades.
 
-        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta, :esShared); ";
+        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared, id_propietari) VALUES (null, :nomCarpeta, :isRoot, :carpetaParent, :urlPath, :esCarpeta, :esShared, :id_propietari); ";
         $stmt = $this->database->prepare($sql);
 
 
@@ -224,6 +224,8 @@ class DoctrineUserRepository implements UserRepository{
 
         $stmt->bindValue("esCarpeta", $esCarpeta, 'boolean');
         $stmt->bindValue("esShared", false, 'boolean');
+        $stmt->bindValue("id_propietari", $_COOKIE['user_id'], 'integer');
+
 
         //$stmt->bindValue("email", , 'string');
         //$stmt->bindValue("password", md5($user->getPassword()), 'string');
@@ -250,9 +252,11 @@ class DoctrineUserRepository implements UserRepository{
     public function createRootDirectory($idUsuari)
     {
 
-        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared) VALUES (null, :idUsuari, true, null, '', true, false); ";
+        $sql = "INSERT INTO Directori (id, nomCarpeta, isRoot, carpetaParent, urlPath, esCarpeta, esShared, id_propietari) VALUES (null, :idUsuari, true, null, '', true, false, :id_propietari); ";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idUsuari", $idUsuari, 'integer');
+        $stmt->bindValue("id_propietari", $idUsuari, 'integer');
+
         $result = $stmt->execute();
 
         $sql = "SELECT * FROM Directori ORDER BY id desc limit 1;";
@@ -621,6 +625,36 @@ class DoctrineUserRepository implements UserRepository{
 
         $userId = $stmt->fetch();
         return $userId;
+    }
+
+    public function deleteAllUserInformation($userid){
+        $sql = "DELETE FROM UserNotification WHERE id_usuari = :userid;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("userid", $userid, 'integer');
+        $result = $stmt->execute();
+
+        //$sql = "DELETE FROM SharedUserCarpeta WHERE id_usuari = :userid;";
+        $sql = "DELETE suc, d FROM SharedUserCarpeta as suc, Directori AS d WHERE suc.id_carpeta = d.id AND d.id_propietari = :userid;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("userid", $userid, 'integer');
+        $result = $stmt->execute();
+
+        $sql = "DELETE FROM UserCarpeta WHERE id_usuari = :userid;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("userid", $userid, 'integer');
+        $result = $stmt->execute();
+
+        $sql = "DELETE FROM Directori WHERE id_propietari = :userid;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("userid", $userid, 'integer');
+        $result = $stmt->execute();
+
+
+        $sql = "DELETE FROM User WHERE id = :userid;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("userid", $userid, 'integer');
+        $result = $stmt->execute();
+
     }
 
 
