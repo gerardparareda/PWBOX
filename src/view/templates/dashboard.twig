@@ -73,7 +73,10 @@
                                 {% if carpeta['esCarpeta'] == true %}
                                     <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
                                     <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
-                                    <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})">
+                                    <a data-toggle="modal" data-target="#shareModal" onclick="selectFolder({{ carpeta['id'] }})">
+                                        <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" id="share-button">
+                                    </a>
+
                                 {% else %}
                                     <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
                                     <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
@@ -115,6 +118,38 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal compartir carpeta-->
+        <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="shareModalLongTitle">Write username to share with</h5>
+                        <p hidden id="id-carpeta"></p>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form id="form-sharefolder" class="form-sharefolder" enctype="multipart/form-data">
+                        Username: <input id="user-name-share" type="text" name="user-name-share"><br>
+                        <div class="admin-check">
+                            <input class="admin-check-input" name="admin-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Admin
+                            </label>
+                            <input class="reader-check-input" name="reader-check-input" type="checkbox" value="" id="defaultCheck2" checked="checked" disabled>
+                            <label class="form-check-label" for="defaultCheck2">
+                                Reader
+                            </label>
+                        </div>
+
+                        <input type="submit" value="Share">
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
 
     {% endblock %}

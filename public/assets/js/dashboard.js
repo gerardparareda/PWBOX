@@ -169,29 +169,62 @@ function removeFolder(idCarpetaEsborrar) {
 }
 
 
-function shareFolder(id) {
-    var userShare = prompt("Share with: ", '');
+function selectFolder(id) {
+    document.getElementById("id-carpeta").innerText = id;
+}
+
+$('#form-sharefolder').on('submit', function(e) {
+    e.preventDefault();
+
+    var username = document.forms["form-sharefolder"]["user-name-share"].value;
+    var carpeta = document.getElementById("id-carpeta").innerText;
 
     $.ajax(
         {
             url: '/shareFolder',
             type: 'POST',
             data: {
-                userShare: userShare,
-                idCarpeta: id
+                userShare: username,
+                idCarpeta: carpeta
+            },
+            dataType : 'json',
+            success: function(data) {
+                if(data.message = 'Carpeta compartida correctament'){
+                    document.forms["form-sharefolder"]["user-name-share"].value = '';
+                }
+                alert(data.message);
+            },
+            error: function(data) {
+                console.log('Error inesperat')
+            }
+        }
+    );
+
+});
+
+/*
+function shareFolder() {
+    $.ajax(
+        {
+            url: '/shareFolder',
+            type: 'POST',
+            data: {
+                userShare: document.getElementById("user-name-share"),
+                idCarpeta: document.getElementById("id-carpeta").innerText
             },
             dataType : 'json',
             success: function(data) {
                 alert(data.message);
             },
             error: function(data) {
-                console.log('Error inesperat"')
+                console.log('Error inesperat')
             }
         }
     );
 
     console.log("fet post!");
-}
+}*/
+
 
 $('#droppable-modal').on("dragenter dragstart dragend dragleave dragover drag drop", function (e) {
     e.preventDefault();
