@@ -36,6 +36,8 @@ $app->get('/forbidden', 'PwBox\Controller\ForbiddenController')->add('PwBox\Cont
 
 $app->post('/renameFolder', 'PwBox\Controller\RenameFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
+$app->post('/renameSharedFolder', 'PwBox\Controller\RenameFolderController:renameShared')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
 $app->get('/sendEmail', 'PwBox\Controller\EmailSenderController:sendEmail');
 
 $app->get('/sharedDashboard[/{path}]', 'PwBox\Controller\SharedDashboardController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
@@ -43,6 +45,8 @@ $app->get('/sharedDashboard[/{path}]', 'PwBox\Controller\SharedDashboardControll
 $app->post('/newItem', 'PwBox\Controller\NewFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 $app->post('/removeFolder', 'PwBox\Controller\RemoveFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
+$app->post('/removeSharedFolder', 'PwBox\Controller\RemoveFolderController:removeShared')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 //$app->get('/removeFolder/{id}', 'PwBox\Controller\RemoveFolderController')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 

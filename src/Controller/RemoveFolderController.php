@@ -62,4 +62,20 @@ class RemoveFolderController
 
     }
 
+    public function removeShared(Request $request, Response $response, array $args)
+    {
+
+        $data = $request->getParsedBody();
+
+
+        $idFolderEsborrar = $data['idCarpetaAEsborrar'];
+
+        $this->deleteDirectory($idFolderEsborrar);
+
+        $response_array = ['elementBorrat' => $idFolderEsborrar];
+
+        return $response->withJson($response_array, 200);
+
+    }
+
 }

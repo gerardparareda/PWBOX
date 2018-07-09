@@ -178,27 +178,34 @@ $('#form-sharefolder').on('submit', function(e) {
 
     var username = document.forms["form-sharefolder"]["user-name-share"].value;
     var carpeta = document.getElementById("id-carpeta").innerText;
+    var admin = document.getElementById('admin-check').checked;
+    console.log(admin);
 
-    $.ajax(
-        {
-            url: '/shareFolder',
-            type: 'POST',
-            data: {
-                userShare: username,
-                idCarpeta: carpeta
-            },
-            dataType : 'json',
-            success: function(data) {
-                if(data.message = 'Carpeta compartida correctament'){
-                    document.forms["form-sharefolder"]["user-name-share"].value = '';
+    if (username.length !== 0) {
+
+        $.ajax(
+            {
+                url: '/shareFolder',
+                type: 'POST',
+                data: {
+                    userShare: username,
+                    idCarpeta: carpeta,
+                    admin: admin
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message = 'Carpeta compartida correctament') {
+                        document.forms["form-sharefolder"]["user-name-share"].value = '';
+                    }
+                    alert(data.message);
+                },
+                error: function (data) {
+                    console.log('Error inesperat')
                 }
-                alert(data.message);
-            },
-            error: function(data) {
-                console.log('Error inesperat')
             }
-        }
-    );
+        );
+
+    }
 
 });
 
@@ -279,4 +286,59 @@ function downloadSharedFile(url) {
     console.log("fet post!");
 
     //document.getElementById('my_iframe').src = url;
+}
+
+function removeSharedFolder(idCarpetaEsborrar) {
+    $.ajax(
+        {
+            url: '/removeSharedFolder',
+            type: 'POST',
+            data: {
+                idCarpetaAEsborrar: idCarpetaEsborrar
+            },
+            success: function(data) {
+                document.getElementById(data.elementBorrat).parentElement.parentElement.remove();
+            },
+            error: function(error) {
+                alert("Error borrant la carpeta")
+            }
+        }
+    );
+}
+
+function renameSharedFolder(idCarpeta, nomCarpeta) {
+
+    console.log("abans de fer post!");
+
+    var newName = prompt("Rename the folder", nomCarpeta);
+
+
+    $.ajax(
+        {
+            url: '/renameSharedFolder',
+            type: 'POST',
+            data: {
+                idCarpeta: idCarpeta,
+                newNameCarpeta: newName,
+                oldNameCarpeta: nomCarpeta
+            },
+            dataType : 'json',
+            success: function(data) {
+                console.log("fet post!");
+                console.log("Data name: ", data.newName);
+                console.log("Data permission: ", data.permision);
+                if (data.permision){
+                    //document.getElementById(data.id).innerHTML = data.newName;
+                    location.reload();
+                } else {
+                    alert('No tens permisos');
+                }
+            },
+            error: function (data) {
+                alert('Hi ha hagut un error');
+                //console.log(data);
+
+            }
+        }
+    );
 }

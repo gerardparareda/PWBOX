@@ -82,14 +82,17 @@ class SharedDashboardController{
                     if (!$repo->esCarpeta($args['path'])) {
 
                         $idCarpetaParent = $repo->getParentFolderId($args['path']);
+
+                        //$isAdmin = $repo->isAdmin($idCarpetaParent, $_COOKIE['user_id']);
                         //$carpetes = $repo->showDirectory($idCarpetaParent, $idUsuari);
 
+
                         return $this->container->get('view')->render($response, 'sharedDashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $fitxers]);
+                            ['user_avatar' => $result[0], 'carpetes' => $fitxers, 'isAdmin' => $privileges['admin']]);
                     } else {
 
                         return $this->container->get('view')->render($response, 'sharedDashboard.twig',
-                            ['user_avatar' => $result[0], 'carpetes' => $fitxers, 'carpetaParent' => $carpeta['id']]);
+                            ['user_avatar' => $result[0], 'carpetes' => $fitxers, 'carpetaParent' => $carpeta['id'], 'isAdmin' => $privileges['admin']]);
 
                     }
                 }

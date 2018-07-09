@@ -283,7 +283,13 @@ class DashboardController{
 
             $user_id = $result_query[0]['id'];
 
-            $repo->share($user_id, $data['idCarpeta']);
+            if ($data['admin'] == 'false') {
+                $admin = false;
+            } else {
+                $admin = true;
+            }
+
+            $repo->share($user_id, $data['idCarpeta'], $admin);
 
             $response_array['message'] = 'Carpeta compartida correctament';
 

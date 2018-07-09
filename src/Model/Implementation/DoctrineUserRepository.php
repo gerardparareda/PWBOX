@@ -496,6 +496,31 @@ class DoctrineUserRepository implements UserRepository{
 
     public function removeFolder($idCarpetaAEsborrar)
     {
+
+        $sql = "SELECT * FROM SharedUserCarpeta WHERE id_carpeta = :idCarpetaAEsborrar";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
+        $result1 = $stmt->execute();
+
+        if ($result1 != null) {
+            $sql = "DELETE FROM SharedUserCarpeta WHERE id_carpeta = :idCarpetaAEsborrar;";
+            $stmt = $this->database->prepare($sql);
+            $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
+            $result = $stmt->execute();
+        }
+
+        $sql = "SELECT * FROM UserCarpeta WHERE id_carpeta = :idCarpetaAEsborrar";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
+        $result2 = $stmt->execute();
+
+        if ($result2 != null) {
+            $sql = "DELETE FROM UserCarpeta WHERE id_carpeta = :idCarpetaAEsborrar;";
+            $stmt = $this->database->prepare($sql);
+            $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
+            $result = $stmt->execute();
+        }
+
         $sql = "DELETE FROM Directori WHERE id = :idCarpetaAEsborrar;";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("idCarpetaAEsborrar", $idCarpetaAEsborrar, 'integer');
@@ -593,12 +618,27 @@ class DoctrineUserRepository implements UserRepository{
         return $stmt->fetchAll();
     }
 
-    public function share($id_user, $id_folder){
+    public function share($id_user, $id_folder, $admin){
+
+        $sql = "SELECT * FROM SharedUserCarpeta WHERE id_usuari = :id_user AND id_carpeta = :id_carpeta";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("id_user", $id_user, 'integer');
+        $stmt->bindValue("id_carpeta", $id_folder, 'integer');
+        $result = $stmt->execute();
+
+        if ($result != null) {
+            $sql = "DELETE FROM SharedUserCarpeta WHERE id_usuari = :id_user AND id_carpeta = :id_carpeta";
+            $stmt = $this->database->prepare($sql);
+            $stmt->bindValue("id_user", $id_user, 'integer');
+            $stmt->bindValue("id_carpeta", $id_folder, 'integer');
+            $stmt->execute();
+        }
+
         $sql = "INSERT INTO SharedUserCarpeta(id_usuari, id_carpeta, admin, reader) VALUES (:id_user, :id_carpeta, :admin, :reader);";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("id_user", $id_user, 'integer');
         $stmt->bindValue("id_carpeta", $id_folder, 'integer');
-        $stmt->bindValue("admin", true, 'boolean');
+        $stmt->bindValue("admin", $admin, 'boolean');
         $stmt->bindValue("reader", true, 'boolean');
         $result = $stmt->execute();
     }
@@ -614,6 +654,18 @@ class DoctrineUserRepository implements UserRepository{
         $permisos = $stmt->fetch();
 
         return $permisos;
+    }
+
+    public function isAdmin($idCarpetaParent, $idUsuari) {
+
+        $sql = "SELECT admin FROM SharedUserCarpeta WHERE id_carpeta = :id_carpeta AND id_usuari = :id_usuari";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("id_carpeta", $idCarpetaParent, 'integer');
+        $stmt->bindValue("id_usuari", $idUsuari, 'integer');
+        $result = $stmt->execute();
+        $admin = $stmt->fetch();
+
+        return $admin;
     }
 
     public function getUserIdByDirectoryId($directoryId)

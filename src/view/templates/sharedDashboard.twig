@@ -36,6 +36,17 @@
         </header>
     {% endblock %}
     {% block content %}
+        {% if isAdmin == true %}
+            <nav class="navbar navbar-expand-lg navbar-dark utils">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" data-toggle="modal" data-target="#loadModal">
+                            <img src="/assets/img/upload-button.png" class="float-left" title="Upload File" alt="Upload File" width="20" height="20">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
         <table class="table table-hover">
             <tbody>
             {% for carpeta in carpetes %}
@@ -53,18 +64,22 @@
                             {% if carpeta['admin'] == 1 %}
                                 <div class="actions float-right">
                                     {% if carpeta['esCarpeta'] == true %}
-                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
-                                        <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
+                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameSharedFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
+                                        <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeSharedFolder({{ carpeta['id'] }})">
                                         <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})">
                                     {% else %}
-                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
-                                        <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeFolder({{ carpeta['id'] }})">
                                         <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
                                     {% endif %}
                                 </div>
                             {% else %}
                                 <div class="actions float-right">
-                                    <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
+                                    {% if isAdmin == true %}
+                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameSharedFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
+                                        <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeSharedFolder({{ carpeta['id'] }})">
+                                        <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
+                                    {% else %}
+                                        <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         </td>
