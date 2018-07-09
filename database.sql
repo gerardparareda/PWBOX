@@ -31,6 +31,7 @@ CREATE TABLE Directori(
 	urlPath VARCHAR(255),
 	esCarpeta BOOLEAN,
 	esShared BOOLEAN,
+    id_propietari INT,
 	PRIMARY KEY(id)
 );
 
@@ -72,3 +73,20 @@ CREATE TABLE UserNotification(
     FOREIGN KEY (id_usuari) REFERENCES User(id),
 	PRIMARY KEY(id_notificacio)
 );
+
+SELECT * FROM User;
+SELECT * FROM Directori;
+SELECT * FROM SharedUserCarpeta;
+DELETE FROM SharedUserCarpeta WHERE id_c = 10;
+
+use PWBOX;
+
+
+
+
+
+DELETE suc, d FROM SharedUserCarpeta as suc, Directori AS d WHERE suc.id_carpeta = d.id AND d.id_propietari = 1;
+
+
+SET SQL_SAFE_UPDATES = 0;
+
