@@ -568,6 +568,7 @@ class DoctrineUserRepository implements UserRepository{
             return false;
         }
 
+
     }
 
     public function getIdByHash($hash)

@@ -23,6 +23,8 @@ $app->get('/file/{id}', 'PwBox\Controller\DashboardController:downloadFile'); //
 $app->get('/sharedFile/{id}', 'PwBox\Controller\SharedDashboardController:downloadFile'); //->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 
 $app->post('/upload_files[/{parent}]', 'PwBox\Controller\DashboardController:upload')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
+
+$app->post('/upload_shared_files[/{parent}]', 'PwBox\Controller\SharedDashboardController:upload')->add('PwBox\Controller\Middleware\UserLoggedMiddleware');
 //
 $app->get('/logout', 'PwBox\Controller\LogoutController:logout');
 
