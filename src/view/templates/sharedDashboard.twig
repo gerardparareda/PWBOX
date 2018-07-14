@@ -64,7 +64,7 @@
                             {% if carpeta['admin'] == 1 %}
                                 <div class="actions float-right">
                                     {% if carpeta['esCarpeta'] == true %}
-                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameSharedFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
+                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameSharedFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}', '{{ carpeta['urlPath'] }}')">
                                         <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeSharedFolder({{ carpeta['id'] }})">
                                         <img src="/assets/img/share-button.png" width="20" height="20" title="Share Item" alt="Share Item" onclick="shareFolder({{ carpeta['id'] }})">
                                     {% else %}
@@ -74,7 +74,7 @@
                             {% else %}
                                 <div class="actions float-right">
                                     {% if isAdmin == true %}
-                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameSharedFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}')">
+                                        <img src="/assets/img/rename-button.png" width="20" height="20" title="Rename Item" alt="Rename Item" onclick="renameSharedFolder({{ carpeta['id'] }}, '{{ carpeta['nomCarpeta'] }}', '{{ carpeta['urlPath'] }}'    )">
                                         <img src="/assets/img/delete-button.png" width="20" height="20" title="Remove Item" alt="Remove Item" onclick="removeSharedFolder({{ carpeta['id'] }})">
                                         <img src="/assets/img/download-button.png" width="20" height="20" title="Download Item" alt="Download Item" onclick="downloadSharedFile('/sharedFile/{{ carpeta['urlPath'] }}')">
                                     {% else %}

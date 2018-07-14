@@ -51,10 +51,10 @@ class RenameFolderController
             $repo->renameFolder($idFolder, $newNameCarpeta);
 
             if (!$file['esCarpeta']){
-                $oldPath = '/../uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
+                $oldPath = './uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
 
                 // Define the new path
-                $newPath = '/../uploads/' . $_COOKIE['user_id'] . '/' . $newNameCarpeta;
+                $newPath = './uploads/' . $_COOKIE['user_id'] . '/' . $newNameCarpeta;
 
                 // Renames the file
                 rename($oldPath, $newPath);
@@ -91,12 +91,23 @@ class RenameFolderController
         $idFolder = $data['idCarpeta'];
         $newNameCarpeta = $data['newNameCarpeta'];
         $oldNameCarpeta = $data['oldNameCarpeta'];
+        $urlPath = $data['path'];
         $idUsuari = $_COOKIE['user_id'];
 
         /** @var UserRepository $repo */
         $repo = $this->container->get('user_repository');
 
-        $permisos = $repo->userPrivileges($idFolder, $idUsuari);
+        $permisos = $repo->userPrivilegesShared($idFolder, $idUsuari);
+
+        $file = $repo->getFileById($idFolder);
+
+        if (!$file['esCarpeta']) {
+
+            $idFolder = $repo->getParentFolderId($urlPath);
+
+            $permisos = $repo->userPrivilegesShared($idFolder, $idUsuari);
+
+        }
 
         if ($permisos['admin']) {
 
@@ -109,10 +120,10 @@ class RenameFolderController
             $repo->renameFolder($idFolder, $newNameCarpeta);
 
             if (!$file['esCarpeta']){
-                $oldPath = '/../uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
+                $oldPath = './uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
 
                 // Define the new path
-                $newPath = '/../uploads/' . $_COOKIE['user_id'] . '/' . $newNameCarpeta;
+                $newPath = './uploads/' . $_COOKIE['user_id'] . '/' . $newNameCarpeta;
 
                 // Renames the file
                 rename($oldPath, $newPath);

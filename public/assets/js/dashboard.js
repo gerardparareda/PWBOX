@@ -306,7 +306,7 @@ function removeSharedFolder(idCarpetaEsborrar) {
     );
 }
 
-function renameSharedFolder(idCarpeta, nomCarpeta) {
+function renameSharedFolder(idCarpeta, nomCarpeta, urlPath) {
 
     console.log("abans de fer post!");
 
@@ -320,7 +320,8 @@ function renameSharedFolder(idCarpeta, nomCarpeta) {
             data: {
                 idCarpeta: idCarpeta,
                 newNameCarpeta: newName,
-                oldNameCarpeta: nomCarpeta
+                oldNameCarpeta: nomCarpeta,
+                path: urlPath
             },
             dataType : 'json',
             success: function(data) {
