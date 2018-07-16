@@ -101,25 +101,38 @@ class RenameFolderController
 
         $file = $repo->getFileById($idFolder);
 
-        if (!$file['esCarpeta']) {
+
+        if ($file['esCarpeta'] == '0') {
 
             $idFolder = $repo->getParentFolderId($urlPath);
 
-            $permisos = $repo->userPrivilegesShared($idFolder, $idUsuari);
+            $permisos = $repo->userPrivilegesShared($idFolder['carpetaParent'], $idUsuari);
+
+            /*var_dump($idFolder);
+            var_dump($idUsuari);
+
+            var_dump($file);
+
+            var_dump($repo->userPrivilegesShared($idFolder, $idUsuari));*/
+            //die;
 
         }
 
-        if ($permisos['admin']) {
+        if ($permisos['admin'] == '1') {
 
-            $folderPath = $repo->getFolderPath($idFolder);
+            if ($file['esCarpeta']) {
+                $folderPath = $repo->getFolderPath($idFolder);
 
-            $file = $repo->getFileById($idFolder);
+                $file = $repo->getFileById($idFolder);
+            }
+
+
 
 
 
             $repo->renameFolder($idFolder, $newNameCarpeta);
 
-            if (!$file['esCarpeta']){
+            if (!$file['esCarpeta'] == '1'){
                 $oldPath = './uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
 
                 // Define the new path

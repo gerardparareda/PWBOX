@@ -46,6 +46,19 @@ function renameFolder(idCarpeta, nomCarpeta) {
     var newName = prompt("Rename the folder", nomCarpeta);
 
 
+    if (newName !== null) {
+        if (newName.length === 0) {
+
+            alert('El camp no pot estar buit');
+            return;
+
+        }
+    } else {
+        if (newName === null) {
+            return;
+        }
+    }
+
     $.ajax(
         {
             url: '/renameFolder',
@@ -311,6 +324,19 @@ function renameSharedFolder(idCarpeta, nomCarpeta, urlPath) {
     console.log("abans de fer post!");
 
     var newName = prompt("Rename the folder", nomCarpeta);
+
+    if (newName !== null) {
+        if (newName.length === 0) {
+
+            alert('El camp no pot estar buit');
+            return;
+
+        }
+    } else {
+        if (newName === null) {
+            return;
+        }
+    }
 
 
     $.ajax(

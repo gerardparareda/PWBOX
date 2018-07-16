@@ -654,6 +654,7 @@ class DoctrineUserRepository implements UserRepository{
         $result = $stmt->execute();
         $permisos = $stmt->fetch();
 
+
         return $permisos;
     }
 
