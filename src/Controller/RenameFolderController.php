@@ -89,6 +89,7 @@ class RenameFolderController
         $data = $request->getParsedBody();
 
         $idFolder = $data['idCarpeta'];
+        $idFitxer = $idFolder;
         $newNameCarpeta = $data['newNameCarpeta'];
         $oldNameCarpeta = $data['oldNameCarpeta'];
         $urlPath = $data['path'];
@@ -108,49 +109,36 @@ class RenameFolderController
 
             $permisos = $repo->userPrivilegesShared($idFolder['carpetaParent'], $idUsuari);
 
-            /*var_dump($idFolder);
-            var_dump($idUsuari);
-
-            var_dump($file);
-
-            var_dump($repo->userPrivilegesShared($idFolder, $idUsuari));*/
-            //die;
 
         }
 
         if ($permisos['admin'] == '1') {
 
+            //Element is a folder
             if ($file['esCarpeta']) {
                 $folderPath = $repo->getFolderPath($idFolder);
 
                 $file = $repo->getFileById($idFolder);
+                $repo->renameFolder($idFolder, $newNameCarpeta);
             }
 
 
+            //Element is a file
+            if ($file['esCarpeta'] == '0'){
+                $idFolder = $repo->getParentFolderId($urlPath);
+                $idPropietari = $repo->getUserIdByDirectoryId($idFolder);
 
 
-
-            $repo->renameFolder($idFolder, $newNameCarpeta);
-
-            if (!$file['esCarpeta'] == '1'){
-                $oldPath = './uploads/' . $_COOKIE['user_id'] . '/' . $oldNameCarpeta;
+                $oldPath = './uploads/' .  $idPropietari['id_usuari'] . '/' . $oldNameCarpeta;
 
                 // Define the new path
-                $newPath = './uploads/' . $_COOKIE['user_id'] . '/' . $newNameCarpeta;
+                $newPath = './uploads/' .  $idPropietari['id_usuari'] . '/' . $newNameCarpeta;
 
                 // Renames the file
                 rename($oldPath, $newPath);
+                $repo->renameFolder($idFitxer, $newNameCarpeta);
+
             }
-
-
-
-            $idCarpetaParent = $repo->getParentFolderId($folderPath['urlPath']);
-
-            $urlPath = $repo->getFolderPath($idCarpetaParent);
-
-            /*$carpetes = $repo->showDirectory($idCarpetaParent, $idUsuari);
-
-            $url = "/dashboard/" . $urlPath;*/
 
             $response_array['id'] = $idFolder;
             $response_array['newName'] = $newNameCarpeta;
