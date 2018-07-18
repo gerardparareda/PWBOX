@@ -688,7 +688,12 @@ class DoctrineUserRepository implements UserRepository{
         $result = $stmt->execute();
 
         //$sql = "DELETE FROM SharedUserCarpeta WHERE id_usuari = :userid;";
-        $sql = "DELETE suc, d FROM SharedUserCarpeta as suc, Directori AS d WHERE suc.id_carpeta = d.id AND d.id_propietari = :userid;";
+        /*$sql = "DELETE suc, d FROM SharedUserCarpeta as suc, Directori AS d WHERE suc.id_carpeta = d.id AND d.id_propietari = :userid;";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindValue("userid", $userid, 'integer');
+        $result = $stmt->execute();*/
+
+        $sql = "DELETE suc FROM SharedUserCarpeta as suc, Directori AS d WHERE suc.id_carpeta = d.id AND d.id_propietari = :userid;";
         $stmt = $this->database->prepare($sql);
         $stmt->bindValue("userid", $userid, 'integer');
         $result = $stmt->execute();
