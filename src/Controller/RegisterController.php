@@ -118,11 +118,9 @@ class RegisterController{
                 $errors['errorEmail'] = "This email already exists in our database";
             }
 
-            //var_dump($data);
-
             if(sizeof($errors) == 0) {
 
-                //Registrar l'usuari (ARREGLAR)
+                //Registrar l'usuari
 
                 $now = new \DateTime('now');
 

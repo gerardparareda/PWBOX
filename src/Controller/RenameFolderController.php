@@ -150,6 +150,5 @@ class RenameFolderController
             $response_array['permision'] = false;
             return $response->withJson($response_array, 200);
         }
-        //return $this->container->get('view')->render($response, 'error.twig', ['errorCode' => 'Forbidden']);
     }
 }

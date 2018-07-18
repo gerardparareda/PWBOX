@@ -48,7 +48,6 @@ class LoginController{
             $rejex = '/@/';
             preg_match($rejex, $data['inputEmail'], $matches, PREG_OFFSET_CAPTURE);
 
-            //var_dump($matches);
 
             if (!empty($matches)) {
 

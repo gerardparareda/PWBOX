@@ -46,18 +46,15 @@ class RemoveFolderController
 
         $repo = $this->container->get('user_repository');
 
-        $idsCarpetesChildDeBorrar = $repo->getCarpetesChildId($idCarpetesBorrar); // 0 => 4
+        $idsCarpetesChildDeBorrar = $repo->getCarpetesChildId($idCarpetesBorrar);
 
-        //var_dump($idsCarpetesChildDeBorrar[0]); //4
-
-        for ($i = 0; $i < count($idsCarpetesChildDeBorrar); $i++) { //Sizeof = 1; i = 0
+        for ($i = 0; $i < count($idsCarpetesChildDeBorrar); $i++) {
             $this->deleteDirectory($idsCarpetesChildDeBorrar[$i]['id'], $idUsuari);
         }
 
         $nom = $repo->getFitxerPerId($idCarpetesBorrar);
         if ($nom) {
             unlink(dirname(__FILE__).'/../../public/uploads/' . $idUsuari . '/' . $nom);
-            //unlink('./uploads/' . $_COOKIE['user_id'] . '/' . $nom);
         }
         $repo->removeFolder($idCarpetesBorrar);
 

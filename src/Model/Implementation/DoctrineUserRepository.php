@@ -76,8 +76,6 @@ class DoctrineUserRepository implements UserRepository{
 
         $result = $stmt->execute();
         $newUser = $stmt->fetch();
-        //Revisar
-        //var_dump($newUser);
 
         if ($newUser != null) {
             return true;
@@ -193,14 +191,6 @@ class DoctrineUserRepository implements UserRepository{
      */
     public function createDirectory($nomCarpetaActual, $idCarpetaParent, $idUsuari, $esCarpeta)
     {
-
-        //var_dump($nomCarpetaActual);
-        //var_dump($idUsuari);
-        //var_dump($idCarpetaParent);
-        //var_dump($esCarpeta);
-
-        $idHash = 0;
-
         //Primer accedim a la bbdd per veure quin es l'ultim id de carpeta, perque el hash per fer la url sempre sigui
         //diferent.
 

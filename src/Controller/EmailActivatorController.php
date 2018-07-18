@@ -27,8 +27,6 @@ use PwBox\Model\UserRepository;
 
         $userId = $repo->getIdByHash($args['activatorId']);
 
-        //var_dump($userId);
-
         $repo->activateUserById($userId);
 
         $email = $repo->getEmailById($userId);
