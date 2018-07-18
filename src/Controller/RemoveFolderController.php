@@ -33,7 +33,7 @@ class RemoveFolderController
 
         $idFolderEsborrar = $data['idCarpetaAEsborrar'];
 
-        $this->deleteDirectory($idFolderEsborrar);
+        $this->deleteDirectory($idFolderEsborrar, $_COOKIE['user_id']);
 
         $response_array = ['elementBorrat' => $idFolderEsborrar];
 
@@ -42,7 +42,7 @@ class RemoveFolderController
     }
 
     //Rep un id de la carpeta que s'ha d'esborrar.
-    public function deleteDirectory ($idCarpetesBorrar) { //3
+    public function deleteDirectory ($idCarpetesBorrar, $idUsuari) { //3
 
         $repo = $this->container->get('user_repository');
 
@@ -51,12 +51,13 @@ class RemoveFolderController
         //var_dump($idsCarpetesChildDeBorrar[0]); //4
 
         for ($i = 0; $i < count($idsCarpetesChildDeBorrar); $i++) { //Sizeof = 1; i = 0
-            $this->deleteDirectory($idsCarpetesChildDeBorrar[$i]['id']);
+            $this->deleteDirectory($idsCarpetesChildDeBorrar[$i]['id'], $idUsuari);
         }
 
         $nom = $repo->getFitxerPerId($idCarpetesBorrar);
         if ($nom) {
-            unlink(dirname(__FILE__).'/../../public/uploads/' . $_COOKIE['user_id'] . '/' . $nom);
+            unlink(dirname(__FILE__).'/../../public/uploads/' . $idUsuari . '/' . $nom);
+            //unlink('./uploads/' . $_COOKIE['user_id'] . '/' . $nom);
         }
         $repo->removeFolder($idCarpetesBorrar);
 
@@ -67,12 +68,37 @@ class RemoveFolderController
 
         $data = $request->getParsedBody();
 
-
         $idFolderEsborrar = $data['idCarpetaAEsborrar'];
+        $nomFolderEsborrar = $data['nomCarpetaAEsborrar'];
+        $urlPath = $data['path'];
 
-        $this->deleteDirectory($idFolderEsborrar);
+        $repo = $this->container->get('user_repository');
 
-        $response_array = ['elementBorrat' => $idFolderEsborrar];
+        $file = $repo->getFileById($idFolderEsborrar);
+
+        if ($file['esCarpeta'] == '1') {
+
+            $idUsuari = $repo->getUserIdByDirectoryId($idFolderEsborrar);
+
+            $this->deleteDirectory($idFolderEsborrar, $idUsuari['id_usuari']);
+
+            $response_array = ['elementBorrat' => $idFolderEsborrar];
+
+        } else {
+
+            $response_array = ['elementBorrat' => $idFolderEsborrar];
+
+            $idParentFolder = $repo->getParentFolderId($urlPath);
+
+            $idPropietari = $repo->getUserIdByDirectoryId($idParentFolder);
+
+            $path = './uploads/' .  $idPropietari['id_usuari'] . '/' . $nomFolderEsborrar;
+
+            unlink($path);
+
+            $repo->removeFolder($idFolderEsborrar);
+
+        }
 
         return $response->withJson($response_array, 200);
 

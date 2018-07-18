@@ -301,13 +301,15 @@ function downloadSharedFile(url) {
     //document.getElementById('my_iframe').src = url;
 }
 
-function removeSharedFolder(idCarpetaEsborrar) {
+function removeSharedFolder(idCarpetaEsborrar, nomCarpetaEsborrar, urlPath) {
     $.ajax(
         {
             url: '/removeSharedFolder',
             type: 'POST',
             data: {
-                idCarpetaAEsborrar: idCarpetaEsborrar
+                idCarpetaAEsborrar: idCarpetaEsborrar,
+                nomCarpetaAEsborrar: nomCarpetaEsborrar,
+                path: urlPath
             },
             success: function(data) {
                 document.getElementById(data.elementBorrat).parentElement.parentElement.remove();
